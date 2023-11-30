@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +35,9 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -77,10 +81,14 @@ fun RegisterPage() {
     }
     val context = androidx.compose.ui.platform.LocalContext.current
     val windowInfo = rememberWindowInfo()
-    val passwordVisibility by remember { mutableStateOf(false) }
-//    val iconVisibility = if (passwordVisibility){
-//
-//    }
+    var passwordVisibility by remember { mutableStateOf(false) }
+    var iconVisibility = if (passwordVisibility){
+        painterResource(id = R.drawable.baseline_visibility_24)
+    }
+    else
+    {
+        painterResource(id = R.drawable.baseline_visibility_off_24)
+    }
 
     if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
         Column(
@@ -198,12 +206,19 @@ fun RegisterPage() {
                 },
                 singleLine = true,
                 trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        passwordVisibility = !passwordVisibility
+                    }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_visibility),
+                            painter = iconVisibility,
                             contentDescription = "visibility password")
                     }
-                }
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                ),
+                visualTransformation = if (passwordVisibility) VisualTransformation.None
+                else PasswordVisualTransformation()
             )
             Button(
                 onClick = {
@@ -377,6 +392,20 @@ fun RegisterPage() {
                         passwordState = it
                     },
                     singleLine = true,
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            passwordVisibility = !passwordVisibility
+                        }) {
+                            Icon(
+                                painter = iconVisibility,
+                                contentDescription = "visibility password")
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
+                    ),
+                    visualTransformation = if (passwordVisibility) VisualTransformation.None
+                    else PasswordVisualTransformation()
                 )
                 Button(
                     onClick = {
