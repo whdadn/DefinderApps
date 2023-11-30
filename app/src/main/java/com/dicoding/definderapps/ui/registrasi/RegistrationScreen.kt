@@ -73,6 +73,9 @@ fun RegisterPage() {
     var emailState by rememberSaveable {
         mutableStateOf("")
     }
+    var usernameState by rememberSaveable {
+        mutableStateOf("")
+    }
     var nameState by rememberSaveable {
         mutableStateOf("")
     }
@@ -90,6 +93,7 @@ fun RegisterPage() {
         painterResource(id = R.drawable.baseline_visibility_off_24)
     }
 
+    //potrait
     if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Compact) {
         Column(
             modifier = Modifier
@@ -98,7 +102,7 @@ fun RegisterPage() {
         ) {
             Image(
                 modifier = Modifier
-                    .padding(25.dp)
+                    .padding(15.dp)
                     .width(344.dp)
                     .height(201.dp),
                 painter = painterResource(id = R.drawable.definder_register_page),
@@ -125,6 +129,32 @@ fun RegisterPage() {
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal,
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 34.dp, top = 16.dp)
+                    .align(Alignment.Start),
+                text = "Username",
+                fontFamily = fontFamily,
+                color = Color(0xFF000080),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(horizontal = 34.dp)
+                    .align(Alignment.Start)
+                    .fillMaxWidth(),
+                value = usernameState,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = Color(0xFF000080),
+                    unfocusedBorderColor = Color(0xFFCBCCCFF),
+                ),
+                onValueChange = {
+                    usernameState = it
+                },
+                singleLine = true,
             )
             Text(
                 modifier = Modifier
@@ -244,7 +274,7 @@ fun RegisterPage() {
             Row {
                 Text(
                     modifier = Modifier
-                        .padding(top = 7.dp)
+                        .padding(top = 1.dp)
                         .align(Alignment.CenterVertically),
                     text = "Already have an account?",
                     fontFamily = fontFamily,
@@ -255,7 +285,7 @@ fun RegisterPage() {
                 )
                 Text(
                     modifier = Modifier
-                        .padding(start = 3.dp, top = 7.dp)
+                        .padding(start = 3.dp, top = 1.dp)
                         .align(Alignment.CenterVertically)
                         .clickable {
                             Toast
@@ -271,6 +301,8 @@ fun RegisterPage() {
                 )
             }
         }
+
+        //Landscape
     } else {
         Column {
             Text(
@@ -312,7 +344,35 @@ fun RegisterPage() {
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(start = 34.dp, top = 28.dp)
+                        .padding(start = 34.dp, top = 8.dp)
+                        .align(Alignment.Start),
+                    text = "Username",
+                    fontFamily = fontFamily,
+                    color = Color(0xFF000080),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    fontStyle = FontStyle.Normal,
+                )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .padding(horizontal = 34.dp)
+                        .align(Alignment.Start)
+                        .height(50.dp)
+                        .fillMaxWidth(),
+                    value = usernameState,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        focusedBorderColor = Color(0xFF000080),
+                        unfocusedBorderColor = Color(0xFFCBCCCFF),
+                    ),
+                    onValueChange = {
+                        usernameState = it
+                    },
+                    singleLine = true,
+                )
+
+                Text(
+                    modifier = Modifier
+                        .padding(start = 34.dp, top = 8.dp)
                         .align(Alignment.Start),
                     text = "Email",
                     fontFamily = fontFamily,
@@ -340,7 +400,7 @@ fun RegisterPage() {
 
                 Text(
                     modifier = Modifier
-                        .padding(start = 34.dp, top = 16.dp)
+                        .padding(start = 34.dp, top = 8.dp)
                         .align(Alignment.Start),
                     text = "Name",
                     fontFamily = fontFamily,
@@ -368,7 +428,7 @@ fun RegisterPage() {
 
                 Text(
                     modifier = Modifier
-                        .padding(start = 34.dp, top = 16.dp)
+                        .padding(start = 34.dp, top = 8.dp)
                         .align(Alignment.Start),
                     text = "Password",
                     fontFamily = fontFamily,
@@ -413,7 +473,7 @@ fun RegisterPage() {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 34.dp, vertical = 10.dp),
+                        .padding(horizontal = 34.dp, vertical = 3.dp),
                     colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
                     shape = RoundedCornerShape(4.dp)
                 ) {
@@ -428,7 +488,7 @@ fun RegisterPage() {
                     )
                 }
 
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(0.dp))
                 Row {
                     Text(
                         modifier = Modifier
@@ -442,7 +502,7 @@ fun RegisterPage() {
                     )
                     Text(
                         modifier = Modifier
-                            .padding(start = 3.dp, top = 1.dp, bottom = 2.dp)
+                            .padding(start = 3.dp, bottom = 1.dp)
                             .clickable {
                                 Toast
                                     .makeText(context, "Menuju halaman login", Toast.LENGTH_SHORT)
