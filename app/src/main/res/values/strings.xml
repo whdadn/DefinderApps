@@ -8,8 +8,13 @@
     <string name="email">Email</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
+    <string name="visibility_password">visibility password</string>
     <string name="already_account">Already have an account?</string>
     <string name="login">Login</string>
+    <string name="login_image">Login Image</string>
+    <string name="login_info">Let\'s start exploring tourist \ndestinations</string>
+    <string name="not_yet_account">Don’t have an account?</string>
+
 
 
     //form_validation
@@ -30,5 +35,7 @@
     <string name="pass_not_has_uppercase">Passwords must have at least one uppercase letter!</string>
     <string name="pass_not_has_lowercase">Passwords must have at least one lowercase letter!</string>
     <string name="pass_not_has_digit">Passwords must have at least one number!</string>
+
+
 
 </resources>

@@ -1,19 +1,16 @@
 package com.dicoding.definderapps.ui.component.validation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.dicoding.definderapps.R
 
 @Composable
 fun ValidationErrorMessage(error:String){
     Text(
         text = error,
-        style =MaterialTheme.typography.bodySmall,
+        style =MaterialTheme.typography.bodySmall.copy(),
         color = MaterialTheme.colorScheme.error
     )
 }
@@ -21,7 +18,7 @@ fun ValidationErrorMessage(error:String){
 
 
 @Composable
-fun errorUsernameMessage(isErrorUsername:String){
+fun ErrorUsernameMessage(isErrorUsername:String){
     when(isErrorUsername){
         "empty"->{
             ValidationErrorMessage(error = stringResource(id = R.string.username_is_empty))
@@ -39,7 +36,7 @@ fun errorUsernameMessage(isErrorUsername:String){
     }
 }
 @Composable
-fun errorEmailMessage(isErrorEmail:String){
+fun ErrorEmailMessage(isErrorEmail:String){
     when(isErrorEmail){
         "empty"->{
             ValidationErrorMessage(error = stringResource(id = R.string.email_is_empty))
@@ -52,7 +49,7 @@ fun errorEmailMessage(isErrorEmail:String){
 }
 
 @Composable
-fun errorNameMessage(isErrorName:String){
+fun ErrorNameMessage(isErrorName:String){
     when(isErrorName){
         "empty"->{
             ValidationErrorMessage(error = stringResource(id = R.string.name_is_empty))
@@ -68,7 +65,7 @@ fun errorNameMessage(isErrorName:String){
 }
 
 @Composable
-fun errorPasswordMessage(isErrorPass:String){
+fun ErrorPasswordMessage(isErrorPass:String){
     when(isErrorPass){
         "empty"->{
             ValidationErrorMessage(error = stringResource(id = R.string.pass_is_empty))
