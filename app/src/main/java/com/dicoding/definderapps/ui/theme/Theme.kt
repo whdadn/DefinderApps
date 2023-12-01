@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui.welcome.theme
+package com.dicoding.definderapps.ui.theme
 
 import android.app.Activity
 import android.os.Build
