@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui.welcome.theme
+package com.dicoding.definderapps.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,34 @@
 <resources>
     <string name="app_name">DefinderApps</string>
     <string name="title_activity_registrasi">RegistrasiActivity</string>
+    <string name="register_image">Register Image</string>
+    <string name="register">Register</string>
+    <string name="register_info">Before exploring tourist destinations, \nlet\'s create an account first</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="already_account">Already have an account?</string>
+    <string name="login">Login</string>
+
+
+    //form_validation
+    <string name="username_is_empty">Username cannot be empty!</string>
+    <string name="username_less_than_four">Username must be at least 3 characters!</string>
+    <string name="username_more_than_fifteen">Username maximum 15 characters!</string>
+    <string name="username_not_valid">Usernames can only consist of letters, numbers, ( . ) and ( _ ) !</string>
+
+    <string name="email_is_empty">Email cannot be empty!</string>
+    <string name="email_not_valid">Invalid email address!</string>
+
+    <string name="name_is_empty">Name cannot be empty!</string>
+    <string name="name_less_than_three">Name must be at least 3 characters!</string>
+    <string name="name_not_valid">Names can only contain letters and spaces!</string>
+
+    <string name="pass_is_empty">Password cannot be empty!</string>
+    <string name="pass_less_than_eight">Password must be at least 8 characters!</string>
+    <string name="pass_not_has_uppercase">Passwords must have at least one uppercase letter!</string>
+    <string name="pass_not_has_lowercase">Passwords must have at least one lowercase letter!</string>
+    <string name="pass_not_has_digit">Passwords must have at least one number!</string>
+
 </resources>
