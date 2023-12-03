@@ -4,8 +4,8 @@ package com.dicoding.definderapps.ui.component.form
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,12 +36,12 @@ fun TextField(
                 ),
             )
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFF000080),
             unfocusedBorderColor = Color(0xFFBCCCFF),
-            errorLabelColor = MaterialTheme.colorScheme.error,
             focusedLabelColor = Color(0xFF000080),
-            unfocusedLabelColor = Color(0xFF79747E)
+            unfocusedLabelColor = Color(0xFF79747E),
+            errorLabelColor = MaterialTheme.colorScheme.error,
         ),
         textStyle = TextStyle.Default.copy(
             fontSize = 16.sp

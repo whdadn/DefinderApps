@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui
+package com.dicoding.definderapps
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
