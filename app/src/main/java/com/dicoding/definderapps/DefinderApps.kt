@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui
+package com.dicoding.definderapps
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

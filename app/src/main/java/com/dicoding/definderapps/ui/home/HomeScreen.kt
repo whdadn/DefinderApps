@@ -1,217 +1,167 @@
 package com.dicoding.definderapps.ui.home
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
+import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.di.Injection
+import com.dicoding.definderapps.ui.component.home.DestinationItem
+import com.dicoding.definderapps.ui.component.home.SearchBar
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomePage()
-{
-    val checkedState = remember { mutableStateOf(false) }
-    var searchState by remember { mutableStateOf("") }
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository())
+    )
+) {
+    var favoriteState by rememberSaveable { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-    ) {
-       LazyColumn(){
-            item {
-                TextField(
-                    value = searchState,
-                    onValueChange = {searchState = it},
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp)
-                        .clip(RoundedCornerShape(20.dp)),
-                    placeholder = { Text(
-                        text = "Search",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal
-                        ),
-                        color = Color.Gray,
+    val destinationData by viewModel.getDestination.collectAsState()
+    val query by viewModel.query
+
+
+
+    Box(modifier = modifier) {
+        val scope = rememberCoroutineScope()
+        val listState = rememberLazyListState()
+        val showButton: Boolean by remember {
+            derivedStateOf { listState.firstVisibleItemIndex > 0 }
+        }
+        LazyColumn(
+            state = listState,
+            contentPadding = PaddingValues(bottom = 10.dp)
+        ) {
+            stickyHeader {
+                Column(
+                    modifier=Modifier.background(MaterialTheme.colorScheme.background)
+                ) {
+                    SearchBar(
+                        query = query,
+                        onQueryChange = viewModel::search,
                         modifier = Modifier
-                            .padding(start = 1.dp)
-                            .fillMaxSize())
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_search_24),
-                            contentDescription = "search",
-                            modifier = Modifier
-                                .offset(x = 5.dp)
-                                .size(25.dp),
-                            tint = Color(0xFF79747E)
-                        )
-                    },
-                    textStyle = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Normal,
-                        fontStyle = FontStyle.Normal
-                    ),
-                    maxLines = 1
-                )
-
-                Text(
-                    text = "Let's explore the \ntourism",
-                    color = Color(0xFF000080),
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Normal
-                    ),
-                    modifier = Modifier
-                        .padding(top = 20.dp),
-                )
+                            .padding(vertical = 16.dp, horizontal = 16.dp)
+                    )
+                }
             }
 
-           items(10)
-           {
-               Card(
-                   modifier = Modifier
-                       .padding(top = 6.dp)
-                       .fillMaxWidth()
-                       .align(Alignment.CenterHorizontally)
-                       .clip(RoundedCornerShape(15.dp))
-                       .height(208.dp),
-                   border = BorderStroke(2.dp, Color(0xFF000080)),
-                   colors = CardDefaults.cardColors(Color.White)
-               ) {
-                   Image(
-                       painter = painterResource(id = R.drawable.borobudur),
-                       contentDescription = "Borobudur Image",
-                       modifier = Modifier
-                           .clip(RoundedCornerShape(15.dp))
-                           .fillMaxWidth()
-                           .height(121.dp),
-                       contentScale = ContentScale.FillWidth
-                   )
-                   Row(
-                       modifier = Modifier
-                           .fillMaxWidth(),
-                   ) {
-                       Text(
-                           text = "Candi Borobudur",
-                           color = Color(0xFF000080),
-                           style = MaterialTheme.typography.titleLarge.copy(
-                               fontWeight = FontWeight.Bold,
-                               fontStyle = FontStyle.Normal
-                           ),
-                           modifier = Modifier
-                               .padding(start = 10.dp, top = 3.dp)
-                               .weight(1f),
-                       )
-                       IconToggleButton(
-                         checked = checkedState.value,
-                           onCheckedChange = {
-                                checkedState.value = !checkedState.value
-                           },
-                           modifier = Modifier
-                               .padding(end = 2.dp)
-                               .size(40.dp)
-                       ){
-                           Icon(painter = if (checkedState.value){
-                               painterResource(id = R.drawable.baseline_favorite_24)
-                           }
-                           else {
-                               painterResource(id = R.drawable.baseline_favorite_border_24)
-                                },
-                               contentDescription = "favorite",
-                               tint = Color(0xFF000066)
-                           )
-                       }
-                   }
-                   Row(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                   ) {
-                       Icon(
-                           painter = painterResource(id = R.drawable.baseline_location_on_24),
-                           contentDescription = "location",
-                           modifier = Modifier
-                               .padding(start = 9.dp)
-                               .size(20.dp),
-                           tint = Color(0xFF00F0FF)
-                       )
-                       Text(
-                           text = "Magelang",
-                           color = Color(0xFF79747E),
-                           style = MaterialTheme.typography.labelSmall.copy(
-                               fontWeight = FontWeight.Normal,
-                               fontStyle = FontStyle.Normal
-                           ),
-                           modifier = Modifier
-                               .padding(top = 1.dp)
-                       )
-                   }
-                   Row(
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .padding(top = 2.dp)
-                   ) {
-                       Icon(
-                           painter = painterResource(id = R.drawable.baseline_star_24),
-                           contentDescription = "location",
-                           modifier = Modifier
-                               .padding(start = 8.dp)
-                               .size(20.dp),
-                           tint = Color.Yellow
-                       )
-                       Text(
-                           text = "4 (120)",
-                           color = Color(0xFF79747E),
-                           style = MaterialTheme.typography.labelSmall.copy(
-                               fontWeight = FontWeight.Normal,
-                               fontStyle = FontStyle.Normal
-                           ),
-                           modifier = Modifier
-                               .padding(top = 2.dp)
-                       )
-                   }
-               }
-           }
-       }
+
+            if (query.isEmpty()) {
+                item {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.info_home),
+                            color = Color(0xFF000080),
+                            style = MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontStyle = FontStyle.Normal
+                            )
+                        )
+                    }
+                }
+            }
+
+            items(destinationData, key = { it.id }) { destination ->
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                ) {
+                    DestinationItem(
+                        name = destination.name,
+                        imageUrl = destination.imageUrl,
+                        location = destination.location,
+                        rating = destination.rating,
+                        favorite = favoriteState,
+                        favoriteChange = { favoriteState = it },
+                        modifier = Modifier
+                            .animateItemPlacement(tween(durationMillis = 100))
+                            .clickable { }
+                    )
+                }
+            }
+        }
+        AnimatedVisibility(
+            visible = showButton,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically(),
+            modifier = Modifier
+                .padding(bottom = 20.dp, end = 20.dp)
+                .align(Alignment.BottomEnd)
+        ) {
+            ScrollToTopButton(
+                onClick = {
+                    scope.launch {
+                        listState.scrollToItem(index = 0)
+                    }
+                }
+            )
+        }
+    }
+
+}
+
+@Composable
+fun ScrollToTopButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FilledIconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = Icons.Filled.KeyboardArrowUp,
+            contentDescription = stringResource(R.string.scroll_to_top),
+        )
     }
 }
 
-@Preview(showBackground = true,
-    showSystemUi = true,
-    device = Devices.PIXEL_4_XL)
+
+@Preview(showBackground = true, device = Devices.PIXEL_4_XL)
 @Composable
-fun HomePagePreview()
-{
-    HomePage()
+fun HomeScreenPreview() {
+    HomeScreen()
 }

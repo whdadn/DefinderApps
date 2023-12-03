@@ -13,14 +13,8 @@
         android:theme="@style/Theme.DefinderApps"
         tools:targetApi="31">
         <activity
-            android:name=".ui.register.RegistrationActivity"
-            android:exported="false"
-            android:label="@string/title_activity_registrasi"
-            android:theme="@style/Theme.DefinderApps" />
-        <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.DefinderApps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
