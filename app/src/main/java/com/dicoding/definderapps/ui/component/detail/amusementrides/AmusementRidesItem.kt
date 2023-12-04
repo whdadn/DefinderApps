@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui.component.amusementrides
+package com.dicoding.definderapps.ui.component.detail.amusementrides
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -129,7 +129,7 @@ fun AmusementRideItem(
 fun AmusementRidesListItems()
 {
     LazyColumn{
-        items(data){list ->
+        items(data){ list ->
             AmusementRideItem(amusementRides = list)
         }
     }
