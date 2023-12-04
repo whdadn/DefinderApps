@@ -1,6 +1,5 @@
 package com.dicoding.definderapps.ui.detail
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,12 +17,17 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.definderapps.R
@@ -45,6 +50,7 @@ fun DetailScreenPage() {
     ) {
         Box(
             modifier = Modifier
+                .wrapContentSize(),
         ) {
             HorizontalPager(
                 state = pagerState,
@@ -53,7 +59,7 @@ fun DetailScreenPage() {
             ) { currentPage ->
                 Card(
                     modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp)
+                        .padding(end = 7.dp)
                         .wrapContentSize(),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
@@ -70,6 +76,41 @@ fun DetailScreenPage() {
             modifier = Modifier
                 .padding(top = 7.dp)
         )
+
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                text = "Candi Borobudur",
+                color = Color(0xFF000080),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Normal
+                ),
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Icon(
+                painter = painterResource(id = R.drawable.ticket_fill),
+                contentDescription = "ticket_logo",
+                modifier = Modifier
+                    .padding(top = 12.dp)
+                    .size(28.dp),
+                tint = Color(0xFF000080)
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 6.dp, top = 10.dp, end = 7.dp),
+                text = "$5",
+                color = Color(0xFF000080),
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Normal
+                ),
+            )
+        }
     }
 }
 
@@ -77,8 +118,8 @@ fun DetailScreenPage() {
 fun PageIndex(pageCount: Int, currentPage: Int, modifier: Modifier) {
     Row(
         modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(pageCount)
         {
@@ -89,13 +130,12 @@ fun PageIndex(pageCount: Int, currentPage: Int, modifier: Modifier) {
 
 @Composable
 fun IndicatorDots(isSelected: Boolean) {
-    val size = animateDpAsState(targetValue = if(isSelected) 12.dp else 10.dp, label = "")
     Box(
         modifier = Modifier
             .padding(start = 2.dp, end = 2.dp)
-            .size(size.value)
+            .size(8.dp)
             .clip(CircleShape)
-            .background(if (isSelected) Color(0xFF79747E) else Color(0xFFD9D9EC)),
+            .background(if (isSelected) Color(0xFF000080) else Color(0xFFD9D9EC)),
     ) {
 
     }
