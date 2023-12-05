@@ -1,13 +1,7 @@
 package com.dicoding.definderapps.ui.component.detail.transportation
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,7 +42,7 @@ data class Transportation(
     val price: Int,
     val desc: String
 )
-const val ANIMATION_DURATION = 300
+
 val data = listOf(
     Transportation(
         1,
@@ -74,10 +68,10 @@ val data = listOf(
 fun TransportationCard(
     transport: Transportation,
     expanded: Boolean,
-    onClickExpanded: (id:Int) -> Unit
+    onClickExpanded: (id: Int) -> Unit
 ) {
     val transition = updateTransition(targetState = expanded, label = null)
-    val iconRotation by transition.animateFloat(label = "rotate_icon") {state ->
+    val iconRotation by transition.animateFloat(label = "rotate_icon") { state ->
         if (state)
             180f
         else
@@ -85,7 +79,7 @@ fun TransportationCard(
     }
     Column(
         modifier = Modifier
-            .padding(16.dp),
+            .padding(top = 16.dp, bottom = 5.dp),
     ) {
         Card(
             modifier = Modifier
@@ -146,53 +140,34 @@ fun TransportationCard(
 fun ExpandedTransportationItem(
     isExpanded: Boolean,
     desc: String
-)
-{
-    val enterTransition = remember {
-        expandVertically(
-            expandFrom = Alignment.Top,
-            animationSpec = tween(ANIMATION_DURATION)
-        ) + fadeIn(initialAlpha = 3f, animationSpec = tween(ANIMATION_DURATION))
-    }
-    val exitTransition = remember {
-        shrinkVertically(
-            shrinkTowards = Alignment.Top,
-            animationSpec = tween(ANIMATION_DURATION)
-        ) + fadeOut(animationSpec = tween(ANIMATION_DURATION))
-    }
-
-    AnimatedVisibility(
-        visible = isExpanded,
-        enter = enterTransition,
-        exit = exitTransition
-    ) {
-        Text(
-            text = desc,
-            textAlign = TextAlign.Justify,
-            color = Color(0xFF00002D),
-            modifier = Modifier
-                .padding(top = 16.dp),
-            style = MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal
-            )
-        )
-    }
+) {
+   if (isExpanded)
+   {
+       Text(
+           text = desc,
+           textAlign = TextAlign.Justify,
+           color = Color(0xFF00002D),
+           modifier = Modifier.padding(top = 16.dp),
+           style = MaterialTheme.typography.labelLarge.copy(
+               fontWeight = FontWeight.Normal,
+               fontStyle = FontStyle.Normal
+           )
+       )
+   }
 }
 
 @Composable
-fun TransportationListItem()
-{
+fun TransportationListItem() {
     var expandedItem by remember {
         mutableIntStateOf(-1)
     }
 
-    LazyColumn{
-        items(data){list ->
+    LazyColumn {
+        items(data) { list ->
             TransportationCard(
                 transport = list,
                 expanded = expandedItem == list.id,
-                onClickExpanded = {id ->
+                onClickExpanded = { id ->
                     expandedItem = if (expandedItem == id) -1 else id
                 }
             )
@@ -206,7 +181,6 @@ fun TransportationListItem()
     device = Devices.PIXEL_4_XL
 )
 @Composable
-fun TransportationItemPreview()
-{
+fun TransportationItemPreview() {
     TransportationListItem()
 }

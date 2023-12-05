@@ -20,7 +20,7 @@ fun AboutPage()
         item {
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(top = 16.dp)
             ) {
                 Text(
                     text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget interdum nibh. Pellentesque scelerisque condimentum lorem, sed tempus velit aliquam ultrices. Maecenas non sapien sagittis, mattis arcu vitae, cursus ipsum. Quisque rhoncus ex dignissim consectetur consequat. Vivamus vehicula, dui a tempor aliquet, mi enim pretium nisi, in condimentum nibh odio ut urna. Suspendisse potenti. Fusce id dictum mauris. Duis leo ligula, cursus sit amet urna a, pellentesque sollicitudin orci. In varius dui ac diam dignissim, nec porttitor dui ultricies. Etiam nec magna lacinia, tincidunt nisi eu, lacinia purus. Pellentesque id pulvinar libero. Suspendisse vitae sapien sed augue varius hendrerit. Etiam sit amet est id augue condimentum sodales non nec ante. Quisque augue tellus, rutrum eu urna in, tincidunt tempus velit. Aenean nisl ligula, feugiat vitae ex id, elementum aliquam diam. Praesent mattis fringilla tincidunt.\n" +

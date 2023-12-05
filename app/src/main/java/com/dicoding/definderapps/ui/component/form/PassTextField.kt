@@ -6,8 +6,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,7 +46,7 @@ fun PassTextField(
 
             )
         },
-        colors = OutlinedTextFieldDefaults.colors(
+        colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Color(0xFF000080),
             unfocusedBorderColor = Color(0xFFBCCCFF),
             focusedLabelColor = Color(0xFF000080),
