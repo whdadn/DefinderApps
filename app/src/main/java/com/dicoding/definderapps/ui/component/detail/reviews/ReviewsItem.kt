@@ -2,8 +2,10 @@ package com.dicoding.definderapps.ui.component.detail.reviews
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,14 +13,20 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.dicoding.definderapps.R
 
 data class Reviews(
@@ -110,6 +119,7 @@ val data = listOf(
                 "Maecenas suscipit ac odio eget placerat. Suspendisse potenti. Nullam sit amet ornare felis. Suspendisse suscipit eros a ligula ornare congue. Pellentesque quis egestas nulla, nec sagittis ante. Integer imperdiet elementum quam, at efficitur ipsum fermentum non. Vestibulum fringilla neque arcu, ac euismod risus porttitor a. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum vestibulum nibh ut elit elementum suscipit. Vestibulum porta arcu et erat rhoncus iaculis. Curabitur luctus odio ac lectus eleifend sodales. Aenean leo felis, rutrum vel lectus non, eleifend bibendum nunc."
     ),
 )
+
 @Composable
 fun ReviewsItem(
     reviews: Reviews
@@ -120,7 +130,7 @@ fun ReviewsItem(
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(top = 16.dp)
     ) {
         Card(
             modifier = Modifier
@@ -207,9 +217,54 @@ fun ReviewsItem(
 @Composable
 fun ReviewsListItem()
 {
-    LazyColumn{
-        items(data){list->
-            ReviewsItem(reviews = list)
+    var reviewUser by rememberSaveable { mutableStateOf("") }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(bottom = 64.dp)
+        ){
+            items(data){list->
+                ReviewsItem(reviews = list)
+            }
+        }
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+        ) {
+            TextField(
+                value = reviewUser,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp),
+                placeholder = {
+                    Text(
+                        text = "Add a review comment...",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Normal,
+                            fontSize = 16.sp
+                        ),
+                        color = Color(0xFF79747E)
+                    )
+                },
+                onValueChange = {reviewUser = it},
+                trailingIcon = {
+                    IconButton(
+                        onClick = { /*TODO*/ }
+                    ) {
+                       Icon(
+                           imageVector = Icons.Default.Send,
+                           contentDescription = "",
+                           tint = Color(0xFF000080)
+                       )
+                    }
+                }
+            )
         }
     }
 }
