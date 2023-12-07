@@ -1,5 +1,6 @@
 package com.dicoding.definderapps.ui.component.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -28,10 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.definderapps.R
 
+@SuppressLint("DiscouragedApi")
 @Composable
 fun DestinationItem(
     name:String,
-    imageUrl:Int,
+    imageUrl:String,
     location:String,
     rating:String,
     favorite:Boolean,
@@ -47,8 +50,13 @@ fun DestinationItem(
         modifier = modifier.height(208.dp)
 
     ) {
+        val imageResourceId = LocalContext.current.resources.getIdentifier(
+            imageUrl,
+            "drawable",
+            LocalContext.current.packageName
+        )
         Image(
-            painter = painterResource(imageUrl),
+            painter = painterResource(imageResourceId),
             contentDescription = stringResource(R.string.image)+name,
             modifier = Modifier
                 .fillMaxWidth()
@@ -139,5 +147,5 @@ fun DestinationItem(
 @Preview(showBackground = true)
 @Composable
 fun DestinationItemPreview(){
-    DestinationItem(name= "Candi Borobudur", imageUrl = R.drawable.candi_borobudur, location = "Magelang", rating = "4 (120)", favorite = false, favoriteChange = {} )
+    DestinationItem(name= "Candi Borobudur", imageUrl = "candi_borobudur", location = "Magelang", rating = "4 (120)", favorite = false, favoriteChange = {} )
 }
