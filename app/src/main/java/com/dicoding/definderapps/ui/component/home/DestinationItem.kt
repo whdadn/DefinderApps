@@ -144,7 +144,10 @@ fun DestinationItem(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
 fun DestinationItemPreview(){
     DestinationItem(name= "Candi Borobudur", imageUrl = "candi_borobudur", location = "Magelang", rating = "4 (120)", favorite = false, favoriteChange = {} )
