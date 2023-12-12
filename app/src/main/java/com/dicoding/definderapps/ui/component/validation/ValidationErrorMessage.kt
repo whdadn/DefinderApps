@@ -18,24 +18,6 @@ fun ValidationErrorMessage(error:String){
 
 
 @Composable
-fun ErrorUsernameMessage(isErrorUsername:String){
-    when(isErrorUsername){
-        "empty"->{
-            ValidationErrorMessage(error = stringResource(id = R.string.username_is_empty))
-        }
-        "less_than_four"->{
-            ValidationErrorMessage(error = stringResource(id = R.string.username_less_than_four))
-        }
-        "more_than_fifteen"->{
-            ValidationErrorMessage(error = stringResource(id = R.string.username_more_than_fifteen))
-        }
-        "not_valid"->{
-            ValidationErrorMessage(error = stringResource(R.string.username_not_valid))
-        }
-        else->{}
-    }
-}
-@Composable
 fun ErrorEmailMessage(isErrorEmail:String){
     when(isErrorEmail){
         "empty"->{

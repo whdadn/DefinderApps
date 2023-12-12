@@ -6,6 +6,7 @@
     <string name="register_image">Register Image</string>
     <string name="register">Register</string>
     <string name="register_info">Before exploring tourist destinations, \nlet\'s create an account first</string>
+    <string name="register_success">Register Success</string>
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="name">Name</string>
@@ -46,6 +47,7 @@
     <string name="icon_location">Icon location</string>
     <string name="icon_rating">Icon_\nrating</string>
     <string name="scroll_to_top">Scroll to Top</string>
+
 
 
 </resources>

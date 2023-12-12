@@ -177,7 +177,6 @@ fun TransportationListItem() {
 
 @Preview(
     showBackground = true,
-    showSystemUi = true,
     device = Devices.PIXEL_4_XL
 )
 @Composable
