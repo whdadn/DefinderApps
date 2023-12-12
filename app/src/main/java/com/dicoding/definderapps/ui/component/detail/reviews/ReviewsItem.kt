@@ -1,16 +1,24 @@
 package com.dicoding.definderapps.ui.component.detail.reviews
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -42,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.dicoding.definderapps.R
 
 data class Reviews(
@@ -179,6 +188,7 @@ fun ReviewsItem(
                     }
                 }
             )
+
            if (measuredHeight > 0 && measuredHeight > 5 * MaterialTheme.typography.bodyLarge.fontSize.value)
            {
                if (!expanded)
@@ -209,6 +219,19 @@ fun ReviewsItem(
                        )
                    )
                }
+               LazyRow(
+                   contentPadding = PaddingValues(horizontal = 5.dp)
+               ){
+                   items(5)
+                   {
+                       Image(
+                           painter = painterResource(id = R.drawable.candi_dieng),
+                           contentDescription = null,
+                           modifier = Modifier
+                               .padding(end = 5.dp)
+                       )
+                   }
+               }
            }
         }
     }
@@ -218,6 +241,11 @@ fun ReviewsItem(
 fun ReviewsListItem()
 {
     var reviewUser by rememberSaveable { mutableStateOf("") }
+    var selectedImage by remember { mutableStateOf<List<Uri>>(emptyList()) }
+    val multiplePhotoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = {uris -> selectedImage = uris}
+    )
 
     Box(
         modifier = Modifier
@@ -236,6 +264,22 @@ fun ReviewsListItem()
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         ) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 5.dp),
+            ){
+                items(selectedImage) {uri ->
+                    AsyncImage(
+                        model = uri,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .height(100.dp)
+                            .padding(end = 5.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+            }
+            
             TextField(
                 value = reviewUser,
                 modifier = Modifier
@@ -253,6 +297,19 @@ fun ReviewsListItem()
                     )
                 },
                 onValueChange = {reviewUser = it},
+                leadingIcon = {
+                    IconButton(
+                        onClick = { multiplePhotoLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        ) }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.image),
+                            contentDescription = "image",
+                            tint = Color(0xFF000080)
+                        )
+                    }
+                },
                 trailingIcon = {
                     IconButton(
                         onClick = { /*TODO*/ }
