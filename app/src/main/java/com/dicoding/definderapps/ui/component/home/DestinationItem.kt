@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.definderapps.R
 
+
 @SuppressLint("DiscouragedApi")
 @Composable
 fun DestinationItem(
@@ -145,8 +146,7 @@ fun DestinationItem(
 }
 
 @Preview(
-    showBackground = true,
-    showSystemUi = true
+    showBackground = true
 )
 @Composable
 fun DestinationItemPreview(){

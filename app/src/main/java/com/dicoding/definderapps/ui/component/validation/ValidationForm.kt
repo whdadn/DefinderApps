@@ -14,30 +14,15 @@ fun nameValidation(name:String):String{
     return ""
 }
 
-fun usernameValidation(username:String):String{
-    val regex = Regex("^[a-zA-Z0-9._]+$")
-    if (!username.isNotEmpty()){
-        return "empty"
-    }else if (username.length<4){
-        return "less_than_four"
-    }else if(username.length>15){
-        return "more_than_fifteen"
-    }else if (!username.matches(regex)){
-        return "not_valid"
-    }else{
-        return ""
-    }
-
-}
 
 fun emailValidation(email: String): String {
     val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
-    if (!email.isNotEmpty()) {
-        return "empty"
+    return if (!email.isNotEmpty()) {
+        "empty"
     } else if (!email.matches(regex)) {
-        return "not_valid"
+        "not_valid"
     } else {
-        return ""
+        ""
     }
 
 }
@@ -47,17 +32,17 @@ fun passwordValidation(password: String):String{
     val hasLowercase = password.any { it.isLowerCase() }
     val hasDigit = password.any { it.isDigit() }
 
-    if (!password.isNotEmpty()){
-        return "empty"
+    return if (!password.isNotEmpty()){
+        "empty"
     }else if (password.length < 8) {
-        return "less_than_eight"
+        "less_than_eight"
     }else if (!hasUppercase) {
-        return "not_has_uppercase"
+        "not_has_uppercase"
     }else if (!hasLowercase) {
-        return "not_has_lowercase"
+        "not_has_lowercase"
     }else if (!hasDigit) {
-        return "not_has_digit"
+        "not_has_digit"
     }else{
-        return ""
+        ""
     }
 }

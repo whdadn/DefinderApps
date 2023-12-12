@@ -184,7 +184,7 @@ fun ReviewsItem(
                 onTextLayout = {textLayoutResult ->
                     if (textLayoutResult.didOverflowHeight)
                     {
-                        measuredHeight = textLayoutResult.size.height.toInt()
+                        measuredHeight = textLayoutResult.size.height
                     }
                 }
             )
@@ -246,6 +246,7 @@ fun ReviewsListItem()
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = {uris -> selectedImage = uris}
     )
+
 
     Box(
         modifier = Modifier
