@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,7 +41,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.ui.component.home.DestinationItem
-import com.dicoding.definderapps.ui.component.home.SearchBar
 import kotlinx.coroutines.launch
 
 
@@ -50,10 +48,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory=ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     val destinationData by viewModel.getDestination.collectAsState()
-    val query by viewModel.query
 
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
@@ -65,34 +62,21 @@ fun HomeScreen(
             state = listState,
             contentPadding = PaddingValues(bottom = 10.dp)
         ) {
-            stickyHeader {
+
+            item {
                 Column(
-                    modifier=Modifier.background(MaterialTheme.colorScheme.background)
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
-                    SearchBar(
-                        query = query,
-                        onQueryChange = viewModel::search,
+                    Text(
+                        text = stringResource(R.string.info_home),
+                        color = Color(0xFF000080),
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal
+                        ),
                         modifier = Modifier
-                            .padding(vertical = 16.dp, horizontal = 16.dp)
+                            .padding(top = 16.dp),
                     )
-                }
-            }
-
-
-            if (query.isEmpty()) {
-                item {
-                    Column(
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.info_home),
-                            color = Color(0xFF000080),
-                            style = MaterialTheme.typography.headlineMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                fontStyle = FontStyle.Normal
-                            )
-                        )
-                    }
                 }
             }
 
@@ -107,10 +91,10 @@ fun HomeScreen(
                         rating = destination.rating,
                         favorite = destination.favorited,
                         favoriteChange = {
-                            if (destination.favorited){
-                                viewModel.setFavorited(destination.id,false)
-                            }else{
-                                viewModel.setFavorited(destination.id,true)
+                            if (destination.favorited) {
+                                viewModel.setFavorited(destination.id, false)
+                            } else {
+                                viewModel.setFavorited(destination.id, true)
                             }
                         },
                         modifier = Modifier
