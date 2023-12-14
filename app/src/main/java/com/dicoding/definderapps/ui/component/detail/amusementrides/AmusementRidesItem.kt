@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,41 +25,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dicoding.definderapps.R
 
-data class AmusementRides(
-    val id: Int, 
-    val image: Int,
-    val title: String,
-    val price: Double
-)
 
-val data = listOf(
-    AmusementRides(
-        1,
-        R.drawable.butterfly_photobooth,
-        "Butterfly Photobooth",
-        5.00
-    ),
-    AmusementRides(
-        2,
-        R.drawable.bioskop_4d,
-        "Bioskop 4 Dimensi",
-        1.92
-    ),
-    AmusementRides(
-        3,
-        R.drawable.terapi_ikan,
-        "Terapi Ikan",
-        0.32
-    )
-)
 @Composable
 fun AmusementRideItem(
-    amusementRides: AmusementRides
+   image: Int,
+   title: String,
+   price: Double
 )
 {
     Column(
@@ -81,7 +53,7 @@ fun AmusementRideItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    painter = painterResource(id = amusementRides.image),
+                    painter = painterResource(id = image),
                     contentDescription = "image",
                     modifier = Modifier
                         .size(100.dp)
@@ -92,7 +64,7 @@ fun AmusementRideItem(
 
                 Column {
                     Text(
-                        text = amusementRides.title,
+                        text = title,
                         color = Color(0xFF000080),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
@@ -108,7 +80,7 @@ fun AmusementRideItem(
                             tint = Color(0xFF000080)
                         )
                         Text(
-                            text = "$" + amusementRides.price.toString(),
+                            text = "$$price",
                             color = Color(0xFF000080),
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Bold,
@@ -123,25 +95,4 @@ fun AmusementRideItem(
             }
         }
     }
-}
-
-@Composable
-fun AmusementRidesListItems()
-{
-    LazyColumn{
-        items(data){ list ->
-            AmusementRideItem(amusementRides = list)
-        }
-    }
-}
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true,
-    device = Devices.PIXEL_4_XL
-)
-@Composable
-fun AmusementRideItemsPreview()
-{
-    AmusementRidesListItems()
 }
