@@ -23,14 +23,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.ui.component.home.DestinationItem
 import com.dicoding.definderapps.ui.component.home.SearchBar
-import com.dicoding.definderapps.ui.home.HomeViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
-    viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: SearchViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
-    val destinationData by viewModel.getDestination.collectAsState()
+    val destinationWithImage by viewModel.getDestinationWithImage.collectAsState()
     val query by viewModel.query
 
     Box(modifier = Modifier) {
@@ -55,21 +54,21 @@ fun SearchScreen(
 
 
             if (query.isNotEmpty()) {
-                items(destinationData, key = { it.id }) { destination ->
+                items(destinationWithImage, key = { it.destination.id }) { data ->
                     Column(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
                     ) {
                         DestinationItem(
-                            name = destination.name,
-                            imageUrl = destination.imageUrl,
-                            location = destination.location,
-                            rating = destination.rating,
-                            favorite = destination.favorited,
+                            name = data.destination.name,
+                            imageUrl = data.imageDestination.first().imageUrl,
+                            location = data.destination.location,
+                            rating = data.destination.rating,
+                            favorite = data.destination.favorited,
                             favoriteChange = {
-                                if (destination.favorited) {
-                                    viewModel.setFavorited(destination.id, false)
+                                if (data.destination.favorited) {
+                                    viewModel.setFavorited(data.destination.id, false)
                                 } else {
-                                    viewModel.setFavorited(destination.id, true)
+                                    viewModel.setFavorited(data.destination.id, true)
                                 }
                             },
                             modifier = Modifier

@@ -13,9 +13,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.data.pref.UserModel
 import com.dicoding.definderapps.ui.component.validation.emailValidation
 import com.dicoding.definderapps.ui.component.validation.passwordValidation
 import com.dicoding.definderapps.ui.theme.DefinderAppsTheme
@@ -30,7 +34,8 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToRegister: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
+    viewModel: LoginViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current)),
 ) {
     val auth: FirebaseAuth = Firebase.auth
     var emailState by rememberSaveable { mutableStateOf("") }
@@ -73,6 +78,7 @@ fun LoginScreen(
                         auth.signInWithEmailAndPassword(emailState, passwordState)
                             .addOnCompleteListener {
                                 if (it.isSuccessful){
+                                    viewModel.saveSession(UserModel(emailState))
                                     navigateToHome()
                                 } else {
                                     snackBarMessage =
@@ -111,6 +117,7 @@ fun LoginScreen(
                         auth.signInWithEmailAndPassword(emailState, passwordState)
                             .addOnCompleteListener {
                                 if (it.isSuccessful){
+                                    viewModel.saveSession(UserModel(emailState))
                                     navigateToHome()
                                 } else {
                                     snackBarMessage =
@@ -131,9 +138,8 @@ fun LoginScreen(
             )
         }
     }
-
-
 }
+
 
 @Preview(
     showBackground = true,
