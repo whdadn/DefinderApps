@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 fun DarkModeScreen()
 {
     val option = listOf(
+        "Auto",
         "On",
         "Off"
     )

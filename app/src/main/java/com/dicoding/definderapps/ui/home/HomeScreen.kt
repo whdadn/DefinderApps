@@ -48,9 +48,20 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+    navigateToDetail:(Int)->Unit
 ) {
-    val destinationData by viewModel.getDestination.collectAsState()
+
+    val destinationWithImage by viewModel.getDestinationWithImage.collectAsState()
+
+
+
+
+
+
+
+
+
 
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
@@ -80,26 +91,28 @@ fun HomeScreen(
                 }
             }
 
-            items(destinationData, key = { it.id }) { destination ->
+            items(destinationWithImage, key = {it.destination.id}) { data ->
                 Column(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
                 ) {
                     DestinationItem(
-                        name = destination.name,
-                        imageUrl = destination.imageUrl,
-                        location = destination.location,
-                        rating = destination.rating,
-                        favorite = destination.favorited,
+                        name = data.destination.name,
+                        imageUrl = data.imageDestination.first().imageUrl,
+                        location = data.destination.location,
+                        rating = data.destination.rating,
+                        favorite = data.destination.favorited,
                         favoriteChange = {
-                            if (destination.favorited) {
-                                viewModel.setFavorited(destination.id, false)
+                            if (data.destination.favorited) {
+                                viewModel.setFavorited(data.destination.id, false)
                             } else {
-                                viewModel.setFavorited(destination.id, true)
+                                viewModel.setFavorited(data.destination.id, true)
                             }
                         },
                         modifier = Modifier
                             .animateItemPlacement(tween(durationMillis = 100))
-                            .clickable { }
+                            .clickable {
+                                navigateToDetail(data.destination.id)
+                            }
                     )
                 }
             }
@@ -145,5 +158,5 @@ fun ScrollToTopButton(
 @Preview(showBackground = true, device = Devices.PIXEL_4_XL)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(navigateToDetail = {})
 }

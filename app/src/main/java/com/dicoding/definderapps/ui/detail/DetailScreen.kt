@@ -1,5 +1,6 @@
 package com.dicoding.definderapps.ui.detail
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,32 +28,58 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
+import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.ui.detail.about.AboutScreen
 import com.dicoding.definderapps.ui.detail.amusementrides.AmusementRidesScreen
 import com.dicoding.definderapps.ui.detail.reviews.ReviewsScreen
 import com.dicoding.definderapps.ui.detail.transportation.TransportationScreen
 import kotlinx.coroutines.launch
 
+@SuppressLint("DiscouragedApi")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailScreen() {
-    val images = listOf(
-        R.drawable.candi_borobudur,
-        R.drawable.borobudur2,
-        R.drawable.borobudur3
-    )
+fun DetailScreen(
+    id:Int,
+    viewModel: DetailViewModel =  viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+) {
+
+    viewModel.setId(id)
+    val detailDestination by viewModel.getDetailDestination.collectAsState()
+    val imageDestination by viewModel.getImageDestination.collectAsState()
+    val aboutDestination by viewModel.getAboutDestination.collectAsState()
+
+    val images = arrayListOf<Int>()
+
+    imageDestination.forEach {
+        val imageResourceId = LocalContext.current.resources.getIdentifier(
+            it.imageUrl,
+            "drawable",
+            LocalContext.current.packageName
+        )
+        if (imageResourceId != 0) {
+            images.add(imageResourceId)
+        }
+    }
+
+
     val pagerState = rememberPagerState { images.size }
     val tabState = rememberPagerState { 4 }
     val coroutinScope = rememberCoroutineScope()
@@ -67,19 +95,21 @@ fun DetailScreen() {
                 .wrapContentSize(),
         ) {
             HorizontalPager(
-                state = pagerState,
-                modifier = Modifier
-                    .wrapContentSize()
+                state = pagerState
             ) { currentPage ->
                 Card(
                     modifier = Modifier
                         .padding(end = 7.dp)
-                        .wrapContentSize(),
+                        .fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(8.dp)
                 ) {
                     Image(
                         painter = painterResource(id = images[currentPage]),
-                        contentDescription = "image_slider",
+                        contentDescription = stringResource(id = R.string.image)+" "+detailDestination?.name.toString(),
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(230.dp)
                     )
                 }
             }
@@ -98,7 +128,7 @@ fun DetailScreen() {
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp),
-                text = "Candi Borobudur",
+                text = detailDestination?.name.toString(),
                 color = Color(0xFF000080),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
@@ -117,7 +147,7 @@ fun DetailScreen() {
             Text(
                 modifier = Modifier
                     .padding(start = 6.dp, top = 10.dp, end = 7.dp),
-                text = "$5",
+                text = LocalContext.current.getString(R.string.price_destination, detailDestination?.price),
                 color = Color(0xFF000080),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
@@ -143,7 +173,7 @@ fun DetailScreen() {
                 text ={
                     Text(
                         text = "About",
-                        style = MaterialTheme.typography.labelMedium.copy(
+                        style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
                         ),
@@ -162,7 +192,7 @@ fun DetailScreen() {
                 text ={
                     Text(
                         text = "Transportation",
-                        style = MaterialTheme.typography.labelMedium.copy(
+                        style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
                         ),
@@ -181,7 +211,7 @@ fun DetailScreen() {
                 text ={
                     Text(
                         text = "Amusement Rides",
-                        style = MaterialTheme.typography.labelSmall.copy(
+                        style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal,
                         ),
@@ -200,7 +230,7 @@ fun DetailScreen() {
                 text ={
                     Text(
                         text = "Reviews",
-                        style = MaterialTheme.typography.labelMedium.copy(
+                        style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
                         )
@@ -220,7 +250,7 @@ fun DetailScreen() {
             state = tabState,
         ) {page ->
             when(page){
-                0 -> AboutScreen()
+                0 -> AboutScreen(aboutDestination?.about.toString())
                 1 -> TransportationScreen()
                 2 -> AmusementRidesScreen()
                 3 -> ReviewsScreen()
@@ -263,5 +293,5 @@ fun IndicatorDots(isSelected: Boolean) {
 )
 @Composable
 fun DetailScreenPreview() {
-    DetailScreen()
+    DetailScreen(id=1)
 }

@@ -99,7 +99,7 @@ fun DestinationItem(
                     )
                 }
                 Row(
-                    modifier=Modifier.padding(start=12.dp, top=2.dp)
+                    modifier=Modifier.padding(start=12.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_star_24),
@@ -114,7 +114,8 @@ fun DestinationItem(
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
-                        )
+                        ),
+                        modifier = Modifier.padding(vertical = 2.dp)
                     )
                 }
 

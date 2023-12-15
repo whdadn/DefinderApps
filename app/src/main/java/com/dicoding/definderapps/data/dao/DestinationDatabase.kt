@@ -1,14 +1,15 @@
-package com.dicoding.definderapps.model
+package com.dicoding.definderapps.data.dao
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.dicoding.definderapps.data.InitialDataSource
 import java.util.concurrent.Executors
 
 @Database(
-    entities = [Destination::class],
+    entities = [Destination::class, ImageDestination::class, AboutDestination::class],
     version = 1,
     exportSchema = false
 )
@@ -36,6 +37,8 @@ abstract class DestinationDatabase : RoomDatabase() {
                                 Executors.newSingleThreadExecutor().execute {
                                     val dao = it.destinationDao()
                                     dao.insertDestination(InitialDataSource.getDestination())
+                                    dao.insertImageDestination(InitialDataSource.getImageDestination())
+                                    dao.insertAboutDestination(InitialDataSource.getAboutDestination())
                                 }
                             }
                         }

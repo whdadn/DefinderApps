@@ -47,7 +47,10 @@
     <string name="icon_location">Icon location</string>
     <string name="icon_rating">Icon_\nrating</string>
     <string name="scroll_to_top">Scroll to Top</string>
-
+    <string name="price_destination">$%.2f</string>
+    <string name="about_title">History</string>
+    <string name="favorited_destination">Favorited Destination</string>
+    <string name="dark_mode">Dark Mode</string>
 
 
 </resources>
