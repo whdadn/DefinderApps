@@ -12,5 +12,4 @@ sealed class Screen(val route: String) {
     object Mbti : Screen("mbti")
     object Favorite : Screen("favorite")
     object Profile : Screen("profile")
-    object DarkMode:Screen("dark_mode")
 }

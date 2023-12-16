@@ -54,15 +54,6 @@ fun HomeScreen(
 
     val destinationWithImage by viewModel.getDestinationWithImage.collectAsState()
 
-
-
-
-
-
-
-
-
-
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
         val listState = rememberLazyListState()
