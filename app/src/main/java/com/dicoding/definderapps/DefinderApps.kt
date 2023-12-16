@@ -7,8 +7,8 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +23,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.dicoding.definderapps.ui.darkmode.DarkModeScreen
 import com.dicoding.definderapps.ui.detail.DetailScreen
 import com.dicoding.definderapps.ui.favorite.FavoriteScreen
 import com.dicoding.definderapps.ui.home.HomeScreen
@@ -40,12 +39,14 @@ import com.dicoding.definderapps.ui.search.SearchScreen
 fun DefinderApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: LoginViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+    viewModel:LoginViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+    darkTheme: Boolean, onThemeUpdated: (Boolean) -> Unit
 ) {
-    val session by viewModel.getSession.collectAsState()
+
+    val session by viewModel.getSession().observeAsState()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val startDestination = when (session.isLogin) {
+    val startDestination = when (session?.isLogin) {
         false -> {
             Screen.Login.route
         }
@@ -55,7 +56,7 @@ fun DefinderApp(
     }
     Scaffold(
         bottomBar = {
-            if (currentRoute !in listOf(Screen.Detail.route, Screen.Login.route, Screen.Register.route, Screen.DarkMode.route)) {
+            if (currentRoute !in listOf(Screen.Detail.route, Screen.Login.route, Screen.Register.route)) {
                 BottomBar(navController = navController, modifier = Modifier.heightIn(max = 60.dp))
             }
         },
@@ -64,7 +65,8 @@ fun DefinderApp(
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = modifier.padding(paddingValues)
+            modifier = modifier.padding(paddingValues),
+
         ) {
             composable(Screen.Login.route) {
                 LoginScreen(
@@ -112,16 +114,12 @@ fun DefinderApp(
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
-                    navigateToDarkMode = {
-                        navController.navigate(Screen.DarkMode.route)
-                    },
                     navigateToLogin = {
                         navController.navigate(Screen.Login.route)
-                    }
+                    },
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated
                 )
-            }
-            composable(Screen.DarkMode.route) {
-                DarkModeScreen()
             }
         }
     }
@@ -163,7 +161,7 @@ private fun BottomBar(
                 screen = Screen.Profile
             )
         )
-        navigationItem.forEach { item ->
+        navigationItem.map { item ->
             NavigationBarItem(
                 icon = {
                     Icon(
