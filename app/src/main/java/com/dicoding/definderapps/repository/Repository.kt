@@ -1,32 +1,67 @@
 package com.dicoding.definderapps.repository
 
-import com.dicoding.definderapps.data.dao.AboutDestination
-import com.dicoding.definderapps.data.dao.Destination
-import com.dicoding.definderapps.data.dao.DestinationDao
-import com.dicoding.definderapps.data.dao.DestinationWithImage
-import com.dicoding.definderapps.data.dao.ImageDestination
-import com.dicoding.definderapps.data.pref.DarkModePreference
-import com.dicoding.definderapps.data.pref.UserModel
-import com.dicoding.definderapps.data.pref.UserPreference
+import androidx.lifecycle.liveData
+import com.dicoding.definderapps.data.local.dao.AboutDestination
+import com.dicoding.definderapps.data.local.dao.Destination
+import com.dicoding.definderapps.data.local.dao.DestinationDao
+import com.dicoding.definderapps.data.local.dao.DestinationWithImage
+import com.dicoding.definderapps.data.local.dao.ImageDestination
+import com.dicoding.definderapps.data.local.pref.DarkModePreference
+import com.dicoding.definderapps.data.local.pref.UserModel
+import com.dicoding.definderapps.data.local.pref.UserPreference
+import com.dicoding.definderapps.data.remote.ApiService
+import com.dicoding.definderapps.data.remote.response.LoginResponse
+import com.dicoding.definderapps.data.remote.response.RegisterResponse
+import com.dicoding.definderapps.ui.common.ResultState
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import retrofit2.HttpException
 
 class Repository private constructor(
     private val preference: UserPreference,
     private val darkMode: DarkModePreference,
-    private val destinationDao: DestinationDao) {
+    private val destinationDao: DestinationDao,
+    private val apiService: ApiService
+) {
     companion object {
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
             userPreference: UserPreference,
-            darkMode:DarkModePreference,
-            dao:DestinationDao
+            darkMode: DarkModePreference,
+            dao: DestinationDao,
+            apiService: ApiService
         ): Repository =
             instance ?: synchronized(this) {
                 instance
-                    ?: Repository(userPreference,darkMode, dao)
+                    ?: Repository(userPreference,darkMode, dao, apiService)
             }.also { instance = it }
     }
+
+    fun register(name: String, email: String, password: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response =apiService.register(name,email, password)
+            emit(ResultState.Success(response))
+        }catch (e: HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, RegisterResponse::class.java)
+            emit(ResultState.Error(errorResponse.message))
+        }
+    }
+
+    fun login(email:String, password: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.login(email, password)
+            emit(ResultState.Success(response))
+        }catch (e:HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, LoginResponse::class.java)
+            emit(ResultState.Error(errorResponse.message))
+        }
+    }
+
     suspend fun saveSession(user: UserModel) {
         preference.saveSession(user)
     }

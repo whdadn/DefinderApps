@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.data.dao
+package com.dicoding.definderapps.data.local.dao
 
 import android.content.Context
 import androidx.room.Database

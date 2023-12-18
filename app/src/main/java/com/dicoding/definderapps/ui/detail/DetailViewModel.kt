@@ -2,9 +2,9 @@ package com.dicoding.definderapps.ui.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.definderapps.data.dao.AboutDestination
-import com.dicoding.definderapps.data.dao.Destination
-import com.dicoding.definderapps.data.dao.ImageDestination
+import com.dicoding.definderapps.data.local.dao.AboutDestination
+import com.dicoding.definderapps.data.local.dao.Destination
+import com.dicoding.definderapps.data.local.dao.ImageDestination
 import com.dicoding.definderapps.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

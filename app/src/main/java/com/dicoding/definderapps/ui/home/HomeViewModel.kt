@@ -2,7 +2,7 @@ package com.dicoding.definderapps.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.definderapps.data.dao.DestinationWithImage
+import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.repository.Repository
 import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
