@@ -5,26 +5,28 @@ import com.dicoding.definderapps.data.dao.Destination
 import com.dicoding.definderapps.data.dao.DestinationDao
 import com.dicoding.definderapps.data.dao.DestinationWithImage
 import com.dicoding.definderapps.data.dao.ImageDestination
+import com.dicoding.definderapps.data.pref.DarkModePreference
 import com.dicoding.definderapps.data.pref.UserModel
 import com.dicoding.definderapps.data.pref.UserPreference
 import kotlinx.coroutines.flow.Flow
 
 class Repository private constructor(
     private val preference: UserPreference,
+    private val darkMode: DarkModePreference,
     private val destinationDao: DestinationDao) {
     companion object {
         @Volatile
         private var instance: Repository? = null
         fun getInstance(
             userPreference: UserPreference,
+            darkMode:DarkModePreference,
             dao:DestinationDao
         ): Repository =
             instance ?: synchronized(this) {
                 instance
-                    ?: Repository(userPreference, dao)
+                    ?: Repository(userPreference,darkMode, dao)
             }.also { instance = it }
     }
-
     suspend fun saveSession(user: UserModel) {
         preference.saveSession(user)
     }
@@ -35,6 +37,14 @@ class Repository private constructor(
 
     suspend fun logout() {
         preference.logout()
+    }
+
+    suspend fun saveTheme(isEnabled:Boolean){
+        darkMode.saveTheme(isEnabled)
+    }
+
+    fun getTheme(): Flow<Boolean>{
+        return darkMode.getTheme()
     }
     fun getAllDestinationWithImage(): Flow<List<DestinationWithImage>>{
         return destinationDao.getAllDestinationWithImage()

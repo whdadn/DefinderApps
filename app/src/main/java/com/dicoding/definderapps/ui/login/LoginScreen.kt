@@ -6,6 +6,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,7 @@ import com.dicoding.definderapps.utils.rememberWindowInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -35,8 +37,36 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
-    viewModel: LoginViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current)),
+    viewModel: LoginViewModel = viewModel(
+        factory= ViewModelFactory.getInstance(LocalContext.current)
+    ),
 ) {
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState->
+        when(uiState){
+            is UiState.Loading->{
+                viewModel.getSession()
+            }
+            is UiState.Success->{
+                LoginScreenContent(
+                    modifier = modifier,
+                    navigateToRegister = navigateToRegister,
+                    navigateToHome = navigateToHome,
+                    viewModel = viewModel
+                )
+
+            }
+            is UiState.Error->{}
+        }
+    }
+}
+
+@Composable
+fun LoginScreenContent(
+    modifier: Modifier = Modifier,
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit,
+    viewModel:LoginViewModel,
+){
     val auth: FirebaseAuth = Firebase.auth
     var emailState by rememberSaveable { mutableStateOf("") }
     var passwordState by rememberSaveable { mutableStateOf("") }
@@ -139,6 +169,7 @@ fun LoginScreen(
         }
     }
 }
+
 
 
 @Preview(

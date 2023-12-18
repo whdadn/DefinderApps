@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
+val Context.darkTheme: DataStore<Preferences> by preferencesDataStore(name = "dark_mode")
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
-
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
             preferences[EMAIL_KEY] = user.email
@@ -46,6 +46,35 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {
                 val instance = UserPreference(dataStore)
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
+}
+
+class DarkModePreference private constructor(private val darkModePreference: DataStore<Preferences>) {
+    suspend fun saveTheme(isEnabled : Boolean) {
+        darkModePreference.edit { preferences ->
+            preferences[IS_ENABLE_KEY] = isEnabled
+        }
+    }
+
+    fun getTheme(): Flow<Boolean> {
+        return darkModePreference.data.map { preferences ->
+            preferences[IS_ENABLE_KEY] ?: false
+        }
+    }
+
+    companion object {
+        @Volatile
+        private var INSTANCE: DarkModePreference? = null
+
+        private val IS_ENABLE_KEY = booleanPreferencesKey("isEnabled")
+
+        fun getInstance(darkModePreference: DataStore<Preferences>): DarkModePreference {
+            return INSTANCE ?: synchronized(this) {
+                val instance = DarkModePreference(darkModePreference)
                 INSTANCE = instance
                 instance
             }
