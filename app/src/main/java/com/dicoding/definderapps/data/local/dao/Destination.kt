@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.data.dao
+package com.dicoding.definderapps.data.local.dao
 
 import androidx.room.Embedded
 import androidx.room.Entity

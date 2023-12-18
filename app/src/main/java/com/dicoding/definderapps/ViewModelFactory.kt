@@ -10,6 +10,7 @@ import com.dicoding.definderapps.ui.favorite.FavoriteViewModel
 import com.dicoding.definderapps.ui.home.HomeViewModel
 import com.dicoding.definderapps.ui.login.LoginViewModel
 import com.dicoding.definderapps.ui.profile.ProfileViewModel
+import com.dicoding.definderapps.ui.register.RegisterViewModel
 import com.dicoding.definderapps.ui.search.SearchViewModel
 
 class ViewModelFactory(private val repository: Repository) :
@@ -33,6 +34,9 @@ class ViewModelFactory(private val repository: Repository) :
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         when {
+            modelClass.isAssignableFrom(RegisterViewModel::class.java)->{
+                RegisterViewModel(repository) as T
+            }
             modelClass.isAssignableFrom(LoginViewModel::class.java)->{
                 LoginViewModel(repository) as T
             }

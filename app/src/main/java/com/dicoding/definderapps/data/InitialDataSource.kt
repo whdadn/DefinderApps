@@ -1,8 +1,8 @@
 package com.dicoding.definderapps.data
 
-import com.dicoding.definderapps.data.dao.AboutDestination
-import com.dicoding.definderapps.data.dao.Destination
-import com.dicoding.definderapps.data.dao.ImageDestination
+import com.dicoding.definderapps.data.local.dao.AboutDestination
+import com.dicoding.definderapps.data.local.dao.Destination
+import com.dicoding.definderapps.data.local.dao.ImageDestination
 import kotlin.random.Random
 
 object InitialDataSource{

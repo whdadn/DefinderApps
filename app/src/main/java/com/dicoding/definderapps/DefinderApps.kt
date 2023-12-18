@@ -117,6 +117,7 @@ fun DefinderAppContent(
             composable(Screen.Register.route) {
                 RegisterScreen(
                     navigateToLogin = {
+                        navController.popBackStack()
                         navController.navigate(Screen.Login.route)
                     }
                 )
@@ -153,6 +154,7 @@ fun DefinderAppContent(
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     navigateToLogin = {
+                        navController.popBackStack()
                         navController.navigate(Screen.Login.route)
                     },
                     darkTheme = darkTheme,

@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
-import com.dicoding.definderapps.data.dao.DestinationWithImage
+import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.ui.component.home.DestinationItem
 import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
