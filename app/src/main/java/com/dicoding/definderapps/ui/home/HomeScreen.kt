@@ -1,5 +1,6 @@
 package com.dicoding.definderapps.ui.home
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -40,20 +41,48 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.data.dao.DestinationWithImage
 import com.dicoding.definderapps.ui.component.home.DestinationItem
+import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
     navigateToDetail:(Int)->Unit
 ) {
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState ->
+        when(uiState){
+            is UiState.Loading->{
+                viewModel.getAllDestinationWithImage()
+            }
+            is UiState.Success->{
+                HomeScreenContent(
+                    modifier = modifier,
+                    destinationWithImage = uiState.data,
+                    navigateToDetail =navigateToDetail,
+                    viewModel = viewModel
+                )
+            }
+            is UiState.Error->{
+                Toast.makeText(LocalContext.current, uiState.errorMessage, Toast.LENGTH_SHORT ).show()
+            }
+        }
+    }
 
-    val destinationWithImage by viewModel.getDestinationWithImage.collectAsState()
 
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeScreenContent(
+    modifier: Modifier = Modifier,
+    destinationWithImage: List<DestinationWithImage>,
+    navigateToDetail: (Int) -> Unit,
+    viewModel: HomeViewModel,
+){
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
         val listState = rememberLazyListState()
@@ -125,7 +154,6 @@ fun HomeScreen(
             )
         }
     }
-
 }
 
 

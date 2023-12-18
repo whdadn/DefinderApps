@@ -1,5 +1,6 @@
 package com.dicoding.definderapps
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -7,8 +8,8 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -21,7 +22,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.dicoding.definderapps.ui.detail.DetailScreen
 import com.dicoding.definderapps.ui.favorite.FavoriteScreen
@@ -34,29 +34,64 @@ import com.dicoding.definderapps.ui.navigation.Screen
 import com.dicoding.definderapps.ui.profile.ProfileScreen
 import com.dicoding.definderapps.ui.register.RegisterScreen
 import com.dicoding.definderapps.ui.search.SearchScreen
+import com.yogi.foodlist.ui.common.UiState
 
 @Composable
 fun DefinderApp(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController(),
+    navController: NavHostController,
     viewModel:LoginViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
-    darkTheme: Boolean, onThemeUpdated: (Boolean) -> Unit
+    darkTheme: Boolean,
+    onThemeUpdated: (Boolean) -> Unit
 ) {
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState->
+        when(uiState){
+            is UiState.Loading->{
+                viewModel.getSession()
+            }
+            is UiState.Success->{
+                val startDestination = when(uiState.data.isLogin){
+                    false->{
+                        Screen.Login.route
+                    }
+                    else->{
+                        Screen.Home.route
+                    }
 
-    val session by viewModel.getSession().observeAsState()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    val startDestination = when (session?.isLogin) {
-        false -> {
-            Screen.Login.route
-        }
-        else -> {
-            Screen.Home.route
+                }
+                DefinderAppContent(
+                    modifier = modifier,
+                    navController = navController,
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated,
+                    startDestination = startDestination
+                )
+
+            }
+            is UiState.Error->{
+                Toast.makeText(LocalContext.current, uiState.errorMessage, Toast.LENGTH_SHORT ).show()
+            }
         }
     }
+}
+
+@Composable
+fun DefinderAppContent(
+    modifier:Modifier = Modifier,
+    navController: NavHostController,
+    darkTheme: Boolean,
+    onThemeUpdated: (Boolean) -> Unit,
+    startDestination :String,
+){
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
     Scaffold(
         bottomBar = {
-            if (currentRoute !in listOf(Screen.Detail.route, Screen.Login.route, Screen.Register.route)) {
+            val bottomNav = listOf(
+                Screen.Home.route,Screen.Search.route,Screen.Profile.route, Screen.Mbti.route, Screen.Favorite.route
+            )
+            if (currentRoute in bottomNav) {
                 BottomBar(navController = navController, modifier = Modifier.heightIn(max = 60.dp))
             }
         },
@@ -66,9 +101,10 @@ fun DefinderApp(
             navController = navController,
             startDestination = startDestination,
             modifier = modifier.padding(paddingValues),
-
         ) {
-            composable(Screen.Login.route) {
+            composable(
+                route = Screen.Login.route,
+            ) {
                 LoginScreen(
                     navigateToRegister = {
                         navController.navigate(Screen.Register.route)
@@ -85,7 +121,9 @@ fun DefinderApp(
                     }
                 )
             }
-            composable(Screen.Home.route) {
+            composable(
+                route= Screen.Home.route,
+            ) {
                 HomeScreen(
                     navigateToDetail = { id ->
                         navController.navigate(Screen.Detail.createRoute(id))
@@ -149,10 +187,6 @@ private fun BottomBar(
                 screen = Screen.Search
             ),
             NavigationItem(
-                icon = painterResource(id = R.drawable.ic_mbti),
-                screen = Screen.Mbti
-            ),
-            NavigationItem(
                 icon = painterResource(id = R.drawable.ic_favorite),
                 screen = Screen.Favorite
             ),
@@ -187,5 +221,4 @@ private fun BottomBar(
             )
         }
     }
-
 }
