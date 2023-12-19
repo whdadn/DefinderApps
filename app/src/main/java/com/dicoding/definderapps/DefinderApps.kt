@@ -179,19 +179,19 @@ private fun BottomBar(
         val currentRoute = navBackStackEntry?.destination?.route
         val navigationItem = listOf(
             NavigationItem(
-                icon = painterResource(id = R.drawable.ic_home),
+                icon = painterResource(id = R.drawable.home_vector),
                 screen = Screen.Home
             ),
             NavigationItem(
-                icon = painterResource(id = R.drawable.ic_search),
+                icon = painterResource(id = R.drawable.search_vector),
                 screen = Screen.Search
             ),
             NavigationItem(
-                icon = painterResource(id = R.drawable.ic_favorite),
+                icon = painterResource(id = R.drawable.favorite_vector),
                 screen = Screen.Favorite
             ),
             NavigationItem(
-                icon = painterResource(id = R.drawable.ic_profile),
+                icon = painterResource(id = R.drawable.profile_vector),
                 screen = Screen.Profile
             )
         )
