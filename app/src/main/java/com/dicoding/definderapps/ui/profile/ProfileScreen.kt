@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -106,7 +108,7 @@ fun ProfileScreen(
                     .align(Alignment.CenterHorizontally),
             )
             Text(
-                text = "MBTI",
+                text = "MBTI / Tour Guide",
                 color = Color(0xFF000080),
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Normal,
@@ -152,7 +154,9 @@ fun ProfileScreen(
             onDismissRequest = {
                 showBottomSheet = false
             },
-            sheetState = sheetState
+            sheetState = sheetState,
+            modifier = Modifier
+                .padding(bottom = 100.dp)
         ) {
             Column(
                 modifier = modifier
@@ -242,6 +246,7 @@ fun ProfileScreen(
 
                 }
             }
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }

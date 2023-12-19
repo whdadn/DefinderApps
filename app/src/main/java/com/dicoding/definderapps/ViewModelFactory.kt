@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.definderapps.di.Injection
 import com.dicoding.definderapps.repository.Repository
 import com.dicoding.definderapps.ui.detail.DetailViewModel
-import com.dicoding.definderapps.ui.favorite.FavoriteViewModel
+import com.dicoding.definderapps.ui.favorite.favoritetourism.FavoriteViewModel
 import com.dicoding.definderapps.ui.home.HomeViewModel
 import com.dicoding.definderapps.ui.login.LoginViewModel
 import com.dicoding.definderapps.ui.profile.ProfileViewModel

@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui.favorite
+package com.dicoding.definderapps.ui.favorite.favoritetourism
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

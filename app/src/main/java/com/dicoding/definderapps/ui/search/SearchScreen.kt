@@ -74,7 +74,7 @@ fun SearchScreen(
                         expanded = expanded,
                         onExpandedChange = {expanded = it},
                         modifier = Modifier
-                            .width(155.dp)
+                            .width(175.dp)
                     ) {
                         TextField(
                             value = option,

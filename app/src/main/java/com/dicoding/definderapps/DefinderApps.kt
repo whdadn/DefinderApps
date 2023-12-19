@@ -145,11 +145,9 @@ fun DefinderAppContent(
                 SearchScreen()
             }
             composable(Screen.Favorite.route) {
-                FavoriteScreen(
-                    navigateToDetail = { id ->
-                        navController.navigate(Screen.Detail.createRoute(id))
-                    }
-                )
+                FavoriteScreen { id ->
+                    navController.navigate(Screen.Detail.createRoute(id))
+                }
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
