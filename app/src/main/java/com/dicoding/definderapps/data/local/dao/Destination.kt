@@ -32,6 +32,20 @@ data class AboutDestination(
     val idDestination: Int
 )
 
+
+@Entity("transportData")
+data class TransportData(
+    @PrimaryKey(autoGenerate = true)
+    val id:Int=0,
+    val name: String,
+    val image: String,
+    val transportType:String,
+    val transportationName: String,
+    val transportationDesc: String,
+    val idDestination: Int
+
+)
+
 data class DestinationWithImage(
     @Embedded
     val destination: Destination,

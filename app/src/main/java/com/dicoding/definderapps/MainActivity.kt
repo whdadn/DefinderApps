@@ -1,7 +1,6 @@
 package com.dicoding.definderapps
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -25,7 +24,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val viewModel: ProfileViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current))
             val getTheme by viewModel.getTheme().collectAsState(initial = isSystemInDarkTheme())
-            Log.d("theme phone", "${isSystemInDarkTheme()}")
             DefinderAppsTheme(darkTheme = getTheme) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

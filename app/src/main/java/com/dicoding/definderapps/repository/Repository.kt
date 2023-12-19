@@ -2,10 +2,9 @@ package com.dicoding.definderapps.repository
 
 import androidx.lifecycle.liveData
 import com.dicoding.definderapps.data.local.dao.AboutDestination
-import com.dicoding.definderapps.data.local.dao.Destination
 import com.dicoding.definderapps.data.local.dao.DestinationDao
 import com.dicoding.definderapps.data.local.dao.DestinationWithImage
-import com.dicoding.definderapps.data.local.dao.ImageDestination
+import com.dicoding.definderapps.data.local.dao.TransportData
 import com.dicoding.definderapps.data.local.pref.DarkModePreference
 import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.data.local.pref.UserPreference
@@ -61,7 +60,6 @@ class Repository private constructor(
             emit(ResultState.Error(errorResponse.message))
         }
     }
-
     suspend fun saveSession(user: UserModel) {
         preference.saveSession(user)
     }
@@ -92,19 +90,28 @@ class Repository private constructor(
         return destinationDao.getFavoritedDestinationWithImage()
     }
 
-    fun getDetailDestination(id:Int):Flow<Destination>{
+    fun getDetailDestination(id:Int):Flow<DestinationWithImage>{
         return destinationDao.getDetailDestination(id)
-    }
-
-    fun getDetailImageDestination(idDestination: Int):Flow<List<ImageDestination>>{
-        return destinationDao.getDetailImageDestination(idDestination)
     }
 
     fun getDetailAboutDestination(idDestination: Int):Flow<AboutDestination>{
         return destinationDao.getDetailAboutDestination(idDestination)
     }
+
     suspend fun isFavorited(id:Int, favorited:Boolean){
         destinationDao.updateFavorited(id, favorited)
+    }
+
+    suspend fun insertTransport(transportData: TransportData){
+        destinationDao.insertTransportData(transportData)
+    }
+
+    fun getTransportDataByIdDestination(idDestination: Int):Flow<List<String>>{
+        return destinationDao.getTransportDataByIdDestination(idDestination)
+    }
+
+    fun getDetailTransportData(idDestination: Int, transportType:String):Flow<List<TransportData>>{
+        return destinationDao.getDetailTransportData(idDestination, transportType)
     }
 
 }

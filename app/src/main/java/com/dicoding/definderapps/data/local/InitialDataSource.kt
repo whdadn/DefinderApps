@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.data
+package com.dicoding.definderapps.data.local
 
 import com.dicoding.definderapps.data.local.dao.AboutDestination
 import com.dicoding.definderapps.data.local.dao.Destination
