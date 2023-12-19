@@ -50,6 +50,7 @@ import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.ui.detail.about.AboutScreen
 import com.dicoding.definderapps.ui.detail.amusementrides.AmusementRidesScreen
 import com.dicoding.definderapps.ui.detail.reviews.ReviewsScreen
+import com.dicoding.definderapps.ui.detail.tourguide.TourGuideScreen
 import com.dicoding.definderapps.ui.detail.transportation.TransportationScreen
 import kotlinx.coroutines.launch
 
@@ -81,7 +82,7 @@ fun DetailScreen(
 
 
     val pagerState = rememberPagerState { images.size }
-    val tabState = rememberPagerState { 4 }
+    val tabState = rememberPagerState { 5 }
     val coroutinScope = rememberCoroutineScope()
 
     Column(
@@ -244,6 +245,25 @@ fun DetailScreen(
                     }
                 }
             )
+            Tab(
+                selected = tabState.currentPage == 4,
+                text ={
+                    Text(
+                        text = "Tour Guide",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Normal
+                        )
+                    )
+                },
+                selectedContentColor = Color(0xFF000066),
+                unselectedContentColor = Color(0xFF79747E),
+                onClick = {
+                    coroutinScope.launch {
+                        tabState.animateScrollToPage(4)
+                    }
+                }
+            )
         }
 
         HorizontalPager(
@@ -254,6 +274,7 @@ fun DetailScreen(
                 1 -> TransportationScreen()
                 2 -> AmusementRidesScreen()
                 3 -> ReviewsScreen()
+                4 -> TourGuideScreen()
             }
         }
     }
