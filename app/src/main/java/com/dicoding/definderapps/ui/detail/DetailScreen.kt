@@ -1,6 +1,7 @@
 package com.dicoding.definderapps.ui.detail
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +30,6 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,29 +47,53 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.ui.detail.about.AboutScreen
 import com.dicoding.definderapps.ui.detail.amusementrides.AmusementRidesScreen
 import com.dicoding.definderapps.ui.detail.reviews.ReviewsScreen
 import com.dicoding.definderapps.ui.detail.tourguide.TourGuideScreen
 import com.dicoding.definderapps.ui.detail.transportation.TransportationScreen
+import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
+
+
+@Composable
+fun DetailScreen(
+    id:Int,
+    viewModel: DetailViewModel =  viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+    navigateToDetailTransport:(Int,String)->Unit,
+) {
+    viewModel.uiStateDestination.collectAsState(initial = UiState.Loading).value.let {
+        when(it){
+            is UiState.Loading->{
+                viewModel.getDetailDestination(id)
+            }
+            is UiState.Success->{
+                DetailContent(
+                    data = it.data,
+                    viewModel = viewModel,
+                    navigateToDetailTransport= navigateToDetailTransport)
+            }
+            is UiState.Error->{
+                Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT ).show()
+            }
+        }
+    }
+
+}
 
 @SuppressLint("DiscouragedApi")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailScreen(
-    id:Int,
-    viewModel: DetailViewModel =  viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
-) {
-
-    viewModel.setId(id)
-    val detailDestination by viewModel.getDetailDestination.collectAsState()
-    val imageDestination by viewModel.getImageDestination.collectAsState()
-    val aboutDestination by viewModel.getAboutDestination.collectAsState()
+fun DetailContent(
+  data:DestinationWithImage,
+  viewModel:DetailViewModel,
+  navigateToDetailTransport: (Int,String) -> Unit
+){
 
     val images = arrayListOf<Int>()
 
-    imageDestination.forEach {
+    data.imageDestination.forEach {
         val imageResourceId = LocalContext.current.resources.getIdentifier(
             it.imageUrl,
             "drawable",
@@ -79,7 +103,6 @@ fun DetailScreen(
             images.add(imageResourceId)
         }
     }
-
 
     val pagerState = rememberPagerState { images.size }
     val tabState = rememberPagerState { 5 }
@@ -106,7 +129,7 @@ fun DetailScreen(
                 ) {
                     Image(
                         painter = painterResource(id = images[currentPage]),
-                        contentDescription = stringResource(id = R.string.image)+" "+detailDestination?.name.toString(),
+                        contentDescription = stringResource(id = R.string.image)+" "+data.destination.name,
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -129,7 +152,7 @@ fun DetailScreen(
             Text(
                 modifier = Modifier
                     .padding(top = 10.dp),
-                text = detailDestination?.name.toString(),
+                text = data.destination.name,
                 color = Color(0xFF000080),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
@@ -148,7 +171,7 @@ fun DetailScreen(
             Text(
                 modifier = Modifier
                     .padding(start = 6.dp, top = 10.dp, end = 7.dp),
-                text = LocalContext.current.getString(R.string.price_destination, detailDestination?.price),
+                text = LocalContext.current.getString(R.string.price_destination, data.destination.price),
                 color = Color(0xFF000080),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
@@ -173,7 +196,7 @@ fun DetailScreen(
                 selected = tabState.currentPage == 0,
                 text ={
                     Text(
-                        text = "About",
+                        text = stringResource(R.string.tab_about),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -192,7 +215,7 @@ fun DetailScreen(
                 selected = tabState.currentPage == 1,
                 text ={
                     Text(
-                        text = "Transportation",
+                        text = stringResource(R.string.tab_transportation),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -211,7 +234,7 @@ fun DetailScreen(
                 selected = tabState.currentPage == 2,
                 text ={
                     Text(
-                        text = "Amusement Rides",
+                        text = stringResource(R.string.tab_amusement_rides),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal,
@@ -230,7 +253,7 @@ fun DetailScreen(
                 selected = tabState.currentPage == 3,
                 text ={
                     Text(
-                        text = "Reviews",
+                        text = stringResource(R.string.tab_reviews),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -249,7 +272,7 @@ fun DetailScreen(
                 selected = tabState.currentPage == 4,
                 text ={
                     Text(
-                        text = "Tour Guide",
+                        text = stringResource(R.string.tab_tour_guide),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -270,8 +293,33 @@ fun DetailScreen(
             state = tabState,
         ) {page ->
             when(page){
-                0 -> AboutScreen(aboutDestination?.about.toString())
-                1 -> TransportationScreen()
+                0 -> viewModel.uiStateAboutDestination.collectAsState(initial = UiState.Loading).value.let {
+                    when(it){
+                        is UiState.Loading->{
+                            viewModel.getAboutDestination(id = data.destination.id)
+                        }
+                        is UiState.Success->{
+                            AboutScreen(aboutDestination = it.data.about)
+                        }
+                        is UiState.Error->{
+                            Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                1 -> viewModel.uiStateTransportDataDestination.collectAsState(initial = UiState.Loading).value.let {
+                    when(it){
+                        is UiState.Loading->{
+                            viewModel.getTransportData(data.destination.id)
+                        }
+                        is UiState.Success->{
+                            TransportationScreen(idDestination = data.destination.id, transportType = it.data, viewModel=viewModel, navigateToDetailTransport = navigateToDetailTransport)
+                        }
+                        is UiState.Error->{
+                            Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
                 2 -> AmusementRidesScreen()
                 3 -> ReviewsScreen()
                 4 -> TourGuideScreen()
@@ -314,5 +362,4 @@ fun IndicatorDots(isSelected: Boolean) {
 )
 @Composable
 fun DetailScreenPreview() {
-    DetailScreen(id=1)
 }

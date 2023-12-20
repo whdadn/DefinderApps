@@ -124,6 +124,7 @@ fun LoginScreenContent(
                                         is ResultState.Success->{
                                             val session = UserModel(
                                                 email = emailState,
+                                                name = it.data.loginResult.name,
                                                 token = it.data.loginResult.token
                                             )
                                             viewModel.saveSession(session)
@@ -172,6 +173,7 @@ fun LoginScreenContent(
                                         is ResultState.Success->{
                                             val session = UserModel(
                                                 email = emailState,
+                                                name = it.data.loginResult.name,
                                                 token = it.data.loginResult.token
                                             )
                                             viewModel.saveSession(session)

@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.dicoding.definderapps.ui.detail.DetailScreen
+import com.dicoding.definderapps.ui.detail.transportation.DetailTransportationScreen
 import com.dicoding.definderapps.ui.favorite.FavoriteScreen
 import com.dicoding.definderapps.ui.home.HomeScreen
 import com.dicoding.definderapps.ui.login.LoginScreen
@@ -136,7 +137,12 @@ fun DefinderAppContent(
                 arguments = listOf(navArgument("id") { type = NavType.IntType }),
             ) {
                 val id = it.arguments?.getInt("id") ?: -1
-                DetailScreen(id = id)
+                DetailScreen(
+                    id = id,
+                    navigateToDetailTransport = { idDestination,transportType->
+                        navController.navigate(Screen.DetailTransport.createRoute(idDestination,transportType))
+                    }
+                )
             }
             composable(Screen.Mbti.route) {
                 MbtiScreen()
@@ -158,6 +164,17 @@ fun DefinderAppContent(
                     darkTheme = darkTheme,
                     onThemeUpdated = onThemeUpdated
                 )
+            }
+            composable(
+                route = Screen.DetailTransport.route,
+                arguments = listOf(
+                    navArgument("idDestination") { type = NavType.IntType },
+                    navArgument("transportType") {type = NavType.StringType}
+                    ),
+                ){
+                val idDestination= it.arguments?.getInt("idDestination") ?: -1
+                val transportType = it.arguments?.getString("transportType") ?: ""
+                DetailTransportationScreen(idDestination = idDestination, transportType = transportType, navigateBack = {navController.navigateUp()})
             }
         }
     }
