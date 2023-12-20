@@ -66,6 +66,6 @@
     <string name="tab_tour_guide">Tour Guide</string>
     <string name="back_to_detail">Back To Detail</string>
     <string name="error_field_empty">All fields must be filled</string>
-
-
+    <string name="success_created_account">Success Created Account</string>
+    <string name="error_login">incorrect email and password</string>
 </resources>

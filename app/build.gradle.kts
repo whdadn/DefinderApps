@@ -19,7 +19,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
+        buildConfigField ("String", "BASE_URL", "\"https://definder-c4or5el6dq-et.a.run.app/api/v1/cms/\"")
     }
 
     buildTypes {
@@ -40,6 +40,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
