@@ -6,6 +6,11 @@ import com.dicoding.definderapps.data.local.dao.DestinationDao
 import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.data.local.dao.TransportData
 import com.dicoding.definderapps.data.local.pref.DarkModePreference
+import com.dicoding.definderapps.data.local.pref.HomeLocModel
+import com.dicoding.definderapps.data.local.pref.HomeLocPreference
+import com.dicoding.definderapps.data.local.pref.HomeMbtiModel
+import com.dicoding.definderapps.data.local.pref.HomeMbtiPreference
+import com.dicoding.definderapps.data.local.pref.HomePreference
 import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.data.local.pref.UserPreference
 import com.dicoding.definderapps.data.remote.ApiService
@@ -19,6 +24,9 @@ import retrofit2.HttpException
 class Repository private constructor(
     private val preference: UserPreference,
     private val darkMode: DarkModePreference,
+    private val homePreference: HomePreference,
+    private val homeLocPreference: HomeLocPreference,
+    private val homeMbtiPreference: HomeMbtiPreference,
     private val destinationDao: DestinationDao,
     private val apiService: ApiService
 ) {
@@ -28,12 +36,15 @@ class Repository private constructor(
         fun getInstance(
             userPreference: UserPreference,
             darkMode: DarkModePreference,
+            homePreference: HomePreference,
+            homeLocPreference: HomeLocPreference,
+            homeMbtiPreference: HomeMbtiPreference,
             dao: DestinationDao,
             apiService: ApiService
         ): Repository =
             instance ?: synchronized(this) {
                 instance
-                    ?: Repository(userPreference,darkMode, dao, apiService)
+                    ?: Repository(userPreference,darkMode,homePreference,homeLocPreference,homeMbtiPreference, dao, apiService)
             }.also { instance = it }
     }
 
@@ -79,6 +90,31 @@ class Repository private constructor(
     fun getTheme(): Flow<Boolean>{
         return darkMode.getTheme()
     }
+
+    fun getHomeContent(): Flow<String>{
+        return homePreference.getHomeContent()
+    }
+
+    suspend fun saveHomeContent(homeContent:String){
+        homePreference.saveHomeContent(homeContent)
+    }
+
+    fun getHomeLoc(): Flow<HomeLocModel>{
+        return homeLocPreference.getHomeLocation()
+    }
+
+    suspend fun saveHomeLoc(homeLocModel: HomeLocModel){
+        homeLocPreference.saveHomeLocation(homeLocModel)
+    }
+
+//    fun getHomeMbti():Flow<HomeMbtiModel>{
+//        return  homeMbtiPreference.getHomeMbti()
+//    }
+
+    suspend fun saveHomeMbti(homeMbtiModel: HomeMbtiModel){
+        homeMbtiPreference.saveHomeMbti(homeMbtiModel)
+    }
+
     fun getAllDestinationWithImage(): Flow<List<DestinationWithImage>>{
         return destinationDao.getAllDestinationWithImage()
     }

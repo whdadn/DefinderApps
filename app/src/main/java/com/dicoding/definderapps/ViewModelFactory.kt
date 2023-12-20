@@ -12,6 +12,7 @@ import com.dicoding.definderapps.ui.login.LoginViewModel
 import com.dicoding.definderapps.ui.profile.ProfileViewModel
 import com.dicoding.definderapps.ui.register.RegisterViewModel
 import com.dicoding.definderapps.ui.search.SearchViewModel
+import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 
 class ViewModelFactory(private val repository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -54,6 +55,9 @@ class ViewModelFactory(private val repository: Repository) :
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java)->{
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(WelcomeViewModel::class.java)->{
+                WelcomeViewModel(repository) as T
             }
 
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
