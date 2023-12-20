@@ -41,7 +41,6 @@
     <!--Home -->
     <string name="search">Search Destination</string>
     <string name="icon_search">Icon search</string>
-    <string name="info_home">Tourism in \nMagelang</string>
     <string name="image">Image </string>
     <string name="favorite">Favorite</string>
     <string name="icon_location">Icon location</string>
@@ -68,4 +67,11 @@
     <string name="error_field_empty">All fields must be filled</string>
     <string name="success_created_account">Success Created Account</string>
     <string name="error_login">incorrect email and password</string>
+    <string name="location_info">Let’s explore the \ntourism you want</string>
+    <string name="tourism_name">Tourism Name</string>
+    <string name="province_name">Province Name</string>
+    <string name="submit">Submit</string>
+    <string name="welcome_info">Search for tourists \nbased on your wishes</string>
+    <string name="info_mbti">Let’s check your \npersonality</string>
+    <string name="mbti_form">Tell us about your self</string>
 </resources>

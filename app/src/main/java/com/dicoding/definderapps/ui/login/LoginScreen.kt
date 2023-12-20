@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToRegister: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToWelcome:()-> Unit,
     viewModel: LoginViewModel = viewModel(
         factory= ViewModelFactory.getInstance(LocalContext.current)
     ),
@@ -55,10 +55,9 @@ fun LoginScreen(
                 LoginScreenContent(
                     modifier = modifier,
                     navigateToRegister = navigateToRegister,
-                    navigateToHome = navigateToHome,
+                    navigateToWelcome = navigateToWelcome,
                     viewModel = viewModel
                 )
-
             }
             is UiState.Error->{}
         }
@@ -69,7 +68,7 @@ fun LoginScreen(
 fun LoginScreenContent(
     modifier: Modifier = Modifier,
     navigateToRegister: () -> Unit,
-    navigateToHome: () -> Unit,
+    navigateToWelcome: () -> Unit,
     viewModel:LoginViewModel,
     context: Context = LocalContext.current
 ){
@@ -132,7 +131,8 @@ fun LoginScreenContent(
                                             )
                                             viewModel.saveSession(session)
                                             showLoading = false
-                                            navigateToHome()
+                                            navigateToWelcome()
+
                                         }
                                         is ResultState.Error->{
                                             snackBarMessage = context.getString(R.string.error_login)
@@ -181,7 +181,7 @@ fun LoginScreenContent(
                                             )
                                             viewModel.saveSession(session)
                                             showLoading = false
-                                            navigateToHome()
+                                            navigateToWelcome()
                                         }
                                         is ResultState.Error->{
                                             snackBarMessage = context.getString(R.string.error_login)
@@ -215,6 +215,7 @@ fun LoginScreenContent(
 @Composable
 fun GreetingPreview() {
     DefinderAppsTheme {
-        LoginScreen(navigateToRegister = {}, navigateToHome = {})
+        LoginScreen(navigateToRegister = {}, navigateToWelcome = {})
+
     }
 }

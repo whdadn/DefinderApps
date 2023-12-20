@@ -29,12 +29,12 @@ import com.dicoding.definderapps.ui.favorite.FavoriteScreen
 import com.dicoding.definderapps.ui.home.HomeScreen
 import com.dicoding.definderapps.ui.login.LoginScreen
 import com.dicoding.definderapps.ui.login.LoginViewModel
-import com.dicoding.definderapps.ui.mbti.MbtiScreen
 import com.dicoding.definderapps.ui.navigation.NavigationItem
 import com.dicoding.definderapps.ui.navigation.Screen
 import com.dicoding.definderapps.ui.profile.ProfileScreen
 import com.dicoding.definderapps.ui.register.RegisterScreen
 import com.dicoding.definderapps.ui.search.SearchScreen
+import com.dicoding.definderapps.ui.welcome.WelcomeScreen
 import com.yogi.foodlist.ui.common.UiState
 
 @Composable
@@ -56,7 +56,7 @@ fun DefinderApp(
                         Screen.Login.route
                     }
                     else->{
-                        Screen.Home.route
+                        Screen.Welcome.route
                     }
 
                 }
@@ -90,7 +90,7 @@ fun DefinderAppContent(
     Scaffold(
         bottomBar = {
             val bottomNav = listOf(
-                Screen.Home.route,Screen.Search.route,Screen.Profile.route, Screen.Mbti.route, Screen.Favorite.route
+                Screen.Home.route,Screen.Search.route,Screen.Profile.route, Screen.Favorite.route
             )
             if (currentRoute in bottomNav) {
                 BottomBar(navController = navController, modifier = Modifier.heightIn(max = 60.dp))
@@ -110,8 +110,9 @@ fun DefinderAppContent(
                     navigateToRegister = {
                         navController.navigate(Screen.Register.route)
                     },
-                    navigateToHome = {
-                        navController.navigate(Screen.Home.route)
+                    navigateToWelcome = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Welcome.route)
                     }
                 )
             }
@@ -144,9 +145,6 @@ fun DefinderAppContent(
                     }
                 )
             }
-            composable(Screen.Mbti.route) {
-                MbtiScreen()
-            }
             composable(Screen.Search.route) {
                 SearchScreen()
             }
@@ -175,6 +173,12 @@ fun DefinderAppContent(
                 val idDestination= it.arguments?.getInt("idDestination") ?: -1
                 val transportType = it.arguments?.getString("transportType") ?: ""
                 DetailTransportationScreen(idDestination = idDestination, transportType = transportType, navigateBack = {navController.navigateUp()})
+            }
+            composable(Screen.Welcome.route){
+                WelcomeScreen(navigateToHome = {
+                    navController.popBackStack()
+                    navController.navigate(Screen.Home.route)
+                })
             }
         }
     }

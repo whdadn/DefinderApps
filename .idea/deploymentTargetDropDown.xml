@@ -5,6 +5,15 @@
       <entry key="PaymentMethodScreenPreview">
         <State />
       </entry>
+      <entry key="LocationScreenPreview">
+        <State />
+      </entry>
+      <entry key="MbtiScreenPreview">
+        <State />
+      </entry>
+      <entry key="WelcomeScreenPreview">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>

@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -49,37 +50,95 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
-    navigateToDetail:(Int)->Unit
+    navigateToDetail: (Int) -> Unit
 ) {
-    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let {uiState ->
-        when(uiState){
-            is UiState.Loading->{
-                viewModel.getAllDestinationWithImage()
+    viewModel.uiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                viewModel.getHomeContent()
             }
-            is UiState.Success->{
-                HomeScreenContent(
-                    modifier = modifier,
-                    destinationWithImage = uiState.data,
-                    navigateToDetail =navigateToDetail,
+
+            is UiState.Success -> {
+                HomeTitleScreen(
+                    homeContent = uiState.data,
+                    navigateToDetail = navigateToDetail,
                     viewModel = viewModel
                 )
             }
-            is UiState.Error->{
-                Toast.makeText(LocalContext.current, uiState.errorMessage, Toast.LENGTH_SHORT ).show()
+
+            is UiState.Error -> {
+                Toast.makeText(LocalContext.current, uiState.errorMessage, Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreenContent(
-    modifier: Modifier = Modifier,
-    destinationWithImage: List<DestinationWithImage>,
+fun HomeTitleScreen(
+    homeContent: String,
     navigateToDetail: (Int) -> Unit,
     viewModel: HomeViewModel,
+) {
+    when (homeContent) {
+        "location" -> {
+            viewModel.homeLocUiState.collectAsState(initial = UiState.Loading).value.let {
+                when(it){
+                    is UiState.Loading->{
+                        viewModel.getHomeLocDestinationWithImage()
+                    }
+                    is UiState.Success->{
+                        val loc by viewModel.getHomeLocPref().observeAsState()
+                        HomeContent(
+                            navigateToDetail = navigateToDetail,
+                            homeTitle = "${loc?.name} Tourism in \n${loc?.province}",
+                            destinationWithImage = it.data,
+                            viewModel = viewModel
+                        )
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+
+        "mbti" -> {
+            viewModel.homeMbtiUiState.collectAsState(initial = UiState.Loading).value.let {
+                when(it){
+                    is UiState.Loading->{
+                        viewModel.getHomeMbtiDestinationWithImage()
+                    }
+                    is UiState.Success->{
+                        HomeContent(
+                            navigateToDetail = navigateToDetail,
+                            homeTitle = "Tourism for an \nINFP",
+                            destinationWithImage = it.data,
+                            viewModel = viewModel
+                        )
+                    }
+                    is UiState.Error -> {
+                        Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+
+        }
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HomeContent(
+    modifier: Modifier = Modifier,
+    navigateToDetail: (Int) -> Unit,
+    homeTitle:String,
+    destinationWithImage:List<DestinationWithImage>,
+    viewModel: HomeViewModel
 ){
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
@@ -97,7 +156,7 @@ fun HomeScreenContent(
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.info_home),
+                        text = homeTitle,
                         color = Color(0xFF000080),
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold,

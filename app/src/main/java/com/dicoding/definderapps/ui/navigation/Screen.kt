@@ -9,11 +9,12 @@ sealed class Screen(val route: String) {
     }
 
     object Search : Screen("search")
-    object Mbti : Screen("mbti")
     object Favorite : Screen("favorite")
     object Profile : Screen("profile")
 
     object DetailTransport: Screen("detail/{idDestination}/{transportType}"){
         fun createRoute(idDestination:Int, transportType:String) = "detail/$idDestination/$transportType"
     }
+    object Welcome: Screen("welcome")
+
 }

@@ -308,7 +308,7 @@ fun AddTransportation(
                         ) {
                             Text(
                                 modifier = Modifier.padding(vertical = 4.dp),
-                                text = "Submit",
+                                text = stringResource(id = R.string.submit),
                                 color = Color(0xFFE6E6F2),
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Normal,
