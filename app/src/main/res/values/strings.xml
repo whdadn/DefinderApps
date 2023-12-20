@@ -68,6 +68,4 @@
     <string name="error_field_empty">All fields must be filled</string>
     <string name="success_created_account">Success Created Account</string>
     <string name="error_login">incorrect email and password</string>
-
-
 </resources>

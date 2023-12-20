@@ -20,7 +20,6 @@ android {
             useSupportLibrary = true
         }
         buildConfigField ("String", "BASE_URL", "\"https://definder-c4or5el6dq-et.a.run.app/api/v1/cms/\"")
-
     }
 
     buildTypes {
