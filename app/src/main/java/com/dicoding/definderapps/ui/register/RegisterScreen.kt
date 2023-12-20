@@ -94,7 +94,7 @@ fun RegisterScreen(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorName == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.register(nameState, emailState, passwordState).asFlow()
+                                viewModel.register(nameState, emailState, passwordState, passwordState).asFlow()
                                     .collect {
                                         when (it) {
                                             is ResultState.Loading -> {
@@ -102,7 +102,7 @@ fun RegisterScreen(
                                             }
 
                                             is ResultState.Success -> {
-                                                snackBarMessage = it.data.message
+                                                snackBarMessage = context.getString(R.string.success_created_account)
                                                 showLoading = false
                                                 val result = snackbarHostState.showSnackbar(
                                                     message = snackBarMessage,
@@ -114,7 +114,6 @@ fun RegisterScreen(
                                                     SnackbarResult.ActionPerformed -> {
                                                         navigateToLogin()
                                                     }
-
                                                     else -> {}
                                                 }
 
@@ -157,7 +156,7 @@ fun RegisterScreen(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorName == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.register(nameState, emailState, passwordState).asFlow()
+                                viewModel.register(nameState, emailState, passwordState, passwordState).asFlow()
                                     .collect {
                                         when (it) {
                                             is ResultState.Loading -> {
@@ -165,7 +164,7 @@ fun RegisterScreen(
                                             }
 
                                             is ResultState.Success -> {
-                                                snackBarMessage = it.data.message
+                                                snackBarMessage = context.getString(R.string.success_created_account)
                                                 showLoading = false
                                                 val result = snackbarHostState.showSnackbar(
                                                     message = snackBarMessage,
@@ -177,7 +176,6 @@ fun RegisterScreen(
                                                     SnackbarResult.ActionPerformed -> {
                                                         navigateToLogin()
                                                     }
-
                                                     else -> {}
                                                 }
 

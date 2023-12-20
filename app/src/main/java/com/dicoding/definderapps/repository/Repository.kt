@@ -37,10 +37,10 @@ class Repository private constructor(
             }.also { instance = it }
     }
 
-    fun register(name: String, email: String, password: String) = liveData {
+    fun register(name: String, email: String, password: String, password_confirmation:String) = liveData {
         emit(ResultState.Loading)
         try {
-            val response =apiService.register(name,email, password)
+            val response =apiService.register(name,email, password, password_confirmation)
             emit(ResultState.Success(response))
         }catch (e: HttpException){
             val errorBody = e.response()?.errorBody()?.string()

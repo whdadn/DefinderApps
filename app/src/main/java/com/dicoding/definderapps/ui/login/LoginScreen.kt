@@ -1,5 +1,6 @@
 package com.dicoding.definderapps.ui.login
 
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.ui.common.ResultState
@@ -69,6 +71,7 @@ fun LoginScreenContent(
     navigateToRegister: () -> Unit,
     navigateToHome: () -> Unit,
     viewModel:LoginViewModel,
+    context: Context = LocalContext.current
 ){
     var emailState by rememberSaveable { mutableStateOf("") }
     var passwordState by rememberSaveable { mutableStateOf("") }
@@ -124,15 +127,15 @@ fun LoginScreenContent(
                                         is ResultState.Success->{
                                             val session = UserModel(
                                                 email = emailState,
-                                                name = it.data.loginResult.name,
-                                                token = it.data.loginResult.token
+                                                name = it.data.result.name,
+                                                token = it.data.token
                                             )
                                             viewModel.saveSession(session)
                                             showLoading = false
                                             navigateToHome()
                                         }
                                         is ResultState.Error->{
-                                            snackBarMessage = it.error
+                                            snackBarMessage = context.getString(R.string.error_login)
                                             showLoading = false
                                             snackbarHostState.showSnackbar(
                                                 message = snackBarMessage,
@@ -173,15 +176,15 @@ fun LoginScreenContent(
                                         is ResultState.Success->{
                                             val session = UserModel(
                                                 email = emailState,
-                                                name = it.data.loginResult.name,
-                                                token = it.data.loginResult.token
+                                                name = it.data.result.name,
+                                                token = it.data.token
                                             )
                                             viewModel.saveSession(session)
                                             showLoading = false
                                             navigateToHome()
                                         }
                                         is ResultState.Error->{
-                                            snackBarMessage = it.error
+                                            snackBarMessage = context.getString(R.string.error_login)
                                             showLoading = false
                                             snackbarHostState.showSnackbar(
                                                 message = snackBarMessage,
