@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -156,16 +158,17 @@ fun ProfileScreen(
             },
             sheetState = sheetState,
             modifier = Modifier
-                .padding(bottom = 100.dp)
+                .navigationBarsPadding()
         ) {
             Column(
                 modifier = modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(start = 12.dp, bottom = 12.dp, end=12.dp)
+                        .padding(start = 16.dp, bottom = 20.dp, end=16.dp)
                 ) {
                     Column(
                         Modifier.weight(2f)
@@ -196,14 +199,109 @@ fun ProfileScreen(
                     ) {
                         Switch(
                             checked = darkTheme,
-                            onCheckedChange = onThemeUpdated)
+                            onCheckedChange = onThemeUpdated,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .padding(end = 16.dp)
+                        )
                     }
 
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(start = 12.dp, bottom = 12.dp, end = 12.dp)
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            if (viewModel.logout()) {
+                                navigateToLogin()
+                            }
+                        }
+                ) {
+                    Column(
+                        modifier= Modifier.weight(2f)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.tour_guide),
+                                contentDescription = "Log Out",
+                                modifier = Modifier
+                                    .padding(start = 5.dp)
+                                    .size(20.dp),
+                                tint = Color(0xFF000080)
+                            )
+                            Text(
+                                text = "Tour Guide",
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 5.dp, bottom = 3.dp)
+                            )
+                        }
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(0.5f)
+                    ) {
+                        Row {
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null)
+                        }
+                    }
+
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            if (viewModel.logout()) {
+                                navigateToLogin()
+                            }
+                        }
+                ) {
+                    Column(
+                        modifier= Modifier.weight(2f)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.mail),
+                                contentDescription = "Message",
+                                modifier = Modifier
+                                    .padding(start = 5.dp),
+                                tint = Color(0xFF000080)
+                            )
+                            Text(
+                                text = "Message",
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 5.dp, bottom = 3.dp)
+                            )
+                        }
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(0.5f)
+                    ) {
+                        Row {
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null)
+                        }
+                    }
+
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
                             if (viewModel.logout()) {
@@ -246,7 +344,7 @@ fun ProfileScreen(
 
                 }
             }
-            Spacer(modifier = Modifier.height(100.dp))
+            Spacer(modifier = Modifier.height(50.dp))
         }
     }
 }
