@@ -211,11 +211,7 @@ fun ProfileScreen(
                     modifier = Modifier
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
-                        .clickable {
-                            if (viewModel.logout()) {
-                                navigateToLogin()
-                            }
-                        }
+                        .clickable {  }
                 ) {
                     Column(
                         modifier= Modifier.weight(2f)
@@ -257,11 +253,7 @@ fun ProfileScreen(
                     modifier = Modifier
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
-                        .clickable {
-                            if (viewModel.logout()) {
-                                navigateToLogin()
-                            }
-                        }
+                        .clickable {  }
                 ) {
                     Column(
                         modifier= Modifier.weight(2f)
@@ -276,6 +268,47 @@ fun ProfileScreen(
                             )
                             Text(
                                 text = "Message",
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 5.dp, bottom = 3.dp)
+                            )
+                        }
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(0.5f)
+                    ) {
+                        Row {
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null)
+                        }
+                    }
+
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .clickable {  }
+                ) {
+                    Column(
+                        modifier= Modifier.weight(2f)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.edit_icon),
+                                contentDescription = "edit_profile",
+                                modifier = Modifier
+                                    .padding(start = 5.dp),
+                                tint = Color(0xFF000080)
+                            )
+                            Text(
+                                text = "Edit Profile",
                                 color = Color(0xFF000080),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
