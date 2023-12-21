@@ -118,6 +118,11 @@ class Repository private constructor(
     fun getAllDestinationWithImage(): Flow<List<DestinationWithImage>>{
         return destinationDao.getAllDestinationWithImage()
     }
+
+    fun getDestinationByNameAndLocation(name:String, location:String): Flow<List<DestinationWithImage>>{
+        return destinationDao.getDestinationByNameAndLocation(name,location)
+    }
+
     fun getDestinationWithImageByName(name:String): Flow<List<DestinationWithImage>>{
         return destinationDao.getDestinationWithImageByName(name)
     }

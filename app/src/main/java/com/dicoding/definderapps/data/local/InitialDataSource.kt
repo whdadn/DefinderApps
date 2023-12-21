@@ -11,7 +11,7 @@ object InitialDataSource{
             Destination(
                 id= 1,
                 name="Candi Borobudur",
-                location = "Magelang, Central Java",
+                location = "Magelang, Jawa Tengah",
                 rating = "4.9 (3,214)",
                 price = Random.nextFloat() * (10.0f - 0.5f) + 0.5f,
                 favorited=false
@@ -27,7 +27,7 @@ object InitialDataSource{
             Destination(
                 id = 3,
                 name = "Candi Sewu",
-                location = "Klaten, Central Java",
+                location = "Klaten, Jawa Tengah",
                 rating = "4.7 (1,523)",
                 price = Random.nextFloat() * (10.0f - 0.5f) + 0.5f,
                 favorited=false
@@ -35,7 +35,7 @@ object InitialDataSource{
             Destination(
                 id = 4,
                 name = "Candi Plaosan",
-                location = "Klaten, Central Java",
+                location = "Klaten, Jawa Tengah",
                 rating = "4.8 (872)",
                 price = Random.nextFloat() * (10.0f - 0.5f) + 0.5f,
                 favorited=false
@@ -51,7 +51,7 @@ object InitialDataSource{
             Destination(
                 id = 6,
                 name = "Candi Gedong Songo",
-                location = "Semarang, Central Java",
+                location = "Semarang, Jawa Tengah",
                 rating = "4.6 (532)",
                 price = Random.nextFloat() * (10.0f - 0.5f) + 0.5f,
                 favorited=false
@@ -59,7 +59,7 @@ object InitialDataSource{
             Destination(
                 id = 7,
                 name = "Candi Penataran",
-                location = "Blitar, East Java",
+                location = "Blitar, Jawa Timur",
                 rating = "4.8 (1,231)",
                 price = Random.nextFloat() * (10.0f - 0.5f) + 0.5f,
                 favorited=false

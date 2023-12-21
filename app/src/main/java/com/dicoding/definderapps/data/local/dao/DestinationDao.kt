@@ -30,6 +30,10 @@ interface DestinationDao {
     fun getDestinationWithImageByName(name:String): Flow<List<DestinationWithImage>>
 
     @Transaction
+    @Query("SELECT * FROM destination WHERE name LIKE '%' || :name || '%' AND location LIKE '%' || :location || '%'")
+    fun getDestinationByNameAndLocation(name: String, location:String): Flow<List<DestinationWithImage>>
+
+    @Transaction
     @Query("SELECT * FROM destination WHERE favorited=1")
     fun getFavoritedDestinationWithImage(): Flow<List<DestinationWithImage>>
 

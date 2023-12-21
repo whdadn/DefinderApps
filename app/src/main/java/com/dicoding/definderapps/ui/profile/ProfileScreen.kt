@@ -3,7 +3,6 @@ package com.dicoding.definderapps.ui.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,14 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -56,6 +51,7 @@ import com.dicoding.definderapps.ViewModelFactory
 fun ProfileScreen(
     modifier:Modifier = Modifier,
     navigateToLogin:()->Unit,
+    navigateToEditProfile: () -> Unit,
     viewModel: ProfileViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current)),
     darkTheme: Boolean, onThemeUpdated: (Boolean) -> Unit
 ) {
@@ -89,7 +85,7 @@ fun ProfileScreen(
                 )
             }
             Image(
-                painter = painterResource(id = R.drawable.pantai_pandawa),
+                painter = painterResource(id = R.drawable.profile_default),
                 contentDescription = "profile_image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -124,30 +120,30 @@ fun ProfileScreen(
                 modifier = Modifier
                     .padding(top = 6.dp),
             )
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2)
-            ) {
-                items(10)
-                {
-                    Box(
-                        modifier = Modifier
-                            .wrapContentSize()
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 10.dp),
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.pantai_pandawa),
-                                contentDescription = "image",
-                                modifier = Modifier
-                                    .wrapContentSize()
-                            )
-                        }
-                    }
-                }
-            }
+//            LazyVerticalGrid(
+//                columns = GridCells.Fixed(2)
+//            ) {
+//                items(10)
+//                {
+//                    Box(
+//                        modifier = Modifier
+//                            .wrapContentSize()
+//                    ) {
+//                        Card(
+//                            modifier = Modifier
+//                                .wrapContentSize()
+//                                .padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 10.dp),
+//                        ) {
+//                            Image(
+//                                painter = painterResource(id = R.drawable.pantai_pandawa),
+//                                contentDescription = "image",
+//                                modifier = Modifier
+//                                    .wrapContentSize()
+//                            )
+//                        }
+//                    }
+//                }
+//            }
         }
     }
     if (showBottomSheet){
@@ -204,111 +200,31 @@ fun ProfileScreen(
                                 .padding(end = 16.dp)
                         )
                     }
-
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
-                        .clickable {  }
+                        .clickable {
+                            showBottomSheet=false
+                            navigateToEditProfile()
+                        }
                 ) {
                     Column(
                         modifier= Modifier.weight(2f)
                     ) {
                         Row {
                             Icon(
-                                painter = painterResource(id = R.drawable.tour_guide),
-                                contentDescription = "Log Out",
+                                painter = painterResource(id = R.drawable.profile_filled),
+                                contentDescription = stringResource(id = R.string.edit_profile),
                                 modifier = Modifier
                                     .padding(start = 5.dp)
                                     .size(20.dp),
                                 tint = Color(0xFF000080)
                             )
                             Text(
-                                text = "Tour Guide",
-                                color = Color(0xFF000080),
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Normal,
-                                    fontStyle = FontStyle.Normal
-                                ),
-                                modifier = Modifier
-                                    .padding(start = 5.dp, bottom = 3.dp)
-                            )
-                        }
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.End,
-                        modifier = Modifier.weight(0.5f)
-                    ) {
-                        Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
-                        }
-                    }
-
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
-                        .fillMaxWidth()
-                        .clickable {  }
-                ) {
-                    Column(
-                        modifier= Modifier.weight(2f)
-                    ) {
-                        Row {
-                            Icon(
-                                painter = painterResource(id = R.drawable.mail),
-                                contentDescription = "Message",
-                                modifier = Modifier
-                                    .padding(start = 5.dp),
-                                tint = Color(0xFF000080)
-                            )
-                            Text(
-                                text = "Message",
-                                color = Color(0xFF000080),
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Normal,
-                                    fontStyle = FontStyle.Normal
-                                ),
-                                modifier = Modifier
-                                    .padding(start = 5.dp, bottom = 3.dp)
-                            )
-                        }
-                    }
-                    Column(
-                        horizontalAlignment = Alignment.End,
-                        modifier = Modifier.weight(0.5f)
-                    ) {
-                        Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
-                        }
-                    }
-
-                }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
-                        .fillMaxWidth()
-                        .clickable {  }
-                ) {
-                    Column(
-                        modifier= Modifier.weight(2f)
-                    ) {
-                        Row {
-                            Icon(
-                                painter = painterResource(id = R.drawable.edit_icon),
-                                contentDescription = "edit_profile",
-                                modifier = Modifier
-                                    .padding(start = 5.dp),
-                                tint = Color(0xFF000080)
-                            )
-                            Text(
-                                text = "Edit Profile",
+                                text = stringResource(R.string.edit_profile),
                                 color = Color(0xFF000080),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
@@ -336,7 +252,92 @@ fun ProfileScreen(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
-                            if (viewModel.logout()) {
+                        }
+                ) {
+                    Column(
+                        modifier= Modifier.weight(2f)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.tour_guide),
+                                contentDescription = stringResource(id = R.string.tour_guide),
+                                modifier = Modifier
+                                    .padding(start = 5.dp)
+                                    .size(20.dp),
+                                tint = Color(0xFF000080)
+                            )
+                            Text(
+                                text = stringResource(R.string.tour_guide),
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 5.dp, bottom = 3.dp)
+                            )
+                        }
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(0.5f)
+                    ) {
+                        Row {
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null)
+                        }
+                    }
+
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                        }
+                ) {
+                    Column(
+                        modifier= Modifier.weight(2f)
+                    ) {
+                        Row {
+                            Icon(
+                                painter = painterResource(id = R.drawable.mail),
+                                contentDescription = stringResource(id = R.string.message),
+                                modifier = Modifier
+                                    .padding(start = 5.dp),
+                                tint = Color(0xFF000080)
+                            )
+                            Text(
+                                text = stringResource(R.string.message),
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 5.dp, bottom = 3.dp)
+                            )
+                        }
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        modifier = Modifier.weight(0.5f)
+                    ) {
+                        Row {
+                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null)
+                        }
+                    }
+
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
+                        .fillMaxWidth()
+                        .clickable {
+                            if (viewModel.logout()){
                                 navigateToLogin()
                             }
                         }
@@ -347,13 +348,13 @@ fun ProfileScreen(
                         Row {
                             Icon(
                                 painter = painterResource(id = R.drawable.logout),
-                                contentDescription = "Log Out",
+                                contentDescription = stringResource(id = R.string.log_out),
                                 modifier = Modifier
                                     .padding(start = 5.dp),
                                 tint = Color(0xFF000080)
                             )
                             Text(
-                                text = "Logout",
+                                text = stringResource(R.string.log_out),
                                 color = Color(0xFF000080),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
@@ -388,5 +389,5 @@ fun ProfileScreen(
 )
 @Composable
 fun ProfileItemPreview() {
-    ProfileScreen( navigateToLogin = {}, darkTheme = false, onThemeUpdated = {})
+    ProfileScreen( navigateToLogin = {}, darkTheme = false, onThemeUpdated = {}, navigateToEditProfile = {})
 }

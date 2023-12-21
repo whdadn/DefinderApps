@@ -37,9 +37,9 @@ class HomeViewModel(private val repository: Repository):ViewModel() {
         }
     }
 
-    fun getHomeLocDestinationWithImage(){
+    fun getHomeLocDestinationWithImage(name:String, location:String){
         viewModelScope.launch {
-            repository.getAllDestinationWithImage()
+            repository.getDestinationByNameAndLocation(name,location)
                 .catch {
                     _homeLocUiState.value =UiState.Error(it.message.toString())
                 }

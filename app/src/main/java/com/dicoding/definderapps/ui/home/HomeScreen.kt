@@ -84,15 +84,17 @@ fun HomeTitleScreen(
     when (homeContent) {
         "location" -> {
             viewModel.homeLocUiState.collectAsState(initial = UiState.Loading).value.let {
+                val loc by viewModel.getHomeLocPref().observeAsState()
+                val name:String = loc?.name.toString()
+                val location:String = loc?.province.toString()
                 when(it){
                     is UiState.Loading->{
-                        viewModel.getHomeLocDestinationWithImage()
+                        viewModel.getHomeLocDestinationWithImage(name,location)
                     }
                     is UiState.Success->{
-                        val loc by viewModel.getHomeLocPref().observeAsState()
                         HomeContent(
                             navigateToDetail = navigateToDetail,
-                            homeTitle = "${loc?.name} Tourism in ${loc?.province}",
+                            homeTitle = "$name Tourism in $location",
                             destinationWithImage = it.data,
                             viewModel = viewModel
                         )
@@ -114,7 +116,7 @@ fun HomeTitleScreen(
                     is UiState.Success->{
                         HomeContent(
                             navigateToDetail = navigateToDetail,
-                            homeTitle = "Tourism for an \nINFP",
+                            homeTitle = "Tourism for an INFP",
                             destinationWithImage = it.data,
                             viewModel = viewModel
                         )

@@ -1,19 +1,11 @@
 package com.dicoding.definderapps.ui.detail.reviews
 
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
@@ -25,27 +17,21 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ui.component.detail.reviews.ReviewsItem
 
 data class Reviews(
     val id: Int,
-    val image: Int,
     val name: String,
     val review: String
 )
@@ -53,49 +39,41 @@ data class Reviews(
 val data = listOf(
     Reviews(
         1,
-        R.drawable.borobudur2,
         "Sukuna",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
     ),
     Reviews(
         2,
-        R.drawable.candi_plaosan,
         "Geto",
         "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
     ),
     Reviews(
         3,
-        R.drawable.candi_dieng,
         "Pululu",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
     ),
     Reviews(
         4,
-        R.drawable.butterfly_photobooth,
         "Uhuy",
         "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
     ),
     Reviews(
         5,
-        R.drawable.candi_dieng,
         "Ihiy",
         "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
     ),
     Reviews(
         6,
-        R.drawable.definder_register_page,
         "Nobara",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
     ),
     Reviews(
         7,
-        R.drawable.candi_kalasan,
         "Inumaki",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
     ),
     Reviews(
         8,
-        R.drawable.candi_sewu,
         "Satoru",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
                 "\n" +
@@ -103,7 +81,6 @@ val data = listOf(
     ),
     Reviews(
         9,
-        R.drawable.candi_sewu,
         "Megumi",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
                 "\n" +
@@ -111,7 +88,6 @@ val data = listOf(
     ),
     Reviews(
         10,
-        R.drawable.pantai_pandawa,
         "Yuji",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
                 "\n" +
@@ -123,13 +99,6 @@ val data = listOf(
 fun ReviewsScreen()
 {
     var reviewUser by rememberSaveable { mutableStateOf("") }
-    var selectedImage by remember { mutableStateOf<List<Uri>>(emptyList()) }
-    val multiplePhotoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = {uris -> selectedImage = uris}
-    )
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -140,7 +109,6 @@ fun ReviewsScreen()
         ){
             items(data){ list->
                 ReviewsItem(
-                    image = list.image,
                     name = list.name,
                     review = list.review
                 )
@@ -151,22 +119,6 @@ fun ReviewsScreen()
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         ) {
-            LazyRow(
-                contentPadding = PaddingValues(horizontal = 5.dp),
-            ){
-                items(selectedImage) {uri ->
-                    AsyncImage(
-                        model = uri,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp)
-                            .padding(end = 5.dp),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-            }
-
             TextField(
                 value = reviewUser,
                 modifier = Modifier
@@ -184,19 +136,6 @@ fun ReviewsScreen()
                     )
                 },
                 onValueChange = {reviewUser = it},
-                leadingIcon = {
-                    IconButton(
-                        onClick = { multiplePhotoLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        ) }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.image),
-                            contentDescription = "image",
-                            tint = Color(0xFF000080)
-                        )
-                    }
-                },
                 trailingIcon = {
                     IconButton(
                         onClick = { /*TODO*/ }
