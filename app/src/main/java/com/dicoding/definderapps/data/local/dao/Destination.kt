@@ -43,7 +43,6 @@ data class TransportData(
     val transportationName: String,
     val transportationDesc: String,
     val idDestination: Int
-
 )
 
 data class DestinationWithImage(

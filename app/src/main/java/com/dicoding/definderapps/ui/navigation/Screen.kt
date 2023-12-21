@@ -17,4 +17,6 @@ sealed class Screen(val route: String) {
     }
     object Welcome: Screen("welcome")
 
+    object EditProfile:Screen("edit_profile")
+
 }

@@ -74,4 +74,12 @@
     <string name="welcome_info">Search for tourists \nbased on your wishes</string>
     <string name="info_mbti">Let’s check your \npersonality</string>
     <string name="mbti_form">Tell us about your self</string>
+    <string name="message">Message</string>
+    <string name="tour_guide">Tour Guide</string>
+    <string name="log_out">Log Out</string>
+    <string name="edit_name">Edit Name</string>
+    <string name="change_password">Change Password</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

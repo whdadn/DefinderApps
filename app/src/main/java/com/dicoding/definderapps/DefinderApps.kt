@@ -31,6 +31,7 @@ import com.dicoding.definderapps.ui.login.LoginScreen
 import com.dicoding.definderapps.ui.login.LoginViewModel
 import com.dicoding.definderapps.ui.navigation.NavigationItem
 import com.dicoding.definderapps.ui.navigation.Screen
+import com.dicoding.definderapps.ui.profile.EditProfileScreen
 import com.dicoding.definderapps.ui.profile.ProfileScreen
 import com.dicoding.definderapps.ui.register.RegisterScreen
 import com.dicoding.definderapps.ui.search.SearchScreen
@@ -159,6 +160,9 @@ fun DefinderAppContent(
                         navController.popBackStack()
                         navController.navigate(Screen.Login.route)
                     },
+                    navigateToEditProfile={
+                        navController.navigate(Screen.EditProfile.route)
+                    },
                     darkTheme = darkTheme,
                     onThemeUpdated = onThemeUpdated
                 )
@@ -179,6 +183,14 @@ fun DefinderAppContent(
                     navController.popBackStack()
                     navController.navigate(Screen.Home.route)
                 })
+            }
+            composable(Screen.EditProfile.route){
+                EditProfileScreen(
+                    closeScreen = {
+                        navController.popBackStack()
+                        navController.navigate(Screen.Profile.route)
+                    }
+                )
             }
         }
     }
@@ -201,18 +213,22 @@ private fun BottomBar(
         val navigationItem = listOf(
             NavigationItem(
                 icon = painterResource(id = R.drawable.home_vector),
+                iconFilled = painterResource(id = R.drawable.home_filled),
                 screen = Screen.Home
             ),
             NavigationItem(
                 icon = painterResource(id = R.drawable.search_vector),
+                iconFilled = painterResource(id = R.drawable.search_filled),
                 screen = Screen.Search
             ),
             NavigationItem(
                 icon = painterResource(id = R.drawable.favorite_vector),
+                iconFilled = painterResource(id = R.drawable.favorite_filled),
                 screen = Screen.Favorite
             ),
             NavigationItem(
                 icon = painterResource(id = R.drawable.profile_vector),
+                iconFilled = painterResource(id = R.drawable.profile_filled),
                 screen = Screen.Profile
             )
         )
@@ -220,13 +236,9 @@ private fun BottomBar(
             NavigationBarItem(
                 icon = {
                     Icon(
-                        painter = item.icon,
+                        painter = if (currentRoute == item.screen.route) item.iconFilled else item.icon,
                         contentDescription = null,
-                        tint = if (currentRoute == item.screen.route) {
-                            Color.Black
-                        } else {
-                            Color.White
-                        }
+                        tint = if (currentRoute == item.screen.route) Color.Black else Color.White
                     )
                 },
                 selected = currentRoute == item.screen.route,

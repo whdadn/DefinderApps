@@ -49,7 +49,6 @@ import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.ui.detail.about.AboutScreen
-import com.dicoding.definderapps.ui.detail.amusementrides.AmusementRidesScreen
 import com.dicoding.definderapps.ui.detail.reviews.ReviewsScreen
 import com.dicoding.definderapps.ui.detail.tourguide.TourGuideScreen
 import com.dicoding.definderapps.ui.detail.transportation.TransportationScreen
@@ -105,7 +104,7 @@ fun DetailContent(
     }
 
     val pagerState = rememberPagerState { images.size }
-    val tabState = rememberPagerState { 5 }
+    val tabState = rememberPagerState { 4 }
     val coroutinScope = rememberCoroutineScope()
 
     Column(
@@ -234,11 +233,11 @@ fun DetailContent(
                 selected = tabState.currentPage == 2,
                 text ={
                     Text(
-                        text = stringResource(R.string.tab_amusement_rides),
+                        text = stringResource(R.string.tab_reviews),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal,
-                        ),
+                            fontStyle = FontStyle.Normal
+                        )
                     )
                 },
                 selectedContentColor = Color(0xFF000066),
@@ -253,25 +252,6 @@ fun DetailContent(
                 selected = tabState.currentPage == 3,
                 text ={
                     Text(
-                        text = stringResource(R.string.tab_reviews),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal
-                        )
-                    )
-                },
-                selectedContentColor = Color(0xFF000066),
-                unselectedContentColor = Color(0xFF79747E),
-                onClick = {
-                    coroutinScope.launch {
-                        tabState.animateScrollToPage(3)
-                    }
-                }
-            )
-            Tab(
-                selected = tabState.currentPage == 4,
-                text ={
-                    Text(
                         text = stringResource(R.string.tab_tour_guide),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
@@ -283,7 +263,7 @@ fun DetailContent(
                 unselectedContentColor = Color(0xFF79747E),
                 onClick = {
                     coroutinScope.launch {
-                        tabState.animateScrollToPage(4)
+                        tabState.animateScrollToPage(3)
                     }
                 }
             )
@@ -320,9 +300,8 @@ fun DetailContent(
                     }
 
                 }
-                2 -> AmusementRidesScreen()
-                3 -> ReviewsScreen()
-                4 -> TourGuideScreen()
+                2 -> ReviewsScreen()
+                3 -> TourGuideScreen()
             }
         }
     }

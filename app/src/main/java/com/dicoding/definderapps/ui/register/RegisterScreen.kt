@@ -94,7 +94,7 @@ fun RegisterScreen(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorName == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.register(nameState, emailState, passwordState, passwordState).asFlow()
+                                viewModel.register(nameState, emailState.lowercase(), passwordState, passwordState).asFlow()
                                     .collect {
                                         when (it) {
                                             is ResultState.Loading -> {
@@ -156,7 +156,7 @@ fun RegisterScreen(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorName == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.register(nameState, emailState, passwordState, passwordState).asFlow()
+                                viewModel.register(nameState, emailState.lowercase(), passwordState, passwordState).asFlow()
                                     .collect {
                                         when (it) {
                                             is ResultState.Loading -> {

@@ -118,7 +118,7 @@ fun LoginScreenContent(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.login(emailState, passwordState).asFlow().collect{
+                                viewModel.login(emailState.lowercase(), passwordState).asFlow().collect{
                                     when(it){
                                         is ResultState.Loading->{
                                             showLoading=true
@@ -168,7 +168,7 @@ fun LoginScreenContent(
                         isErrorPass = passwordValidation(passwordState)
                         if (isErrorEmail == "" && isErrorPass == "") {
                             scope.launch {
-                                viewModel.login(emailState, passwordState).asFlow().collect{
+                                viewModel.login(emailState.lowercase(), passwordState).asFlow().collect{
                                     when(it){
                                         is ResultState.Loading->{
                                             showLoading=true
