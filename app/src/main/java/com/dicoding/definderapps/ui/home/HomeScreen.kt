@@ -92,7 +92,7 @@ fun HomeTitleScreen(
                         val loc by viewModel.getHomeLocPref().observeAsState()
                         HomeContent(
                             navigateToDetail = navigateToDetail,
-                            homeTitle = "${loc?.name} Tourism in \n${loc?.province}",
+                            homeTitle = "${loc?.name} Tourism in ${loc?.province}",
                             destinationWithImage = it.data,
                             viewModel = viewModel
                         )
