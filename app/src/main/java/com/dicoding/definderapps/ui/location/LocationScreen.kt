@@ -149,7 +149,7 @@ fun LocationScreen(
                     )
                     Text(
                         text = "Choose Personality",
-                        color = Color(0xFF000080),
+                        color = Color(0xFF00002D),
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -175,7 +175,7 @@ fun LocationScreen(
                             placeholder = {
                                 Text(
                                     text = "Choose Personality",
-                                    color = Color(0xFF000080),
+                                    color = Color(0xFF00002D),
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
@@ -185,112 +185,160 @@ fun LocationScreen(
                             onDismissRequest = { expanded = false },
                         ) {
                             DropdownMenuItem(
-                                text = { Text(text = "ESTJ") },
+                                text = { Text(
+                                    text = "ESTJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ESTJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ESTP") },
+                                text = { Text(
+                                    text = "ESTP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ESTP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ESFP") },
+                                text = { Text(
+                                    text = "ESFP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ESFP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ESFJ") },
+                                text = { Text(
+                                    text = "ESFJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ESFJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ISTJ") },
+                                text = { Text(
+                                    text = "ISTJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ISTJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ISTP") },
+                                text = { Text(
+                                    text = "ISTP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ISTP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ISFP") },
+                                text = { Text(
+                                    text = "ISFP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ISFP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ISFJ") },
+                                text = { Text(
+                                    text = "ISFJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ISFJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "INTJ") },
+                                text = { Text(
+                                    text = "INTJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "INTJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "INTP") },
+                                text = { Text(
+                                    text = "INTP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "INTP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "INFP") },
+                                text = { Text(
+                                    text = "INFP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "INFP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "INFJ") },
+                                text = { Text(
+                                    text = "INFJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "INFJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ENTJ") },
+                                text = { Text(
+                                    text = "ENTJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ENTJ"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ENTP") },
+                                text = { Text(
+                                    text = "ENTP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ENTP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ENFP") },
+                                text = { Text(
+                                    text = "ENFP",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ENFP"
                                     expanded = false
                                 },
                             )
                             DropdownMenuItem(
-                                text = { Text(text = "ENFJ") },
+                                text = { Text(
+                                    text = "ENFJ",
+                                    color = Color(0xFF00002D)
+                                ) },
                                 onClick = {
                                     optionMbti = "ENFJ"
                                     expanded = false
