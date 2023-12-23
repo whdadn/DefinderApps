@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -37,26 +41,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.dicoding.definderapps.R
-import com.dicoding.definderapps.data.local.pref.HomeMbtiModel
 import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MbtiScreen(
-    closeDialog:()->Unit,
-    context:Context=LocalContext.current,
-    navigateToHome:()->Unit,
-    viewModel:WelcomeViewModel
-)
-{
+    closeDialog: () -> Unit,
+    context: Context = LocalContext.current,
+    navigateToHome: () -> Unit,
+    viewModel: WelcomeViewModel
+) {
     var inputMbti by rememberSaveable { mutableStateOf("") }
+
     Dialog(
         onDismissRequest = {
             closeDialog()
@@ -79,9 +84,9 @@ fun MbtiScreen(
             Surface(modifier = Modifier.fillMaxSize()) {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(16.dp),
                 ) {
-                    Row(){
+                    Row() {
                         Text(
                             text = stringResource(R.string.info_mbti),
                             color = Color(0xFF000080),
@@ -89,7 +94,9 @@ fun MbtiScreen(
                                 fontWeight = FontWeight.Bold,
                                 fontStyle = FontStyle.Normal
                             ),
-                            modifier = Modifier.weight(2f).padding(top=40.dp)
+                            modifier = Modifier
+                                .weight(2f)
+                                .padding(top = 40.dp)
                         )
                         IconButton(onClick = closeDialog) {
                             Icon(imageVector = Icons.Default.Close, contentDescription = null)
@@ -118,20 +125,20 @@ fun MbtiScreen(
 
                     Button(
                         onClick = {
-                                  if (inputMbti!=""){
-                                      viewModel.saveHomeContent("mbti")
-                                      val mbti = HomeMbtiModel(personality= inputMbti)
-                                      viewModel.saveHomeMbti(mbti)
-                                      navigateToHome()
+                            if (inputMbti.isNotBlank()) {
+//                                      viewModel.saveHomeContent("mbti")
+//                                      val mbti = HomeMbtiModel(personality= inputMbti)
+//                                      viewModel.saveHomeMbti(mbti)
+//                                      navigateToHome()
 
-                                  }else{
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = context.getString(R.string.error_field_empty),
-                                            withDismissAction = false,
-                                            duration = SnackbarDuration.Short,
-                                        )
-                                    }
+                            } else {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = context.getString(R.string.error_field_empty),
+                                        withDismissAction = false,
+                                        duration = SnackbarDuration.Short,
+                                    )
+                                }
                             }
                         },
                         modifier = Modifier
@@ -150,17 +157,57 @@ fun MbtiScreen(
                             )
                         )
                     }
+                    Divider(
+                        thickness = 2.dp,
+                        modifier = Modifier
+                            .padding(top = 15.dp)
+                    )
+                    Text(
+                        text = "Your personality type is:",
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .align(Alignment.CenterHorizontally),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Normal
+                        ),
+                        color = Color(0xFF00002D),
+                    )
+                    Text(
+                        text = "ISTJ",
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 10.dp),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal
+                        ),
+                        color = Color(0xFF00002D),
+                    )
+                    LazyColumn {
+                        item {
+                            Text(
+                                text = "Logisticians are practical and fact-minded individuals, whose reliability cannot be doubted.",
+                                textAlign = TextAlign.Justify,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                color = Color(0xFF00002D),
+                                modifier = Modifier
+                                    .padding(top = 10.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
     }
-
 }
 
 @Preview(
     showBackground = true
 )
 @Composable
-fun MbtiScreenPreview()
-{
+fun MbtiScreenPreview() {
 }

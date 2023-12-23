@@ -12,6 +12,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,6 +51,7 @@ import com.dicoding.definderapps.data.local.pref.HomeLocModel
 import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LocationScreen(
@@ -57,6 +62,8 @@ fun LocationScreen(
 ) {
     var inputTourismName by rememberSaveable { mutableStateOf("") }
     var inputProvince by rememberSaveable { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    var optionMbti by remember { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = {
@@ -90,7 +97,9 @@ fun LocationScreen(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
                                 ),
-                                modifier = Modifier.weight(2f).padding(top=40.dp)
+                                modifier = Modifier
+                                    .weight(2f)
+                                    .padding(top = 40.dp)
                             )
                             IconButton(onClick = closeDialog) {
                                 Icon(imageVector = Icons.Default.Close, contentDescription = null)
@@ -138,6 +147,157 @@ fun LocationScreen(
                         ),
                         onValueChange = { inputProvince = it },
                     )
+                    Text(
+                        text = "Choose Personality",
+                        color = Color(0xFF000080),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Normal
+                        ),
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded },
+                    ) {
+                        OutlinedTextField(
+                            value = optionMbti,
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            },
+                            modifier = Modifier.menuAnchor(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Color(0xFF000080),
+                                unfocusedBorderColor = Color(0xFFBCCCFF),
+                            ),
+                            placeholder = {
+                                Text(
+                                    text = "Choose Personality",
+                                    color = Color(0xFF000080),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
+                        )
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(text = "ESTJ") },
+                                onClick = {
+                                    optionMbti = "ESTJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ESTP") },
+                                onClick = {
+                                    optionMbti = "ESTP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ESFP") },
+                                onClick = {
+                                    optionMbti = "ESFP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ESFJ") },
+                                onClick = {
+                                    optionMbti = "ESFJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ISTJ") },
+                                onClick = {
+                                    optionMbti = "ISTJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ISTP") },
+                                onClick = {
+                                    optionMbti = "ISTP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ISFP") },
+                                onClick = {
+                                    optionMbti = "ISFP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ISFJ") },
+                                onClick = {
+                                    optionMbti = "ISFJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "INTJ") },
+                                onClick = {
+                                    optionMbti = "INTJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "INTP") },
+                                onClick = {
+                                    optionMbti = "INTP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "INFP") },
+                                onClick = {
+                                    optionMbti = "INFP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "INFJ") },
+                                onClick = {
+                                    optionMbti = "INFJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ENTJ") },
+                                onClick = {
+                                    optionMbti = "ENTJ"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ENTP") },
+                                onClick = {
+                                    optionMbti = "ENTP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ENFP") },
+                                onClick = {
+                                    optionMbti = "ENFP"
+                                    expanded = false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(text = "ENFJ") },
+                                onClick = {
+                                    optionMbti = "ENFJ"
+                                    expanded = false
+                                },
+                            )
+                        }
+                    }
 
                     Button(
                         onClick = {
