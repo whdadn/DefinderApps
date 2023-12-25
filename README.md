@@ -1,7 +1,7 @@
 # About
 Finder is an application that will display recommendations for tourist attractions based on user input (tour name, province name or you can search based on the user's MBTI). In looking for detailed information about tourist attractions, it is too complicated, we have to explore various sites, ask people who have visited, therefore we thought about what if we provide one place where people can get complete detailed information like a guild center. in games/anime.
 
-# Fitur
+# Feature
 Currently the features available are:
 1. Register
 2. Login
@@ -30,7 +30,7 @@ Currently the features available are:
 1. [Machine Learning](https://github.com/ishala/recommender-model)
 2. [Cloud Computing](https://github.com/DimasAriyanto/definder-api)
 
-# Cara Install Aplikasi
+# How to Install App
 1. Visit the link [download app](https://drive.google.com/drive/folders/1jUKO0vEZN7NugRxgbCF8bOit8nzlr1tZ)
 2. Install app
 3. If there is a message regarding security check (just allow the installation of apps from unknown sources) and wait for the installation process to complete
