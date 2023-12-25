@@ -55,7 +55,7 @@ fun LoginPotrait(
         )
         Text(
             text = stringResource(id = R.string.login),
-            color = Color(0xFF000080),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Normal
@@ -63,7 +63,7 @@ fun LoginPotrait(
         )
         Text(
             text = stringResource(id = R.string.login_info),
-            color = Color(0xFF79747E),
+            color = MaterialTheme.colorScheme.outline,
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal
@@ -106,7 +106,7 @@ fun LoginPotrait(
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(id = R.string.login),
-                color = Color(0xFFE6E6F2),
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal
@@ -122,7 +122,7 @@ fun LoginPotrait(
         ) {
             Text(
                 text = stringResource(id = R.string.not_yet_account),
-                color = Color(0xFF79747E),
+                color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal
@@ -133,7 +133,7 @@ fun LoginPotrait(
                     .padding(start = 3.dp)
                     .clickable {navigateToRegister()},
                 text = stringResource(id = R.string.register),
-                color = Color(0xFF000080),
+                color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal

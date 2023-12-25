@@ -71,17 +71,20 @@ fun TransportationScreen(
                                 },
                                 modifier = Modifier
                                     .padding(top = 17.dp),
-                                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 shape = RoundedCornerShape(4.dp),
                                 contentPadding = PaddingValues(7.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
                                     contentDescription = stringResource(id = R.string.add_transportation),
+                                    tint = MaterialTheme.colorScheme.onPrimary,
+                                    modifier = Modifier
+                                        .padding(bottom = 4.dp)
                                 )
                                 Text(
                                     text = "Information",
-                                    color = Color(0xFFE6E6F2),
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyLarge.copy(
                                         fontWeight = FontWeight.Normal,
                                         fontStyle = FontStyle.Normal

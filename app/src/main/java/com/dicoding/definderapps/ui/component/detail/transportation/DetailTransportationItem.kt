@@ -53,7 +53,7 @@ fun DetailTransportationItem(
             .wrapContentSize()
             .padding(horizontal = 8.dp, vertical = 4.dp)
         ,
-        colors = CardDefaults.cardColors(Color.Transparent),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
     ) {
         Row(
             modifier = Modifier
@@ -71,7 +71,7 @@ fun DetailTransportationItem(
             )
             Text(
                 text = name,
-                color = Color(0xFF000080),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal
@@ -82,7 +82,7 @@ fun DetailTransportationItem(
         Column(modifier = Modifier.padding(horizontal = 6.dp)) {
             Text(
                 text = transportationName,
-                color = Color(0xFF000080),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal

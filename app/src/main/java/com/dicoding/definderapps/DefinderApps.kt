@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -209,7 +210,7 @@ private fun BottomBar(
 ) {
     NavigationBar(
         modifier = modifier,
-        containerColor = Color(0xF0000080),
+        containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -242,7 +243,7 @@ private fun BottomBar(
                     Icon(
                         painter = if (currentRoute == item.screen.route) item.iconFilled else item.icon,
                         contentDescription = null,
-                        tint = if (currentRoute == item.screen.route) Color.Black else Color.White
+                        tint = if (currentRoute == item.screen.route) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
                     )
                 },
                 selected = currentRoute == item.screen.route,

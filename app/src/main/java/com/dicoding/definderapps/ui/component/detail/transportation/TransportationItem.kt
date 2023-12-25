@@ -32,8 +32,7 @@ fun TransportationItem(
             modifier = modifier
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp),
-            colors = CardDefaults.cardColors(Color.Transparent),
-            border = BorderStroke(2.dp, Color(0xFF000080))
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         ) {
             Column(
                 modifier = Modifier
@@ -42,7 +41,7 @@ fun TransportationItem(
             ) {
                 Text(
                     text = typeTransportation,
-                    color = Color(0xFF000080),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal

@@ -47,9 +47,8 @@ fun TourGuideItem(
         Card(
             modifier = Modifier
                 .wrapContentSize()
-                .border(2.dp, Color(0xFF000080) ,shape = RoundedCornerShape(20.dp))
                 .padding(vertical = 7.dp),
-            colors = CardDefaults.cardColors(Color.Transparent),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         ) {
             Row(
                 modifier = Modifier
@@ -71,7 +70,7 @@ fun TourGuideItem(
                 ) {
                     Text(
                         text = name,
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontStyle = FontStyle.Normal
@@ -83,13 +82,14 @@ fun TourGuideItem(
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_star_24),
                             contentDescription = "rating",
-                            tint = Color.Yellow,
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier
                                 .size(17.dp)
+                                .padding(bottom = 3.dp)
                         )
                         Text(
                             text = rating,
-                            color = Color(0xFF79747E),
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal
@@ -109,7 +109,7 @@ fun TourGuideItem(
                                     painterResource(id = R.drawable.baseline_favorite_border_24)
                                 },
                                 contentDescription = stringResource(R.string.favorite),
-                                tint = Color(0xFF000066)
+                                tint = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
                     }
@@ -120,7 +120,7 @@ fun TourGuideItem(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
                             .padding(end = 10.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
@@ -128,7 +128,8 @@ fun TourGuideItem(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal
-                            )
+                            ),
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

@@ -49,9 +49,8 @@ fun DestinationItem(
     Card(
         shape = RoundedCornerShape(15.dp),
         colors= CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
-        border = BorderStroke(width = 2.dp, color = Color(0xFF000080)),
         modifier = modifier.wrapContentHeight()
 
     ) {
@@ -71,7 +70,7 @@ fun DestinationItem(
             ) {
                 Text(
                     text = name,
-                    color = Color(0xFF000080),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal
@@ -79,17 +78,18 @@ fun DestinationItem(
                     modifier = Modifier
                         .padding(start = 10.dp, top = 3.dp)
                 )
-                Row(modifier = Modifier.padding(start = 12.dp, top = 2.dp )){
+                Row(modifier = Modifier
+                    .padding(start = 6.dp, top = 2.dp )){
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_location_on_24),
                         contentDescription = stringResource(R.string.icon_location),
                         modifier = Modifier
                             .size(20.dp),
-                        tint = Color(0xFF00F0FF)
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Text(
                         text = location,
-                        color = Color(0xFF79747E),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -98,18 +98,19 @@ fun DestinationItem(
                     )
                 }
                 Row(
-                    modifier=Modifier.padding(start=12.dp)
+                    modifier=Modifier
+                        .padding(start=7.dp, top = 6.dp)
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_star_24),
                         contentDescription = stringResource(R.string.icon_rating),
                         modifier = Modifier
                             .size(20.dp),
-                        tint = Color.Yellow
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                     Text(
                         text = LocalContext.current.getString(R.string.rating_destination, rating.toFloat()) + "("+review+")",
-                        color = Color(0xFF79747E),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -135,7 +136,7 @@ fun DestinationItem(
                             painterResource(id = R.drawable.baseline_favorite_border_24)
                         },
                         contentDescription = stringResource(R.string.favorite),
-                        tint = Color(0xFF000066)
+                        tint = MaterialTheme.colorScheme.onTertiaryContainer
                     )
                 }
             }

@@ -57,7 +57,7 @@ fun WelcomeScreen(
         ) {
             Text(
                 text = stringResource(R.string.welcome_info),
-                color = Color(0xFF000080),
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal
@@ -74,7 +74,7 @@ fun WelcomeScreen(
             ) {
                 Card(
                     shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(Color(0xFF000080)),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .width(135.dp)
                         .height(104.dp)
@@ -91,13 +91,13 @@ fun WelcomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.location_circle),
                             contentDescription = "icon_location",
-                            tint = Color(0xFF00F0FF),
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier
                                 .size(50.dp)
                         )
                         Text(
                             text = "Location",
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal
@@ -108,7 +108,7 @@ fun WelcomeScreen(
 
                 Card(
                     shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(Color(0xFF000080)),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                     modifier = Modifier
                         .width(135.dp)
                         .height(104.dp)
@@ -123,13 +123,13 @@ fun WelcomeScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.mbti),
                             contentDescription = "icon_location",
-                            tint = Color(0xFF00F0FF),
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier
                                 .size(50.dp)
                         )
                         Text(
                             text = "MBTI",
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal
@@ -141,13 +141,13 @@ fun WelcomeScreen(
         }
         Button(
             onClick = {
-//                val loc = HomeLocModel("","")
-//                viewModel.saveHomeLoc(loc)
+                val loc = HomeLocModel("","")
+                viewModel.saveHomeLoc(loc)
                 navigateToHome() },
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF000080),
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ),
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -155,7 +155,7 @@ fun WelcomeScreen(
         ) {
             Text(
                 text = stringResource(R.string.skip),
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.bodyMedium)
         }
     }

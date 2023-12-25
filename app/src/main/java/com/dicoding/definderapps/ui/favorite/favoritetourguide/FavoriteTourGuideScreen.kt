@@ -75,7 +75,7 @@ fun FavoriteTourGuideScreen()
                 Column{
                     Text(
                         text = "Favorited Tour Guide",
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontStyle = FontStyle.Normal

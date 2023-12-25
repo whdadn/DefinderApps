@@ -62,7 +62,6 @@ fun LocationScreen(
 ) {
     var inputTourismName by rememberSaveable { mutableStateOf("") }
     var inputDistrict by rememberSaveable { mutableStateOf("") }
-    var inputProvince by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     var optionMbti by remember { mutableStateOf("") }
 
@@ -93,7 +92,7 @@ fun LocationScreen(
                         Row(){
                             Text(
                                 text = stringResource(R.string.location_info),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
@@ -109,7 +108,7 @@ fun LocationScreen(
 
                     Text(
                         text = stringResource(R.string.tourism_name),
-                        color = Color(0xFF00002D),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier
                             .padding(top = 17.dp)
@@ -119,8 +118,8 @@ fun LocationScreen(
                             .fillMaxWidth(),
                         value = inputTourismName,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF000080),
-                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontSize = 16.sp
@@ -132,7 +131,7 @@ fun LocationScreen(
 
                     Text(
                         text = stringResource(R.string.district_name),
-                        color = Color(0xFF00002D),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier
                             .padding(top = 17.dp)
@@ -142,8 +141,8 @@ fun LocationScreen(
                             .fillMaxWidth(),
                         value = inputDistrict,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF000080),
-                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                         ),
                         textStyle = TextStyle.Default.copy(
                             fontSize = 16.sp
@@ -154,7 +153,7 @@ fun LocationScreen(
                     )
                     Text(
                         text = "Choose Personality",
-                        color = Color(0xFF00002D),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -174,13 +173,13 @@ fun LocationScreen(
                             },
                             modifier = Modifier.menuAnchor(),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF000080),
-                                unfocusedBorderColor = Color(0xFFBCCCFF),
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                             ),
                             placeholder = {
                                 Text(
                                     text = "Choose Personality",
-                                    color = Color(0xFF00002D),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     style = MaterialTheme.typography.bodyMedium
                                 )
                             }
@@ -192,7 +191,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ESTJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ESTJ"
@@ -202,7 +201,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ESTP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ESTP"
@@ -212,7 +211,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ESFP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ESFP"
@@ -222,7 +221,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ESFJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ESFJ"
@@ -232,7 +231,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ISTJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ISTJ"
@@ -242,7 +241,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ISTP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ISTP"
@@ -252,7 +251,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ISFP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ISFP"
@@ -262,7 +261,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ISFJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ISFJ"
@@ -272,7 +271,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "INTJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "INTJ"
@@ -282,7 +281,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "INTP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "INTP"
@@ -292,7 +291,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "INFP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "INFP"
@@ -302,7 +301,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "INFJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "INFJ"
@@ -312,7 +311,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ENTJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ENTJ"
@@ -322,7 +321,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ENTP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ENTP"
@@ -332,7 +331,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ENFP",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ENFP"
@@ -342,7 +341,7 @@ fun LocationScreen(
                             DropdownMenuItem(
                                 text = { Text(
                                     text = "ENFJ",
-                                    color = Color(0xFF00002D)
+                                    color = MaterialTheme.colorScheme.onSurface
                                 ) },
                                 onClick = {
                                     optionMbti = "ENFJ"
@@ -372,13 +371,13 @@ fun LocationScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 17.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(4.dp)
                     ) {
                         Text(
                             modifier = Modifier.padding(vertical = 4.dp),
                             text = stringResource(R.string.submit),
-                            color = Color(0xFFE6E6F2),
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal

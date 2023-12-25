@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,7 +80,7 @@ fun EditProfileContent(
         Row() {
             Text(
                 text = stringResource(R.string.edit_profile),
-                color = Color(0xFF000080),
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.headlineMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal
@@ -108,7 +109,7 @@ fun EditProfileContent(
                 Row {
                     Text(
                         text = stringResource(id = R.string.edit_account),
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -146,7 +147,7 @@ fun EditProfileContent(
                 Row {
                     Text(
                         text = stringResource(id = R.string.change_password),
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -196,6 +197,13 @@ fun EditProfileContent(
             token = token,
             userId = userId,
             closeDialog = { showEditPassword = false })
+    }
+    LaunchedEffect(showEditAccount)
+    {
+        if (!showEditAccount)
+        {
+            viewModel.getUser(token, userId)
+        }
     }
 }
 

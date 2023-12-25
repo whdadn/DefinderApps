@@ -40,8 +40,8 @@ fun SearchBar(
             .height(56.dp)
             .clip(RoundedCornerShape(40.dp)),
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = MaterialTheme.colorScheme.background,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.background
         ),
         placeholder = { Text(
             text = stringResource(id = R.string.search),
@@ -49,7 +49,7 @@ fun SearchBar(
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal
             ),
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.outline,
             modifier = Modifier
                 .padding(start = 1.dp)
                 .fillMaxSize())
@@ -61,7 +61,7 @@ fun SearchBar(
                 modifier = Modifier
                     .offset(x = 5.dp)
                     .size(25.dp),
-                tint = Color(0xFF79747E)
+                tint = MaterialTheme.colorScheme.outline
             )
         },
         textStyle = TextStyle.Default.copy(

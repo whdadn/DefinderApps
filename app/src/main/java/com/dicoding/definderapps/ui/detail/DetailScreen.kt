@@ -144,7 +144,7 @@ fun DetailScreen(
                                     modifier = Modifier
                                         .padding(top = 10.dp),
                                     text = it.data.data?.name.toString(),
-                                    color = Color(0xFF000080),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     style = MaterialTheme.typography.titleLarge.copy(
                                         fontWeight = FontWeight.Bold,
                                         fontStyle = FontStyle.Normal
@@ -161,13 +161,13 @@ fun DetailScreen(
                                         modifier = Modifier
                                             .padding(top = 12.dp)
                                             .size(28.dp),
-                                        tint = Color(0xFF000080)
+                                        tint = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
                                         modifier = Modifier
                                             .padding(start = 6.dp, top = 10.dp, end = 7.dp),
                                         text = if (it.data.data?.price != null) context.getString(R.string.price_destination, it.data.data.price) else "-",
-                                        color = Color(0xFF000080),
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         style = TextStyle.Default.copy(
                                             fontWeight = FontWeight.Bold,
                                             fontStyle = FontStyle.Normal,
@@ -184,7 +184,7 @@ fun DetailScreen(
                                     modifier = Modifier
                                         .tabIndicatorOffset(tabPositions[tabState.currentPage])
                                         .height(2.dp),
-                                    color = Color(0xFF000066),
+                                    color = MaterialTheme.colorScheme.secondary,
                                 )
                             },
                             edgePadding = 0.dp
@@ -200,8 +200,8 @@ fun DetailScreen(
                                         ),
                                     )
                                 },
-                                selectedContentColor = Color(0xFF000066),
-                                unselectedContentColor = Color(0xFF79747E),
+                                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                                unselectedContentColor = MaterialTheme.colorScheme.outline,
                                 onClick = {
                                     coroutinScope.launch {
                                         tabState.animateScrollToPage(0)
@@ -219,8 +219,8 @@ fun DetailScreen(
                                         ),
                                     )
                                 },
-                                selectedContentColor = Color(0xFF000066),
-                                unselectedContentColor = Color(0xFF79747E),
+                                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                                unselectedContentColor = MaterialTheme.colorScheme.outline,
                                 onClick = {
                                     coroutinScope.launch {
                                         tabState.animateScrollToPage(1)
@@ -238,8 +238,8 @@ fun DetailScreen(
                                         )
                                     )
                                 },
-                                selectedContentColor = Color(0xFF000066),
-                                unselectedContentColor = Color(0xFF79747E),
+                                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                                unselectedContentColor = MaterialTheme.colorScheme.outline,
                                 onClick = {
                                     coroutinScope.launch {
                                         tabState.animateScrollToPage(2)
@@ -257,8 +257,8 @@ fun DetailScreen(
                                         )
                                     )
                                 },
-                                selectedContentColor = Color(0xFF000066),
-                                unselectedContentColor = Color(0xFF79747E),
+                                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                                unselectedContentColor = MaterialTheme.colorScheme.outline,
                                 onClick = {
                                     coroutinScope.launch {
                                         tabState.animateScrollToPage(3)
@@ -321,7 +321,7 @@ fun IndicatorDots(isSelected: Boolean) {
             .padding(start = 2.dp, end = 2.dp)
             .size(8.dp)
             .clip(CircleShape)
-            .background(if (isSelected) Color(0xFF000080) else Color(0xFFD9D9EC)),
+            .background(if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer),
     ) {
 
     }
