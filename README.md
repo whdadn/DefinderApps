@@ -1,16 +1,16 @@
 # About
-Definder adalah sebuah aplikasi yang akan menampilkan sebuah rkeomendasi tempat wisata berdasarkan inputan user (nama wisata, nama provinsi atau bisa dengan mencari berdasarkan mbti user). Dalam mencari informasi detail mengenai tempat wisata itu terlalu ribet kita harus menjelajah ke berbagai situs, bertanya ke orang-orang yang pernah berkunjung, oleh karena itu kami terpikirkan bagaiman jika kita menyediakan satu tempat untuk orang-orang dapat mendapatkan informasi detail secara lengkap layaknya pusat guild pada game/anime.
+Finder is an application that will display recommendations for tourist attractions based on user input (tour name, province name or you can search based on the user's MBTI). In looking for detailed information about tourist attractions, it is too complicated, we have to explore various sites, ask people who have visited, therefore we thought about what if we provide one place where people can get complete detailed information like a guild center. in games/anime.
 
 # Fitur
-Untuk saat ini fitur yang tersedia, yaitu:
+Currently the features available are:
 1. Register
 2. Login
-3. Menambahkan informasi mengenai tranportasi, cara user sampai ke tempat wisata yang dituju menggunakan transportasi yang user gunakan
-4. Menambahkan review
+3. Add information about transportation, how the user gets to the destination tourist spot using the transportation the user uses
+4. Add reviews
 5. Dark mode
-6. Edit profile (edit name dan change password)
+6. Edit profile (edit name and change password)
 
-# Teknologi
+# Technology
 **Machine Learning**
 1. Python
 2. Flask
@@ -31,7 +31,7 @@ Untuk saat ini fitur yang tersedia, yaitu:
 2. [Cloud Computing](https://github.com/DimasAriyanto/definder-api)
 
 # Cara Install Aplikasi
-1. Kunjungi link [download app](https://drive.google.com/drive/folders/1jUKO0vEZN7NugRxgbCF8bOit8nzlr1tZ) untuk download aplikasi
+1. Visit the link [download app](https://drive.google.com/drive/folders/1jUKO0vEZN7NugRxgbCF8bOit8nzlr1tZ)
 2. Install app
-3. Jika ada pesan mengenai security check (izinkan saja penginstalan app dari sumber tak dikenal) dan tunggu proses penginstalan selesai
-4. Jalankan app
+3. If there is a message regarding security check (just allow the installation of apps from unknown sources) and wait for the installation process to complete
+4. Run the app
