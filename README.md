@@ -31,7 +31,7 @@ Untuk saat ini fitur yang tersedia, yaitu:
 2. [Cloud Computing](https://github.com/DimasAriyanto/definder-api)
 
 # Cara Install Aplikasi
-1. Kunjungi website [link download](https://drive.google.com/drive/folders/1jUKO0vEZN7NugRxgbCF8bOit8nzlr1tZ) untuk download aplikasi
+1. Kunjungi link [download app](https://drive.google.com/drive/folders/1jUKO0vEZN7NugRxgbCF8bOit8nzlr1tZ) untuk download aplikasi
 2. Install app
 3. Jika ada pesan mengenai security check (izinkan saja penginstalan app dari sumber tak dikenal) dan tunggu proses penginstalan selesai
 4. Jalankan app
