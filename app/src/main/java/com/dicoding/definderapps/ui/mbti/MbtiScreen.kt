@@ -101,6 +101,7 @@ fun MbtiContent(
     closeDialog: () -> Unit
 ) {
     var inputMbti by rememberSaveable { mutableStateOf("") }
+
     Dialog(
         onDismissRequest = {
             closeDialog()
@@ -244,6 +245,48 @@ fun MbtiContent(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
                                 )
+                            )
+                        }
+                    }
+                    Divider(
+                        thickness = 2.dp,
+                        modifier = Modifier
+                            .padding(top = 15.dp)
+                    )
+                    Text(
+                        text = "Your personality type is:",
+                        modifier = Modifier
+                            .padding(top = 10.dp)
+                            .align(Alignment.CenterHorizontally),
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            fontStyle = FontStyle.Normal
+                        ),
+                        color = Color(0xFF00002D),
+                    )
+                    Text(
+                        text = "ISTJ",
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(top = 10.dp),
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal
+                        ),
+                        color = Color(0xFF00002D),
+                    )
+                    LazyColumn {
+                        item {
+                            Text(
+                                text = "Logisticians are practical and fact-minded individuals, whose reliability cannot be doubted.",
+                                textAlign = TextAlign.Justify,
+                                style = MaterialTheme.typography.bodyMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                color = Color(0xFF00002D),
+                                modifier = Modifier
+                                    .padding(top = 10.dp),
                             )
                         }
                     }
