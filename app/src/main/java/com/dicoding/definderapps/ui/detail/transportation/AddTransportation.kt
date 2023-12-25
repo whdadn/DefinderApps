@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -56,8 +58,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
+import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.ui.common.ResultState
 import com.dicoding.definderapps.ui.detail.DetailViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -67,19 +74,20 @@ fun AddTransportation(
     modifier: Modifier = Modifier,
     closeDialog: () -> Unit,
     idDestination: Int,
-    viewModel: DetailViewModel,
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    viewModel: DetailViewModel = viewModel(factory=ViewModelFactory.getInstance(context))
 ) {
 
     val dataType = mapOf(
-        "land_transport" to stringResource(R.string.transport_type_1),
-        "air_transport" to stringResource(R.string.transport_type_2),
-        "sea_transport" to stringResource(R.string.transport_type_3)
+        "land" to stringResource(R.string.transport_type_1),
+        "air" to stringResource(R.string.transport_type_2),
+        "sea" to stringResource(R.string.transport_type_3)
     )
     var selectedOption by rememberSaveable { mutableStateOf("") }
     var valueOption by rememberSaveable { mutableStateOf("") }
     var nameTransportation by rememberSaveable { mutableStateOf("") }
     var explainFlow by rememberSaveable { mutableStateOf("") }
+    var showLoading by rememberSaveable { mutableStateOf(false) }
 
     Dialog(
         onDismissRequest = {
@@ -101,219 +109,238 @@ fun AddTransportation(
             }
         ) {
             Surface(modifier = Modifier.fillMaxSize()) {
-                LazyColumn(
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(vertical = 16.dp)
-                        .background(MaterialTheme.colorScheme.background, RoundedCornerShape(7.dp))
+                Box(
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    stickyHeader {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colorScheme.background)
-                        ) {
-                            Box(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    text = stringResource(R.string.add_transportation),
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        fontStyle = FontStyle.Normal
-                                    ),
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
-                                IconButton(
-                                    onClick = closeDialog,
-                                    modifier = Modifier.align(Alignment.CenterEnd)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = stringResource(R.string.close_add_transportation)
+                    if(showLoading){
+                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    }
+                    LazyColumn(
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(vertical = 16.dp)
+                            .background(
+                                MaterialTheme.colorScheme.background,
+                                RoundedCornerShape(7.dp)
+                            )
+                    ) {
+                        stickyHeader {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(MaterialTheme.colorScheme.background)
+                            ) {
+                                Box(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = stringResource(R.string.add_transportation),
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            fontStyle = FontStyle.Normal
+                                        ),
+                                        modifier = Modifier.align(Alignment.Center)
                                     )
+                                    IconButton(
+                                        onClick = closeDialog,
+                                        modifier = Modifier.align(Alignment.CenterEnd)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = stringResource(R.string.close_add_transportation)
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 20.dp),
-                            colors = CardDefaults.cardColors(Color.Transparent),
-                            border = BorderStroke(2.dp, Color(0xFF000080))
-                        ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(
-                                    text = stringResource(R.string.add_transport_type),
-                                    color = Color(0xFF00002D),
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontWeight = FontWeight.Normal,
-                                        fontStyle = FontStyle.Normal
-                                    ),
-                                    modifier = Modifier
-                                        .padding(7.dp)
-                                )
-                                for ((key, value) in dataType) {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
+                        item {
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 20.dp),
+                                colors = CardDefaults.cardColors(Color.Transparent),
+                                border = BorderStroke(2.dp, Color(0xFF000080))
+                            ) {
+                                Column(modifier = Modifier.padding(8.dp)) {
+                                    Text(
+                                        text = stringResource(R.string.add_transport_type),
+                                        color = Color(0xFF00002D),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = FontWeight.Normal,
+                                            fontStyle = FontStyle.Normal
+                                        ),
                                         modifier = Modifier
-                                            .selectable(
+                                            .padding(7.dp)
+                                    )
+                                    for ((key, value) in dataType) {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier
+                                                .selectable(
+                                                    selected = selectedOption == key,
+                                                    onClick = {
+                                                        selectedOption = key
+                                                        valueOption = value
+                                                    }
+                                                ),
+                                        ) {
+                                            RadioButton(
                                                 selected = selectedOption == key,
                                                 onClick = {
                                                     selectedOption = key
                                                     valueOption = value
-                                                }
-                                            ),
-                                    ) {
-                                        RadioButton(
-                                            selected = selectedOption == key,
-                                            onClick = {
-                                                selectedOption = key
-                                                valueOption = value
-                                            },
-                                            colors = RadioButtonDefaults.colors(Color(0xFF000080))
-                                        )
-                                        Text(
-                                            text = value,
-                                            color = Color(0xFF00002D),
-                                            style = MaterialTheme.typography.bodyMedium.copy(
-                                                fontWeight = FontWeight.Normal,
-                                                fontStyle = FontStyle.Normal
+                                                },
+                                                colors = RadioButtonDefaults.colors(Color(0xFF000080))
                                             )
-                                        )
+                                            Text(
+                                                text = value,
+                                                color = Color(0xFF00002D),
+                                                style = MaterialTheme.typography.bodyMedium.copy(
+                                                    fontWeight = FontWeight.Normal,
+                                                    fontStyle = FontStyle.Normal
+                                                )
+                                            )
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 20.dp),
-                            colors = CardDefaults.cardColors(Color.Transparent),
-                            border = BorderStroke(2.dp, Color(0xFF000080)),
-                        ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(
-                                    text = stringResource(R.string.add_transport_name),
-                                    color = Color(0xFF00002D),
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontWeight = FontWeight.Normal,
-                                        fontStyle = FontStyle.Normal
-                                    ),
-                                    modifier = Modifier
-                                        .padding(7.dp)
-                                )
-                                OutlinedTextField(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(
-                                            top = 16.dp,
-                                            bottom = 8.dp,
-                                            start = 8.dp,
-                                            end = 8.dp
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 20.dp),
+                                colors = CardDefaults.cardColors(Color.Transparent),
+                                border = BorderStroke(2.dp, Color(0xFF000080)),
+                            ) {
+                                Column(modifier = Modifier.padding(8.dp)) {
+                                    Text(
+                                        text = stringResource(R.string.add_transport_name),
+                                        color = Color(0xFF00002D),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = FontWeight.Normal,
+                                            fontStyle = FontStyle.Normal
                                         ),
-                                    value = nameTransportation,
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = Color(0xFF000080),
-                                        unfocusedBorderColor = Color(0xFFBCCCFF),
-                                    ),
-                                    textStyle = TextStyle.Default.copy(
-                                        fontSize = 16.sp
-                                    ),
-                                    onValueChange = { nameTransportation = it },
-                                    maxLines = 1,
-                                    singleLine = true,
-                                    shape = RoundedCornerShape(7.dp)
-                                )
-                            }
-                        }
-                    }
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 20.dp),
-                            colors = CardDefaults.cardColors(Color.Transparent),
-                            border = BorderStroke(2.dp, Color(0xFF000080)),
-                        ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(
-                                    text = stringResource(R.string.add_transport_explain_flow),
-                                    color = Color(0xFF00002D),
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        fontWeight = FontWeight.Normal,
-                                        fontStyle = FontStyle.Normal
-                                    ),
-                                    modifier = Modifier
-                                        .padding(7.dp)
-                                )
-                                OutlinedTextField(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .wrapContentHeight()
-                                        .padding(
-                                            top = 16.dp,
-                                            bottom = 8.dp,
-                                            start = 8.dp,
-                                            end = 8.dp
-                                        ),
-                                    value = explainFlow,
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = Color(0xFF000080),
-                                        unfocusedBorderColor = Color(0xFFBCCCFF),
-                                    ),
-                                    textStyle = TextStyle.Default.copy(
-                                        fontSize = 16.sp
-                                    ),
-                                    onValueChange = { explainFlow = it },
-                                    maxLines = 5,
-                                    shape = RoundedCornerShape(7.dp)
-                                )
-                            }
-                        }
-                    }
-                    item {
-                        val session by viewModel.getSession().observeAsState()
-                        Button(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            onClick = {
-                                if (selectedOption != "" && nameTransportation != "" && explainFlow != "") {
-                                    viewModel.insertTransport(
-                                        name = session?.name.toString(),
-                                        image = "profile_default",
-                                        transportType = selectedOption,
-                                        transportationName = nameTransportation,
-                                        transportationDesc = explainFlow,
-                                        idDestination = idDestination
+                                        modifier = Modifier
+                                            .padding(7.dp)
                                     )
-                                    closeDialog()
-                                }else{
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = context.getString(R.string.error_field_empty),
-                                            withDismissAction = false,
-                                            duration = SnackbarDuration.Short,
-                                        )
-                                    }
+                                    OutlinedTextField(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                top = 16.dp,
+                                                bottom = 8.dp,
+                                                start = 8.dp,
+                                                end = 8.dp
+                                            ),
+                                        value = nameTransportation,
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedBorderColor = Color(0xFF000080),
+                                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                                        ),
+                                        textStyle = TextStyle.Default.copy(
+                                            fontSize = 16.sp
+                                        ),
+                                        onValueChange = { nameTransportation = it },
+                                        maxLines = 1,
+                                        singleLine = true,
+                                        shape = RoundedCornerShape(7.dp)
+                                    )
                                 }
-                            },
-                            colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
-                            shape = RoundedCornerShape(4.dp)
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(vertical = 4.dp),
-                                text = stringResource(id = R.string.submit),
-                                color = Color(0xFFE6E6F2),
-                                style = MaterialTheme.typography.bodyLarge.copy(
-                                    fontWeight = FontWeight.Normal,
-                                    fontStyle = FontStyle.Normal
+                            }
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 20.dp),
+                                colors = CardDefaults.cardColors(Color.Transparent),
+                                border = BorderStroke(2.dp, Color(0xFF000080)),
+                            ) {
+                                Column(modifier = Modifier.padding(8.dp)) {
+                                    Text(
+                                        text = stringResource(R.string.add_transport_explain_flow),
+                                        color = Color(0xFF00002D),
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = FontWeight.Normal,
+                                            fontStyle = FontStyle.Normal
+                                        ),
+                                        modifier = Modifier
+                                            .padding(7.dp)
+                                    )
+                                    OutlinedTextField(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .wrapContentHeight()
+                                            .padding(
+                                                top = 16.dp,
+                                                bottom = 8.dp,
+                                                start = 8.dp,
+                                                end = 8.dp
+                                            ),
+                                        value = explainFlow,
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedBorderColor = Color(0xFF000080),
+                                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                                        ),
+                                        textStyle = TextStyle.Default.copy(
+                                            fontSize = 16.sp
+                                        ),
+                                        onValueChange = { explainFlow = it },
+                                        maxLines = 5,
+                                        shape = RoundedCornerShape(7.dp)
+                                    )
+                                }
+                            }
+                            val session by viewModel.getSession().observeAsState()
+                            Button(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    val token = session?.token.toString()
+                                    val userId = session?.id.toString().trim().toInt()
+                                    if (selectedOption != "" && nameTransportation != "" && explainFlow != "") {
+                                        scope.launch {
+                                            viewModel.addTransport(token,idDestination,userId,selectedOption,nameTransportation,explainFlow).asFlow()
+                                                .collect{transport->
+                                                    when(transport){
+                                                        is ResultState.Loading -> {
+                                                            showLoading = true
+                                                        }
+                                                        is ResultState.Success -> {
+                                                            closeDialog()
+                                                        }
+
+                                                        is ResultState.Error -> {
+                                                            showLoading = false
+                                                            snackbarHostState.showSnackbar(
+                                                                message = transport.error,
+                                                                withDismissAction = true,
+                                                                duration = SnackbarDuration.Short,
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                        }
+
+                                    }else{
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(
+                                                message = context.getString(R.string.error_field_empty),
+                                                withDismissAction = false,
+                                                duration = SnackbarDuration.Short,
+                                            )
+                                        }
+                                    }
+                                },
+                                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                                shape = RoundedCornerShape(4.dp)
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(vertical = 4.dp),
+                                    text = stringResource(id = R.string.submit),
+                                    color = Color(0xFFE6E6F2),
+                                    style = MaterialTheme.typography.bodyLarge.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        fontStyle = FontStyle.Normal
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
@@ -330,4 +357,5 @@ fun AddTransportation(
 )
 @Composable
 fun AddTransportationPreview() {
+    AddTransportation(closeDialog = {  }, idDestination =1 )
 }

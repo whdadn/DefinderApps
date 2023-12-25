@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.dicoding.definderapps.data.local.dao.AboutDestination
-import com.dicoding.definderapps.data.local.dao.DestinationWithImage
-import com.dicoding.definderapps.data.local.dao.TransportData
 import com.dicoding.definderapps.data.local.pref.UserModel
+import com.dicoding.definderapps.data.remote.response.detail.DetailResponse
+import com.dicoding.definderapps.data.remote.response.detailtransport.DetailTransportResponse
+import com.dicoding.definderapps.data.remote.response.typetransport.TypeTransportResponse
 import com.dicoding.definderapps.repository.Repository
-import com.yogi.foodlist.ui.common.UiState
+import com.dicoding.definderapps.ui.common.ResultState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -17,80 +17,73 @@ import kotlinx.coroutines.launch
 
 class DetailViewModel(private val repository: Repository): ViewModel() {
 
-    private val _uiStateDestination: MutableStateFlow<UiState<DestinationWithImage>> = MutableStateFlow(UiState.Loading)
-    val uiStateDestination: StateFlow<UiState<DestinationWithImage>> get() = _uiStateDestination
+    private val _dataDetailPlace: MutableStateFlow<ResultState<DetailResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataDetailPlace: StateFlow<ResultState<DetailResponse>> get() = _dataDetailPlace
 
-    private val _uiStateAboutDestination: MutableStateFlow<UiState<AboutDestination>> = MutableStateFlow(UiState.Loading)
-    val uiStateAboutDestination: StateFlow<UiState<AboutDestination>> get() = _uiStateAboutDestination
+    private val _dataTypeTransport: MutableStateFlow<ResultState<TypeTransportResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataTypeTransport: StateFlow<ResultState<TypeTransportResponse>> get() = _dataTypeTransport
 
-    private val _uiStateTransportDataDestination: MutableStateFlow<UiState<List<String>>> = MutableStateFlow(UiState.Loading)
-    val uiStateTransportDataDestination: StateFlow<UiState<List<String>>> get() = _uiStateTransportDataDestination
-
-    private val _uiStateDetailTransportDataDestination: MutableStateFlow<UiState<List<TransportData>>> = MutableStateFlow(UiState.Loading)
-    val uiStateDetailTransportDataDestination: StateFlow<UiState<List<TransportData>>> get() = _uiStateDetailTransportDataDestination
+    private val _dataDetailTransport:MutableStateFlow<ResultState<DetailTransportResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataDetailtransport:StateFlow<ResultState<DetailTransportResponse>> get() = _dataDetailTransport
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
     }
 
-    fun getDetailDestination(id: Int){
+    fun getDetailPlace(token:String,id:Int){
         viewModelScope.launch {
-            repository.getDetailDestination(id)
+            repository.getDetailPlace(token, id)
                 .catch {
-                    _uiStateDestination.value = UiState.Error(it.message.toString())
+                    _dataDetailPlace.value = ResultState.Error(it.message.toString())
                 }
-                .collect{
-                    _uiStateDestination.value = UiState.Success(it)
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            _dataDetailPlace.value = ResultState.Success(resultState.data)
+                        }
+                        else->{}
+                    }
                 }
+
         }
     }
 
-    fun getAboutDestination(id:Int) {
+    fun addTransport(token:String,placeId: Int,userId: Int, type:String, name:String, description:String) = repository.addTransport(token,placeId,userId,type,name,description)
+
+    fun getTransport(token:String,placeId: Int){
         viewModelScope.launch {
-            repository.getDetailAboutDestination(id)
+            repository.getTransport(token, placeId)
                 .catch {
-                    _uiStateAboutDestination.value = UiState.Error(it.message.toString())
+                    _dataTypeTransport.value = ResultState.Error(it.message.toString())
                 }
-                .collect{
-                    _uiStateAboutDestination.value = UiState.Success(it)
-            }
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            _dataTypeTransport.value = ResultState.Success(resultState.data)
+                        }
+                        else->{}
+                    }
+                }
+
         }
     }
 
-    fun insertTransport(name:String, image:String, transportType:String, transportationName: String,transportationDesc: String,idDestination: Int){
-        val data = TransportData(
-            name=name,
-            image = image,
-            transportType = transportType,
-            transportationName = transportationName,
-            transportationDesc = transportationDesc,
-            idDestination = idDestination
-        )
+    fun getDetailTransport(token:String,placeId: Int,type: String){
         viewModelScope.launch {
-            repository.insertTransport(data)
-        }
-    }
-    fun getTransportData(id: Int){
-        viewModelScope.launch {
-            repository.getTransportDataByIdDestination(id)
+            repository.getDetailTransport(token, placeId,type)
                 .catch {
-                    _uiStateTransportDataDestination.value = UiState.Error(it.message.toString())
+                    _dataDetailTransport.value = ResultState.Error(it.message.toString())
                 }
-                .collect{
-                    _uiStateTransportDataDestination.value = UiState.Success(it)
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            _dataDetailTransport.value = ResultState.Success(resultState.data)
+                        }
+                        else->{}
+                    }
                 }
+
         }
     }
 
-    fun getDetailTransportData(idDestination: Int, transportType:String){
-        viewModelScope.launch {
-            repository.getDetailTransportData(idDestination,transportType)
-                .catch {
-                    _uiStateDetailTransportDataDestination.value = UiState.Error(it.message.toString())
-                }
-                .collect{
-                    _uiStateDetailTransportDataDestination.value = UiState.Success(it)
-                }
-        }
-    }
 }

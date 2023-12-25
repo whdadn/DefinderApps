@@ -1,11 +1,15 @@
 package com.dicoding.definderapps.ui.profile
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -15,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,9 +30,13 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,108 +54,163 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.ui.common.ResultState
+import com.dicoding.definderapps.ui.mbti.MbtiScreen
+import com.yogi.foodlist.ui.common.UiState
+
+
+@Composable
+fun ProfileScreen(
+    navigateToLogin: () -> Unit,
+    navigateToEditProfile: () -> Unit,
+    viewModel: ProfileViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
+    darkTheme: Boolean,
+    onThemeUpdated: (Boolean) -> Unit
+) {
+    viewModel.session.collectAsState(initial = UiState.Loading).value.let {
+        when(it){
+            is UiState.Loading->{
+                viewModel.getSession()
+            }
+            is UiState.Success->{
+                ProfileContent(
+                    token = it.data.token,
+                    userId = it.data.id,
+                    mbti = it.data.mbti,
+                    viewModel = viewModel,
+                    darkTheme = darkTheme,
+                    onThemeUpdated = onThemeUpdated,
+                    navigateToLogin = navigateToLogin,
+                    navigateToEditProfile = navigateToEditProfile)
+            }
+            is UiState.Error->{
+                Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(
-    modifier:Modifier = Modifier,
-    navigateToLogin:()->Unit,
-    navigateToEditProfile: () -> Unit,
-    viewModel: ProfileViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current)),
-    darkTheme: Boolean, onThemeUpdated: (Boolean) -> Unit
-) {
+fun ProfileContent(
+    modifier:Modifier= Modifier,
+    token:String,
+    userId:Int,
+    mbti:String,
+    viewModel:ProfileViewModel,
+    darkTheme:Boolean,
+    onThemeUpdated:(Boolean)->Unit,
+    navigateToLogin: () -> Unit,
+    navigateToEditProfile: () -> Unit
+){
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showLoading by rememberSaveable { mutableStateOf(false) }
+    var showMbti by rememberSaveable { mutableStateOf(false) }
+    Box(modifier = modifier.fillMaxSize()) {
+        if (showLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+        viewModel.dataUser.collectAsState(initial = ResultState.Loading).value.let {
+            when (it) {
+                is ResultState.Loading -> {
+                    showLoading = true
+                    viewModel.getUser(token, userId)
+                }
 
-    Row(
-        modifier = Modifier
-            .padding(top = 16.dp),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            IconButton(
-                onClick = {
-                    showBottomSheet = true
-                },
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(end = 7.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(65.dp),
-                    tint = Color(0xFF000080)
-                )
+                is ResultState.Success -> {
+                    showLoading = false
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 16.dp),
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            IconButton(
+                                onClick = {
+                                    showBottomSheet = true
+                                },
+                                modifier = Modifier
+                                    .align(Alignment.End)
+                                    .padding(end = 7.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(65.dp),
+                                    tint = Color(0xFF000080)
+                                )
+                            }
+                            Image(
+                                painter = painterResource(id = R.drawable.profile_default),
+                                contentDescription = "profile_image",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .padding(top = 30.dp)
+                                    .size(200.dp)
+                                    .clip(CircleShape)
+                            )
+                            Text(
+                                text = it.data.data.name,
+                                color = Color(0xFF000080),
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontStyle = FontStyle.Normal
+                                ),
+                                modifier = Modifier
+                                    .padding(top = 8.dp)
+                                    .align(Alignment.CenterHorizontally),
+                            )
+                            if (mbti==""){
+                                Text(
+                                    text = stringResource(id = R.string.click_here_for_set_mbti),
+                                    color = Color(0xFF000080),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        fontStyle = FontStyle.Normal
+                                    ),
+                                    modifier = Modifier
+                                        .align(Alignment.CenterHorizontally)
+                                        .clickable { showMbti = true },
+                                )
+                            }else{
+                                Text(
+                                    text = mbti,
+                                    color = Color(0xFF000080),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        fontStyle = FontStyle.Normal
+                                    ),
+                                    modifier = Modifier
+                                        .align(Alignment.CenterHorizontally),
+                                )
+                            }
+                            Divider(
+                                color = Color(0xFF000080),
+                                thickness = 2.dp,
+                                modifier = Modifier
+                                    .padding(top = 6.dp),
+                            )
+                        }
+                    }
+
+
+
+                }
+                is ResultState.Error->{
+                    showLoading=false
+                    Toast.makeText(LocalContext.current, it.error, Toast.LENGTH_SHORT ).show()
+                }
             }
-            Image(
-                painter = painterResource(id = R.drawable.profile_default),
-                contentDescription = "profile_image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .padding(top = 30.dp)
-                    .size(200.dp)
-                    .clip(CircleShape)
-            )
-            Text(
-                text = "Shoratorizawa",
-                color = Color(0xFF000080),
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontStyle = FontStyle.Normal
-                ),
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .align(Alignment.CenterHorizontally),
-            )
-            Text(
-                text = "MBTI / Tour Guide",
-                color = Color(0xFF000080),
-                style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Normal,
-                    fontStyle = FontStyle.Normal
-                ),
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-            )
-            Divider(
-                color = Color(0xFF000080),
-                thickness = 2.dp,
-                modifier = Modifier
-                    .padding(top = 6.dp),
-            )
-//            LazyVerticalGrid(
-//                columns = GridCells.Fixed(2)
-//            ) {
-//                items(10)
-//                {
-//                    Box(
-//                        modifier = Modifier
-//                            .wrapContentSize()
-//                    ) {
-//                        Card(
-//                            modifier = Modifier
-//                                .wrapContentSize()
-//                                .padding(top = 10.dp, start = 8.dp, end = 8.dp, bottom = 10.dp),
-//                        ) {
-//                            Image(
-//                                painter = painterResource(id = R.drawable.pantai_pandawa),
-//                                contentDescription = "image",
-//                                modifier = Modifier
-//                                    .wrapContentSize()
-//                            )
-//                        }
-//                    }
-//                }
-//            }
         }
     }
-    if (showBottomSheet){
+
+    if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
                 showBottomSheet = false
@@ -163,7 +227,7 @@ fun ProfileScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .padding(start = 16.dp, bottom = 20.dp, end=16.dp)
+                        .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                 ) {
                     Column(
                         Modifier.weight(2f)
@@ -207,12 +271,12 @@ fun ProfileScreen(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
-                            showBottomSheet=false
+                            showBottomSheet = false
                             navigateToEditProfile()
                         }
                 ) {
                     Column(
-                        modifier= Modifier.weight(2f)
+                        modifier = Modifier.weight(2f)
                     ) {
                         Row {
                             Icon(
@@ -240,8 +304,10 @@ fun ProfileScreen(
                         modifier = Modifier.weight(0.5f)
                     ) {
                         Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null
+                            )
                         }
                     }
 
@@ -255,7 +321,7 @@ fun ProfileScreen(
                         }
                 ) {
                     Column(
-                        modifier= Modifier.weight(2f)
+                        modifier = Modifier.weight(2f)
                     ) {
                         Row {
                             Icon(
@@ -283,8 +349,10 @@ fun ProfileScreen(
                         modifier = Modifier.weight(0.5f)
                     ) {
                         Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null
+                            )
                         }
                     }
 
@@ -298,7 +366,7 @@ fun ProfileScreen(
                         }
                 ) {
                     Column(
-                        modifier= Modifier.weight(2f)
+                        modifier = Modifier.weight(2f)
                     ) {
                         Row {
                             Icon(
@@ -325,8 +393,10 @@ fun ProfileScreen(
                         modifier = Modifier.weight(0.5f)
                     ) {
                         Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null
+                            )
                         }
                     }
 
@@ -337,13 +407,13 @@ fun ProfileScreen(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
-                            if (viewModel.logout()){
+                            if (viewModel.logout()) {
                                 navigateToLogin()
                             }
                         }
                 ) {
                     Column(
-                        modifier= Modifier.weight(2f)
+                        modifier = Modifier.weight(2f)
                     ) {
                         Row {
                             Icon(
@@ -370,14 +440,23 @@ fun ProfileScreen(
                         modifier = Modifier.weight(0.5f)
                     ) {
                         Row {
-                            Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null)
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowRight,
+                                contentDescription = null
+                            )
                         }
                     }
 
                 }
             }
             Spacer(modifier = Modifier.height(50.dp))
+        }
+    }else if (showMbti){
+        MbtiScreen(closeDialog = { showMbti=false })
+    }
+    LaunchedEffect(showMbti) {
+        if (!showMbti) {
+            viewModel.getUser(token, userId)
         }
     }
 }
@@ -389,5 +468,9 @@ fun ProfileScreen(
 )
 @Composable
 fun ProfileItemPreview() {
-    ProfileScreen( navigateToLogin = {}, darkTheme = false, onThemeUpdated = {}, navigateToEditProfile = {})
+    ProfileScreen(
+        navigateToLogin = {},
+        darkTheme = false,
+        onThemeUpdated = {},
+        navigateToEditProfile = {})
 }

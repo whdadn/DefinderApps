@@ -1,6 +1,7 @@
 package com.dicoding.definderapps.ui.component.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.dicoding.definderapps.R
 
 
@@ -38,6 +41,7 @@ fun DestinationItem(
     imageUrl:String,
     location:String,
     rating:String,
+    review:Int,
     favorite:Boolean,
     favoriteChange:(Boolean)->Unit,
     modifier:Modifier = Modifier
@@ -48,16 +52,11 @@ fun DestinationItem(
             containerColor = Color.Transparent
         ),
         border = BorderStroke(width = 2.dp, color = Color(0xFF000080)),
-        modifier = modifier.height(208.dp)
+        modifier = modifier.wrapContentHeight()
 
     ) {
-        val imageResourceId = LocalContext.current.resources.getIdentifier(
-            imageUrl,
-            "drawable",
-            LocalContext.current.packageName
-        )
-        Image(
-            painter = painterResource(imageResourceId),
+        AsyncImage(
+            model = imageUrl,
             contentDescription = stringResource(R.string.image)+name,
             modifier = Modifier
                 .fillMaxWidth()
@@ -109,7 +108,7 @@ fun DestinationItem(
                         tint = Color.Yellow
                     )
                     Text(
-                        text = rating,
+                        text = LocalContext.current.getString(R.string.rating_destination, rating.toFloat()) + "("+review+")",
                         color = Color(0xFF79747E),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Normal,
@@ -151,5 +150,5 @@ fun DestinationItem(
 )
 @Composable
 fun DestinationItemPreview(){
-    DestinationItem(name= "Candi Borobudur", imageUrl = "candi_borobudur", location = "Magelang", rating = "4 (120)", favorite = false, favoriteChange = {} )
+    DestinationItem(name= "Candi Borobudur", imageUrl = "candi_borobudur", location = "Magelang", rating = "4 ",review=1000, favorite = false, favoriteChange = {} )
 }

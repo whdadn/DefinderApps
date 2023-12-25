@@ -2,6 +2,7 @@ package com.dicoding.definderapps.ui.welcome
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -34,110 +38,140 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.data.local.pref.HomeLocModel
 import com.dicoding.definderapps.ui.location.LocationScreen
 import com.dicoding.definderapps.ui.mbti.MbtiScreen
 
 @Composable
 fun WelcomeScreen(
-    navigateToHome:()->Unit,
-    viewModel: WelcomeViewModel = viewModel(factory= ViewModelFactory.getInstance(LocalContext.current))
+    navigateToHome: () -> Unit,
+    viewModel: WelcomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     var showLocationScreen by rememberSaveable { mutableStateOf(false) }
     var showMbtiScreen by rememberSaveable { mutableStateOf(false) }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.welcome_info),
-            color = Color(0xFF000080),
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Normal
-            ),
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .padding(bottom = 34.dp),
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround,
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                colors = CardDefaults.cardColors(Color(0xFF000080)),
+            Text(
+                text = stringResource(R.string.welcome_info),
+                color = Color(0xFF000080),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    fontStyle = FontStyle.Normal
+                ),
                 modifier = Modifier
-                    .width(135.dp)
-                    .height(104.dp)
-                    .clickable {
-                        showLocationScreen = true
-                    }
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.location_circle),
-                        contentDescription = "icon_location",
-                        tint = Color(0xFF00F0FF),
-                        modifier = Modifier
-                            .size(50.dp)
-                    )
-                    Text(
-                        text = "Location",
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal
-                        )
-                    )
-                }
-            }
+                    .padding(bottom = 34.dp),
+            )
 
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                colors = CardDefaults.cardColors(Color(0xFF000080)),
+            Row(
                 modifier = Modifier
-                    .width(135.dp)
-                    .height(104.dp)
-                    .clickable { showMbtiScreen = true }
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(Color(0xFF000080)),
                     modifier = Modifier
-                        .fillMaxSize()
+                        .width(135.dp)
+                        .height(104.dp)
+                        .clickable {
+                            showLocationScreen = true
+                        }
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.mbti),
-                        contentDescription = "icon_location",
-                        tint = Color(0xFF00F0FF),
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier
-                            .size(50.dp)
-                    )
-                    Text(
-                        text = "MBTI",
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal
+                            .fillMaxSize()
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.location_circle),
+                            contentDescription = "icon_location",
+                            tint = Color(0xFF00F0FF),
+                            modifier = Modifier
+                                .size(50.dp)
                         )
-                    )
+                        Text(
+                            text = "Location",
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Normal,
+                                fontStyle = FontStyle.Normal
+                            )
+                        )
+                    }
+                }
+
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(Color(0xFF000080)),
+                    modifier = Modifier
+                        .width(135.dp)
+                        .height(104.dp)
+                        .clickable { showMbtiScreen = true }
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.mbti),
+                            contentDescription = "icon_location",
+                            tint = Color(0xFF00F0FF),
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                        Text(
+                            text = "MBTI",
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                fontWeight = FontWeight.Normal,
+                                fontStyle = FontStyle.Normal
+                            )
+                        )
+                    }
                 }
             }
         }
+        Button(
+            onClick = {
+//                val loc = HomeLocModel("","")
+//                viewModel.saveHomeLoc(loc)
+                navigateToHome() },
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF000080),
+                contentColor = Color.White
+            ),
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.skip),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium)
+        }
     }
-    
-    if (showLocationScreen){
-        LocationScreen(closeDialog = { showLocationScreen=false }, viewModel=viewModel, navigateToHome = navigateToHome)
-    }else if(showMbtiScreen){
-        MbtiScreen(closeDialog = { showMbtiScreen=false }, viewModel=viewModel, navigateToHome= navigateToHome)
+
+
+
+    if (showLocationScreen) {
+        LocationScreen(
+            closeDialog = { showLocationScreen = false },
+            viewModel = viewModel,
+            navigateToHome = navigateToHome
+        )
+    } else if (showMbtiScreen) {
+        MbtiScreen(
+            closeDialog = { showMbtiScreen = false }
+        )
     }
 }
 

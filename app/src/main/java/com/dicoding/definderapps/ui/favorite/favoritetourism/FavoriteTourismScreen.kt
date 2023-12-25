@@ -15,10 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.FilledIconButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +35,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.ui.component.home.DestinationItem
+import com.dicoding.definderapps.ui.home.ScrollToTopButton
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,9 +45,6 @@ fun FavoriteTourismScreen(
     viewModel: FavoriteViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
     navigateToDetail:(Int)->Unit
 ) {
-
-    val favoriteDestination by viewModel.getFavoriteDestinationWithImage.collectAsState()
-
 
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
@@ -78,31 +72,32 @@ fun FavoriteTourismScreen(
                 }
             }
 
-            items(favoriteDestination, key = {it.destination.id}) { data ->
-                Column(
-                    modifier = Modifier.padding(vertical = 6.dp)
-                ) {
-                    DestinationItem(
-                        name = data.destination.name,
-                        imageUrl = data.imageDestination.first().imageUrl,
-                        location = data.destination.location,
-                        rating = data.destination.rating,
-                        favorite = data.destination.favorited,
-                        favoriteChange = {
-                            if (data.destination.favorited) {
-                                viewModel.setFavorited(data.destination.id, false)
-                            } else {
-                                viewModel.setFavorited(data.destination.id, true)
-                            }
-                        },
-                        modifier = Modifier
-                            .animateItemPlacement(tween(durationMillis = 100))
-                            .clickable {
-                                navigateToDetail(data.destination.id)
-                            }
-                    )
-                }
-            }
+//            items(favoriteDestination, key = {it.destination.id}) { data ->
+//                Column(
+//                    modifier = Modifier.padding(vertical = 6.dp)
+//                ) {
+//                    DestinationItem(
+//                        name = data.destination.name,
+//                        imageUrl = data.imageDestination.first().imageUrl,
+//                        location = data.destination.location,
+//                        rating = data.destination.rating,
+//                        review = 1000,
+//                        favorite = data.destination.favorited,
+//                        favoriteChange = {
+//                            if (data.destination.favorited) {
+//                                viewModel.setFavorited(data.destination.id, false)
+//                            } else {
+//                                viewModel.setFavorited(data.destination.id, true)
+//                            }
+//                        },
+//                        modifier = Modifier
+//                            .animateItemPlacement(tween(durationMillis = 100))
+//                            .clickable {
+//                                navigateToDetail(data.destination.id)
+//                            }
+//                    )
+//                }
+//            }
         }
         AnimatedVisibility(
             visible = showButton,
@@ -122,20 +117,4 @@ fun FavoriteTourismScreen(
         }
     }
 
-}
-
-@Composable
-fun ScrollToTopButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    FilledIconButton(
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Icon(
-            imageVector = Icons.Filled.KeyboardArrowUp,
-            contentDescription = stringResource(R.string.scroll_to_top),
-        )
-    }
 }
