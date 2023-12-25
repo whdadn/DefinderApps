@@ -1,5 +1,6 @@
 package com.dicoding.definderapps.ui.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -29,21 +31,52 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
-import com.dicoding.definderapps.ui.profile.edit.EditNameUser
+import com.dicoding.definderapps.ui.common.ResultState
+import com.dicoding.definderapps.ui.profile.edit.EditAccountUser
 import com.dicoding.definderapps.ui.profile.edit.EditPasswordUser
+import com.yogi.foodlist.ui.common.UiState
 
 @Composable
 fun EditProfileScreen(
-    closeScreen:()->Unit,
+    closeScreen: () -> Unit,
     viewModel: ProfileViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
-){
+) {
+    viewModel.session.collectAsState(initial = UiState.Loading).value.let {
+        when (it) {
+            is UiState.Loading -> {
+                viewModel.getSession()
+            }
 
-    var showEditName by rememberSaveable { mutableStateOf(false) }
+            is UiState.Success -> {
+                EditProfileContent(
+                    token = it.data.token,
+                    userId = it.data.id,
+                    closeScreen = closeScreen,
+                    viewModel = viewModel
+                )
+            }
+
+            is UiState.Error -> {
+                Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
+
+@Composable
+fun EditProfileContent(
+    token: String,
+    userId: Int,
+    closeScreen: () -> Unit,
+    viewModel: ProfileViewModel
+) {
+    var showEditAccount by rememberSaveable { mutableStateOf(false) }
     var showEditPassword by rememberSaveable { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.padding(16.dp)
-    ){
-        Row(){
+    ) {
+        Row() {
             Text(
                 text = stringResource(R.string.edit_profile),
                 color = Color(0xFF000080),
@@ -63,18 +96,18 @@ fun EditProfileScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(bottom = 20.dp)
+                .padding(bottom = 20.dp, top = 40.dp)
                 .fillMaxWidth()
                 .clickable {
-                    showEditName=true
+                    showEditAccount = true
                 }
         ) {
             Column(
-                modifier= Modifier.weight(2f)
+                modifier = Modifier.weight(2f)
             ) {
                 Row {
                     Text(
-                        text = stringResource(id = R.string.edit_name),
+                        text = stringResource(id = R.string.edit_account),
                         color = Color(0xFF000080),
                         style = MaterialTheme.typography.titleMedium.copy(
                             fontWeight = FontWeight.Normal,
@@ -90,8 +123,10 @@ fun EditProfileScreen(
                 modifier = Modifier.weight(0.5f)
             ) {
                 Row {
-                    Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = null
+                    )
                 }
             }
 
@@ -106,7 +141,7 @@ fun EditProfileScreen(
                 }
         ) {
             Column(
-                modifier= Modifier.weight(2f)
+                modifier = Modifier.weight(2f)
             ) {
                 Row {
                     Text(
@@ -126,22 +161,46 @@ fun EditProfileScreen(
                 modifier = Modifier.weight(0.5f)
             ) {
                 Row {
-                    Icon(imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = null)
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = null
+                    )
                 }
             }
 
         }
     }
-    if(showEditName){
-        EditNameUser(closeDialog = { showEditName=false})
-    }else if(showEditPassword){
-        EditPasswordUser(closeDialog = { showEditPassword=false})
+    if (showEditAccount) {
+        viewModel.dataUser.collectAsState(initial = ResultState.Loading).value.let {
+            when (it) {
+                is ResultState.Loading -> {
+                    viewModel.getUser(token, userId)
+                }
+
+                is ResultState.Success -> {
+                    EditAccountUser(
+                        token = token,
+                        userId = userId,
+                        name = it.data.data.name,
+                        email = it.data.data.email,
+                        closeDialog = { showEditAccount = false })
+                }
+
+                is ResultState.Error -> {
+                    Toast.makeText(LocalContext.current, it.error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    } else if (showEditPassword) {
+        EditPasswordUser(
+            token = token,
+            userId = userId,
+            closeDialog = { showEditPassword = false })
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun EditProfileScreenPreview(){
+fun EditProfileScreenPreview() {
     EditProfileScreen(closeScreen = {})
 }

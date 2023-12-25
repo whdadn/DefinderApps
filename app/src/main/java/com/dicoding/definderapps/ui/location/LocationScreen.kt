@@ -56,7 +56,7 @@ fun LocationScreen(
     navigateToHome:()->Unit
 ) {
     var inputTourismName by rememberSaveable { mutableStateOf("") }
-    var inputProvince by rememberSaveable { mutableStateOf("") }
+    var inputDistrict by rememberSaveable { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = {
@@ -116,10 +116,12 @@ fun LocationScreen(
                             fontSize = 16.sp
                         ),
                         onValueChange = { inputTourismName = it },
+                        singleLine = true,
+                        maxLines = 1,
                     )
 
                     Text(
-                        text = stringResource(R.string.province_name),
+                        text = stringResource(R.string.district_name),
                         color = Color(0xFF00002D),
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier
@@ -128,7 +130,7 @@ fun LocationScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        value = inputProvince,
+                        value = inputDistrict,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = Color(0xFF000080),
                             unfocusedBorderColor = Color(0xFFBCCCFF),
@@ -136,14 +138,15 @@ fun LocationScreen(
                         textStyle = TextStyle.Default.copy(
                             fontSize = 16.sp
                         ),
-                        onValueChange = { inputProvince = it },
+                        onValueChange = { inputDistrict = it },
+                        singleLine = true,
+                        maxLines = 1
                     )
 
                     Button(
                         onClick = {
-                                  if (inputTourismName!="" && inputProvince!=""){
-                                      viewModel.saveHomeContent("location")
-                                      val loc = HomeLocModel(name = inputTourismName, province = inputProvince)
+                                  if (inputTourismName!="" && inputDistrict!=""){
+                                      val loc = HomeLocModel(name = inputTourismName.trim(), province = inputDistrict.trim())
                                       viewModel.saveHomeLoc(loc)
                                       navigateToHome()
 

@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -13,15 +14,13 @@ import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 val Context.darkTheme: DataStore<Preferences> by preferencesDataStore(name = "dark_mode")
-val Context.homePref:DataStore<Preferences> by preferencesDataStore(name = "home_pref")
 val Context.homeLocationPref: DataStore<Preferences> by preferencesDataStore(name = "home_location")
-val Context.homeMbtiPref:DataStore<Preferences> by preferencesDataStore(name="home_mbti")
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
     suspend fun saveSession(user: UserModel) {
         dataStore.edit { preferences ->
-            preferences[EMAIL_KEY] = user.email
-            preferences[NAME_KEY] = user.name
+            preferences[MBTI_KEY] = user.mbti
+            preferences[ID_KEY] = user.id
             preferences[TOKEN_KEY] = user.token
             preferences[IS_LOGIN_KEY] = true
         }
@@ -30,13 +29,27 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     fun getSession(): Flow<UserModel> {
         return dataStore.data.map { preferences ->
             UserModel(
-                preferences[EMAIL_KEY] ?: "",
-                preferences[NAME_KEY] ?: "",
+                preferences[MBTI_KEY] ?: "",
+                preferences[ID_KEY] ?: 0,
                 preferences[TOKEN_KEY] ?: "",
                 preferences[IS_LOGIN_KEY] ?: false
             )
         }
     }
+
+    suspend fun saveMbti(mbti:String){
+        dataStore.edit {preferences->
+            preferences[MBTI_KEY] = mbti
+        }
+    }
+
+    fun yourMbti():Flow<String>{
+        return dataStore.data.map{ preferences->
+            preferences[MBTI_KEY]?:""
+        }
+
+    }
+
 
     suspend fun logout() {
         dataStore.edit { preferences ->
@@ -48,8 +61,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         @Volatile
         private var INSTANCE: UserPreference? = null
 
-        private val EMAIL_KEY = stringPreferencesKey("email")
-        private val NAME_KEY = stringPreferencesKey("name")
+        private val MBTI_KEY = stringPreferencesKey("mbti")
+        private val ID_KEY = intPreferencesKey("id")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val IS_LOGIN_KEY = booleanPreferencesKey("isLogin")
 
@@ -93,35 +106,6 @@ class DarkModePreference private constructor(private val darkModePreference: Dat
 }
 
 
-class HomePreference private constructor(private val homePref: DataStore<Preferences>) {
-    suspend fun saveHomeContent(homeContent: String) {
-        homePref.edit { preferences ->
-            preferences[HOME_CONTENT] = homeContent
-        }
-    }
-
-    fun getHomeContent(): Flow<String> {
-        return homePref.data.map { preferences ->
-            preferences[HOME_CONTENT] ?: ""
-        }
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: HomePreference? = null
-
-        private val HOME_CONTENT = stringPreferencesKey("home_content")
-
-        fun getInstance(homePref: DataStore<Preferences>): HomePreference {
-            return INSTANCE ?: synchronized(this) {
-                val instance = HomePreference(homePref)
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
-}
-
 class HomeLocPreference private constructor(private val homeLocPref: DataStore<Preferences>) {
     suspend fun saveHomeLocation(homeLocModel: HomeLocModel) {
         homeLocPref.edit { preferences ->
@@ -149,37 +133,6 @@ class HomeLocPreference private constructor(private val homeLocPref: DataStore<P
         fun getInstance(homeLocPref: DataStore<Preferences>): HomeLocPreference {
             return INSTANCE ?: synchronized(this) {
                 val instance = HomeLocPreference(homeLocPref)
-                INSTANCE = instance
-                instance
-            }
-        }
-    }
-}
-
-class HomeMbtiPreference private constructor(private val homeMbtiPref: DataStore<Preferences>) {
-    suspend fun saveHomeMbti(homeMbtiModel: HomeMbtiModel) {
-        homeMbtiPref.edit { preferences ->
-            preferences[PERSONALITY] = homeMbtiModel.personality
-        }
-    }
-
-//    fun getHomeMbti(): Flow<HomeMbtiModel> {
-//        return homeMbtiPref.data.map { preferences ->
-//            HomeMbtiModel(
-//                preferences[PERSONALITY] ?: ""
-//            )
-//        }
-//    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: HomeMbtiPreference? = null
-
-        private val PERSONALITY = stringPreferencesKey("personality_mbti")
-
-        fun getInstance(homeMbtiPref: DataStore<Preferences>): HomeMbtiPreference {
-            return INSTANCE ?: synchronized(this) {
-                val instance = HomeMbtiPreference(homeMbtiPref)
                 INSTANCE = instance
                 instance
             }

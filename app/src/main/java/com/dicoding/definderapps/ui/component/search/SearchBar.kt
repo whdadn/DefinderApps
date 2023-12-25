@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.ui.component.home
+package com.dicoding.definderapps.ui.component.search
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth

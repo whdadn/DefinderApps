@@ -26,18 +26,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.dicoding.definderapps.R
 
 @SuppressLint("DiscouragedApi")
 @Composable
 fun DetailTransportationItem(
     name: String,
-    image: String,
+    image: Int,
     transportationName: String,
     transportationDesc: String,
     modifier: Modifier = Modifier
@@ -58,14 +60,9 @@ fun DetailTransportationItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            val imageResourceId = LocalContext.current.resources.getIdentifier(
-                image,
-                "drawable",
-                LocalContext.current.packageName
-            )
             Image(
-                painter = painterResource(imageResourceId),
-                contentDescription = "profile",
+                painter = painterResource(image),
+                contentDescription = stringResource(R.string.profile),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .padding(6.dp)
@@ -146,7 +143,7 @@ fun DetailTransportationItem(
 fun DetailTransportItemPreview() {
     DetailTransportationItem(
         name = "Alex Bijer",
-        image = "img_profile_default",
+        image = R.drawable.profile_default,
         transportationName = "Buroq",
         transportationDesc = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
     )

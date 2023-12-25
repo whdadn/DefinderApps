@@ -1,4 +1,4 @@
-package com.dicoding.definderapps.data.remote.response
+package com.dicoding.definderapps.data.remote.response.register
 
 import com.google.gson.annotations.SerializedName
 

@@ -19,7 +19,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField ("String", "BASE_URL", "\"https://definder-c4or5el6dq-et.a.run.app/api/v1/cms/\"")
+        buildConfigField ("String", "API_KEY", "\"https://definder-api-c4or5el6dq-et.a.run.app/api/v1/cms/\"")
+        buildConfigField("String", "API_MBTI","\"https://mbti-model-c4or5el6dq-as.a.run.app/\"")
     }
 
     buildTypes {
@@ -77,7 +78,7 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

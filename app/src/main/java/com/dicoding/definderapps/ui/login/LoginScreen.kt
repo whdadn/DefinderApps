@@ -1,6 +1,7 @@
 package com.dicoding.definderapps.ui.login
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -94,7 +95,6 @@ fun LoginScreenContent(
             )
         }
     ) { paddingValue ->
-
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -125,8 +125,7 @@ fun LoginScreenContent(
                                         }
                                         is ResultState.Success->{
                                             val session = UserModel(
-                                                email = emailState,
-                                                name = it.data.result.name,
+                                                id = it.data.result.id,
                                                 token = it.data.token
                                             )
                                             viewModel.saveSession(session)
@@ -175,8 +174,7 @@ fun LoginScreenContent(
                                         }
                                         is ResultState.Success->{
                                             val session = UserModel(
-                                                email = emailState,
-                                                name = it.data.result.name,
+                                                id = it.data.result.id,
                                                 token = it.data.token
                                             )
                                             viewModel.saveSession(session)

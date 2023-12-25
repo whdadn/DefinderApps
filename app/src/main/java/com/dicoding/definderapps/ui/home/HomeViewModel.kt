@@ -1,12 +1,12 @@
 package com.dicoding.definderapps.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.dicoding.definderapps.data.local.dao.DestinationWithImage
 import com.dicoding.definderapps.data.local.pref.HomeLocModel
+import com.dicoding.definderapps.data.local.pref.UserModel
+import com.dicoding.definderapps.data.remote.response.place.PlaceResponse
 import com.dicoding.definderapps.repository.Repository
+import com.dicoding.definderapps.ui.common.ResultState
 import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,31 +15,31 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: Repository):ViewModel() {
 
-    private val _uiState: MutableStateFlow<UiState<String>> = MutableStateFlow(UiState.Loading)
-    val uiState: StateFlow<UiState<String>> get() = _uiState
+    private val _token: MutableStateFlow<UiState<UserModel>> = MutableStateFlow(UiState.Loading)
+    val token: StateFlow<UiState<UserModel>> get() = _token
+
+    private val _homeLocUiState: MutableStateFlow<UiState<HomeLocModel>> = MutableStateFlow(UiState.Loading)
+    val homeLocUiState: StateFlow<UiState<HomeLocModel>> get() = _homeLocUiState
+
+    private val _dataLocResult: MutableStateFlow<ResultState<PlaceResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataLocResult: StateFlow<ResultState<PlaceResponse>> get() = _dataLocResult
 
 
-    private val _homeLocUiState: MutableStateFlow<UiState<List<DestinationWithImage>>> = MutableStateFlow(UiState.Loading)
-    val homeLocUiState: StateFlow<UiState<List<DestinationWithImage>>> get() = _homeLocUiState
-
-    private val _homeMbtiUiState: MutableStateFlow<UiState<List<DestinationWithImage>>> = MutableStateFlow(UiState.Loading)
-    val homeMbtiUiState: StateFlow<UiState<List<DestinationWithImage>>> get() = _homeMbtiUiState
-
-    fun getHomeContent(){
+    fun getToken(){
         viewModelScope.launch {
-            repository.getHomeContent()
+            repository.getSession()
                 .catch {
-                    _uiState.value = UiState.Error(it.message.toString())
+                    _token.value = UiState.Error(it.message.toString())
                 }
                 .collect{
-                    _uiState.value = UiState.Success(it)
+                    _token.value = UiState.Success(it)
                 }
         }
     }
 
-    fun getHomeLocDestinationWithImage(name:String, location:String){
+    fun getHomeLocPref(){
         viewModelScope.launch {
-            repository.getDestinationByNameAndLocation(name,location)
+            repository.getHomeLocPref()
                 .catch {
                     _homeLocUiState.value =UiState.Error(it.message.toString())
                 }
@@ -49,29 +49,40 @@ class HomeViewModel(private val repository: Repository):ViewModel() {
         }
     }
 
-    fun getHomeMbtiDestinationWithImage(){
+
+    fun getPlaceByNameAndDistrict(token:String,name:String, district:String){
         viewModelScope.launch {
-            repository.getAllDestinationWithImage()
+            repository.getPlaceByNameAndDistrict(token,name,district)
                 .catch {
-                    _homeMbtiUiState.value =UiState.Error(it.message.toString())
+                    _dataLocResult.value = ResultState.Error(it.message.toString())
                 }
-                .collect{
-                    _homeMbtiUiState.value = UiState.Success(it)
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            val placeResponse = resultState.data
+                            _dataLocResult.value = ResultState.Success(placeResponse)
+                        }
+                        else->{}
+                    }
                 }
         }
     }
 
-    fun getHomeLocPref(): LiveData<HomeLocModel> {
-        return repository.getHomeLoc().asLiveData()
-    }
-
-//    fun getHomeMbtiPref():LiveData<HomeMbtiModel>{
-//        return repository.getHomeMbti().asLiveData()
-//    }
-
-    fun setFavorited(id:Int, favorited:Boolean){
+    fun getPlace(token: String){
         viewModelScope.launch {
-            repository.isFavorited(id,favorited)
+            repository.getPlaceByName(token,"")
+                .catch {
+                    _dataLocResult.value = ResultState.Error(it.message.toString())
+                }
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            val placeResponse = resultState.data
+                            _dataLocResult.value = ResultState.Success(placeResponse)
+                        }
+                        else->{}
+                    }
+                }
         }
     }
 
