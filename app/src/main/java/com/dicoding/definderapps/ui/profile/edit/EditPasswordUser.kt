@@ -109,7 +109,7 @@ fun EditPasswordUser(
                         Row(){
                             Text(
                                 text = stringResource(R.string.change_password),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
@@ -125,7 +125,7 @@ fun EditPasswordUser(
 
                         Text(
                             text = stringResource(R.string.new_password),
-                            color = Color(0xFF00002D),
+                            color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier
                                 .padding(top = 40.dp)
@@ -134,10 +134,10 @@ fun EditPasswordUser(
                             modifier = Modifier.fillMaxWidth(),
                             value = inputNewPassword,
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF000080),
-                                unfocusedBorderColor = Color(0xFFBCCCFF),
-                                focusedLabelColor = Color(0xFF000080),
-                                unfocusedLabelColor = Color(0xFF79747E),
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                unfocusedLabelColor = MaterialTheme.colorScheme.outline,
                                 errorLabelColor = MaterialTheme.colorScheme.error,
                             ),
                             textStyle = TextStyle.Default.copy(
@@ -170,7 +170,7 @@ fun EditPasswordUser(
 
                         Text(
                             text = stringResource(R.string.old_password),
-                            color = Color(0xFF00002D),
+                            color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier
                                 .padding(top = 17.dp)
@@ -179,10 +179,10 @@ fun EditPasswordUser(
                             modifier = Modifier.fillMaxWidth(),
                             value = inputOldPassword,
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF000080),
-                                unfocusedBorderColor = Color(0xFFBCCCFF),
-                                focusedLabelColor = Color(0xFF000080),
-                                unfocusedLabelColor = Color(0xFF79747E),
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                unfocusedLabelColor = MaterialTheme.colorScheme.outline,
                                 errorLabelColor = MaterialTheme.colorScheme.error,
                             ),
                             textStyle = TextStyle.Default.copy(
@@ -269,13 +269,13 @@ fun EditPasswordUser(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 17.dp),
-                            colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                             shape = RoundedCornerShape(4.dp)
                         ) {
                             Text(
                                 modifier = Modifier.padding(vertical = 4.dp),
                                 text = "Submit",
-                                color = Color(0xFFE6E6F2),
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal

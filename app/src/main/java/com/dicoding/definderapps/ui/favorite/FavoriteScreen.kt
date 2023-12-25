@@ -49,7 +49,7 @@ fun FavoriteScreen(
                     modifier = Modifier
                         .tabIndicatorOffset(tabPositions[tabState.currentPage])
                         .height(2.dp),
-                    color = Color(0xFF000066),
+                    color = MaterialTheme.colorScheme.secondary,
                 )
             },
         ) {
@@ -64,8 +64,8 @@ fun FavoriteScreen(
                         ),
                     )
                 },
-                selectedContentColor = Color(0xFF000066),
-                unselectedContentColor = Color(0xFF79747E),
+                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                unselectedContentColor = MaterialTheme.colorScheme.outline,
                 onClick = {
                     coroutinScope.launch {
                         tabState.animateScrollToPage(0)
@@ -83,8 +83,8 @@ fun FavoriteScreen(
                         ),
                     )
                 },
-                selectedContentColor = Color(0xFF000066),
-                unselectedContentColor = Color(0xFF79747E),
+                selectedContentColor = MaterialTheme.colorScheme.secondary,
+                unselectedContentColor = MaterialTheme.colorScheme.outline,
                 onClick = {
                     coroutinScope.launch {
                         tabState.animateScrollToPage(1)

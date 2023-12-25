@@ -45,10 +45,10 @@ fun PassTextField(
             )
         },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(0xFF000080),
-            unfocusedBorderColor = Color(0xFFBCCCFF),
-            focusedLabelColor = Color(0xFF000080),
-            unfocusedLabelColor = Color(0xFF79747E),
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.outline,
             errorLabelColor = MaterialTheme.colorScheme.error,
         ),
         textStyle = TextStyle.Default.copy(

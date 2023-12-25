@@ -138,6 +138,7 @@ fun AddTransportation(
                                             fontWeight = FontWeight.Bold,
                                             fontStyle = FontStyle.Normal
                                         ),
+                                        color = MaterialTheme.colorScheme.onSurface,
                                         modifier = Modifier.align(Alignment.Center)
                                     )
                                     IconButton(
@@ -157,13 +158,12 @@ fun AddTransportation(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = 20.dp),
-                                colors = CardDefaults.cardColors(Color.Transparent),
-                                border = BorderStroke(2.dp, Color(0xFF000080))
+                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                             ) {
                                 Column(modifier = Modifier.padding(8.dp)) {
                                     Text(
                                         text = stringResource(R.string.add_transport_type),
-                                        color = Color(0xFF00002D),
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Normal,
                                             fontStyle = FontStyle.Normal
@@ -189,11 +189,11 @@ fun AddTransportation(
                                                     selectedOption = key
                                                     valueOption = value
                                                 },
-                                                colors = RadioButtonDefaults.colors(Color(0xFF000080))
+                                                colors = RadioButtonDefaults.colors(MaterialTheme.colorScheme.secondary)
                                             )
                                             Text(
                                                 text = value,
-                                                color = Color(0xFF00002D),
+                                                color = MaterialTheme.colorScheme.onTertiaryContainer,
                                                 style = MaterialTheme.typography.bodyMedium.copy(
                                                     fontWeight = FontWeight.Normal,
                                                     fontStyle = FontStyle.Normal
@@ -207,13 +207,12 @@ fun AddTransportation(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = 20.dp),
-                                colors = CardDefaults.cardColors(Color.Transparent),
-                                border = BorderStroke(2.dp, Color(0xFF000080)),
+                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                             ) {
                                 Column(modifier = Modifier.padding(8.dp)) {
                                     Text(
                                         text = stringResource(R.string.add_transport_name),
-                                        color = Color(0xFF00002D),
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Normal,
                                             fontStyle = FontStyle.Normal
@@ -232,8 +231,8 @@ fun AddTransportation(
                                             ),
                                         value = nameTransportation,
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFF000080),
-                                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                                         ),
                                         textStyle = TextStyle.Default.copy(
                                             fontSize = 16.sp
@@ -249,13 +248,12 @@ fun AddTransportation(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(bottom = 20.dp),
-                                colors = CardDefaults.cardColors(Color.Transparent),
-                                border = BorderStroke(2.dp, Color(0xFF000080)),
+                                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
                             ) {
                                 Column(modifier = Modifier.padding(8.dp)) {
                                     Text(
                                         text = stringResource(R.string.add_transport_explain_flow),
-                                        color = Color(0xFF00002D),
+                                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             fontWeight = FontWeight.Normal,
                                             fontStyle = FontStyle.Normal
@@ -275,8 +273,8 @@ fun AddTransportation(
                                             ),
                                         value = explainFlow,
                                         colors = OutlinedTextFieldDefaults.colors(
-                                            focusedBorderColor = Color(0xFF000080),
-                                            unfocusedBorderColor = Color(0xFFBCCCFF),
+                                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                                         ),
                                         textStyle = TextStyle.Default.copy(
                                             fontSize = 16.sp
@@ -328,13 +326,13 @@ fun AddTransportation(
                                         }
                                     }
                                 },
-                                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 shape = RoundedCornerShape(4.dp)
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 4.dp),
                                     text = stringResource(id = R.string.submit),
-                                    color = Color(0xFFE6E6F2),
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyLarge.copy(
                                         fontWeight = FontWeight.Normal,
                                         fontStyle = FontStyle.Normal

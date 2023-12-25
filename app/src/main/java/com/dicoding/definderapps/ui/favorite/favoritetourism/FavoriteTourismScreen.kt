@@ -61,7 +61,7 @@ fun FavoriteTourismScreen(
                 Column{
                     Text(
                         text = stringResource(R.string.favorited_tourism),
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontStyle = FontStyle.Normal

@@ -28,7 +28,7 @@ fun AboutScreen(
             ) {
                 Text(
                     text = stringResource(R.string.about_title),
-                    color = Color(0xFF00002D),
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal
@@ -41,7 +41,7 @@ fun AboutScreen(
                 Column(modifier = Modifier.padding(top=4.dp)) {
                     Text(
                         text = stringResource(id = R.string.data_not_found),
-                        color = Color(0xFF00002D),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal

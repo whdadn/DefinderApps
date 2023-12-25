@@ -46,7 +46,7 @@ fun PaymentMethodScreen() {
     ) {
         Text(
             text = "Payment Method",
-            color = Color(0xFF000080),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.headlineMedium.copy(
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Normal
@@ -55,7 +55,7 @@ fun PaymentMethodScreen() {
         )
         Text(
             text = "Choose Card",
-            color = Color(0xFF000080),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal
@@ -75,13 +75,13 @@ fun PaymentMethodScreen() {
                 },
                 modifier = Modifier.menuAnchor(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF000080),
-                    unfocusedBorderColor = Color(0xFFBCCCFF),
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 ),
                 placeholder = {
                     Text(
                         text = "Choose Card",
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -122,7 +122,7 @@ fun PaymentMethodScreen() {
         }
         Text(
             text = "Card Name",
-            color = Color(0xFF000080),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal
@@ -134,8 +134,8 @@ fun PaymentMethodScreen() {
                 .fillMaxWidth(),
             value = cardName,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFF000080),
-                unfocusedBorderColor = Color(0xFFBCCCFF),
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
             ),
             textStyle = TextStyle.Default.copy(
                 fontSize = 16.sp
@@ -144,7 +144,7 @@ fun PaymentMethodScreen() {
         )
         Text(
             text = "Card Number",
-            color = Color(0xFF000080),
+            color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleSmall.copy(
                 fontWeight = FontWeight.Normal,
                 fontStyle = FontStyle.Normal
@@ -156,8 +156,8 @@ fun PaymentMethodScreen() {
                 .fillMaxWidth(),
             value = cardNumber,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color(0xFF000080),
-                unfocusedBorderColor = Color(0xFFBCCCFF),
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
             ),
             textStyle = TextStyle.Default.copy(
                 fontSize = 16.sp
@@ -170,13 +170,13 @@ fun PaymentMethodScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 17.dp),
-            colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(4.dp)
         ) {
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = "Purchase",
-                color = Color(0xFFE6E6F2),
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal

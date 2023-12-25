@@ -70,8 +70,8 @@ fun EditAccountUser(
     context:Context = LocalContext.current,
     viewModel:ProfileViewModel = viewModel(factory=ViewModelFactory.getInstance(context))
 ){
-    var inputEditName by rememberSaveable { mutableStateOf("") }
-    var inputEditEmail by rememberSaveable{ mutableStateOf("") }
+    var inputEditName by rememberSaveable { mutableStateOf(name) }
+    var inputEditEmail by rememberSaveable{ mutableStateOf(email) }
     inputEditName = name
     inputEditEmail = email
     var showLoading by rememberSaveable{ mutableStateOf(false) }
@@ -108,7 +108,7 @@ fun EditAccountUser(
                         Row(){
                             Text(
                                 text = stringResource(R.string.edit_account),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.headlineMedium.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
@@ -124,7 +124,7 @@ fun EditAccountUser(
 
                         Text(
                             text = stringResource(id = R.string.name),
-                            color = Color(0xFF00002D),
+                            color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier
                                 .padding(top = 40.dp)
@@ -134,8 +134,8 @@ fun EditAccountUser(
                                 .fillMaxWidth(),
                             value = inputEditName,
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF000080),
-                                unfocusedBorderColor = Color(0xFFBCCCFF),
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                             ),
                             textStyle = TextStyle.Default.copy(
                                 fontSize = 16.sp
@@ -148,7 +148,7 @@ fun EditAccountUser(
 
                         Text(
                             text = stringResource(id = R.string.email),
-                            color = Color(0xFF00002D),
+                            color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleSmall,
                             modifier = Modifier
                                 .padding(top = 20.dp)
@@ -158,8 +158,8 @@ fun EditAccountUser(
                                 .fillMaxWidth(),
                             value = inputEditEmail,
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = Color(0xFF000080),
-                                unfocusedBorderColor = Color(0xFFBCCCFF),
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                             ),
                             textStyle = TextStyle.Default.copy(
                                 fontSize = 16.sp
@@ -178,7 +178,7 @@ fun EditAccountUser(
                                 if (inputEditName!="" && inputEditEmail!=""){
                                     if (inputEditName!=name || inputEditEmail!=email){
                                         scope.launch {
-                                            viewModel.editAccount(token,userId,name, email.lowercase()).asFlow().collect {
+                                            viewModel.editAccount(token,userId,inputEditName, inputEditEmail.lowercase()).asFlow().collect {
                                                 when (it) {
                                                     is ResultState.Loading -> {
                                                         showLoading = true
@@ -228,13 +228,13 @@ fun EditAccountUser(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 17.dp),
-                            colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                             shape = RoundedCornerShape(4.dp)
                         ) {
                             Text(
                                 modifier = Modifier.padding(vertical = 4.dp),
                                 text = "Submit",
-                                color = Color(0xFFE6E6F2),
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 style = MaterialTheme.typography.bodyLarge.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal

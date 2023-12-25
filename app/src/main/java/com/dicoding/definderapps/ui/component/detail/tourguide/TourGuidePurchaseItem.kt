@@ -34,9 +34,8 @@ fun TourGuidePurchaseItem(
         Card(
             modifier = Modifier
                 .wrapContentSize()
-                .border(2.dp, Color(0xFF000080), shape = RoundedCornerShape(10.dp))
                 .padding(vertical = 7.dp),
-            colors = CardDefaults.cardColors(Color.Transparent),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primaryContainer),
         ) {
             Row(
                 modifier = Modifier
@@ -50,7 +49,7 @@ fun TourGuidePurchaseItem(
                 ) {
                     Text(
                         text = duration,
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
                             fontStyle = FontStyle.Normal
@@ -58,7 +57,7 @@ fun TourGuidePurchaseItem(
                     )
                     Text(
                         text = "$$price",
-                        color = Color(0xFF000080),
+                        color = MaterialTheme.colorScheme.onTertiaryContainer,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal
@@ -71,7 +70,7 @@ fun TourGuidePurchaseItem(
                         onClick = { /*TODO*/ },
                         modifier = Modifier
                             .padding(end = 10.dp),
-                        colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                         shape = RoundedCornerShape(10.dp)
                     ) {
                         Text(
@@ -79,7 +78,8 @@ fun TourGuidePurchaseItem(
                             style = MaterialTheme.typography.bodyLarge.copy(
                                 fontWeight = FontWeight.Normal,
                                 fontStyle = FontStyle.Normal
-                            )
+                            ),
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 }

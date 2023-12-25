@@ -132,7 +132,7 @@ fun ReviewsScreen()
                             fontStyle = FontStyle.Normal,
                             fontSize = 16.sp
                         ),
-                        color = Color(0xFF79747E)
+                        color = MaterialTheme.colorScheme.outline
                     )
                 },
                 onValueChange = {reviewUser = it},
@@ -143,7 +143,7 @@ fun ReviewsScreen()
                         Icon(
                             imageVector = Icons.Default.Send,
                             contentDescription = "",
-                            tint = Color(0xFF000080)
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
                 }

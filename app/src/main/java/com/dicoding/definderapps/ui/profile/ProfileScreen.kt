@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -143,7 +144,7 @@ fun ProfileContent(
                                     contentDescription = null,
                                     modifier = Modifier
                                         .size(65.dp),
-                                    tint = Color(0xFF000080)
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                             Image(
@@ -157,7 +158,7 @@ fun ProfileContent(
                             )
                             Text(
                                 text = it.data.data.name,
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.headlineLarge.copy(
                                     fontWeight = FontWeight.Bold,
                                     fontStyle = FontStyle.Normal
@@ -169,7 +170,7 @@ fun ProfileContent(
                             if (mbti==""){
                                 Text(
                                     text = stringResource(id = R.string.click_here_for_set_mbti),
-                                    color = Color(0xFF000080),
+                                    color = MaterialTheme.colorScheme.secondary,
                                     style = MaterialTheme.typography.titleSmall.copy(
                                         fontWeight = FontWeight.Normal,
                                         fontStyle = FontStyle.Normal
@@ -181,7 +182,7 @@ fun ProfileContent(
                             }else{
                                 Text(
                                     text = mbti,
-                                    color = Color(0xFF000080),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     style = MaterialTheme.typography.titleSmall.copy(
                                         fontWeight = FontWeight.Normal,
                                         fontStyle = FontStyle.Normal
@@ -191,7 +192,7 @@ fun ProfileContent(
                                 )
                             }
                             Divider(
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.secondary,
                                 thickness = 2.dp,
                                 modifier = Modifier
                                     .padding(top = 6.dp),
@@ -238,11 +239,11 @@ fun ProfileContent(
                                 contentDescription = "dark_mode",
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = Color(0xFF000080)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = stringResource(R.string.dark_mode),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal
@@ -261,7 +262,8 @@ fun ProfileContent(
                             onCheckedChange = onThemeUpdated,
                             modifier = Modifier
                                 .size(32.dp)
-                                .padding(end = 16.dp)
+                                .padding(end = 16.dp),
+                            colors = SwitchDefaults.colors(MaterialTheme.colorScheme.primaryContainer)
                         )
                     }
                 }
@@ -285,11 +287,11 @@ fun ProfileContent(
                                 modifier = Modifier
                                     .padding(start = 5.dp)
                                     .size(20.dp),
-                                tint = Color(0xFF000080)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = stringResource(R.string.edit_profile),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal
@@ -330,11 +332,11 @@ fun ProfileContent(
                                 modifier = Modifier
                                     .padding(start = 5.dp)
                                     .size(20.dp),
-                                tint = Color(0xFF000080)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = stringResource(R.string.tour_guide),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal
@@ -374,11 +376,11 @@ fun ProfileContent(
                                 contentDescription = stringResource(id = R.string.message),
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = Color(0xFF000080)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = stringResource(R.string.message),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal
@@ -421,11 +423,11 @@ fun ProfileContent(
                                 contentDescription = stringResource(id = R.string.log_out),
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = Color(0xFF000080)
+                                tint = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = stringResource(R.string.log_out),
-                                color = Color(0xFF000080),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Normal
@@ -456,6 +458,13 @@ fun ProfileContent(
     }
     LaunchedEffect(showMbti) {
         if (!showMbti) {
+            viewModel.getUser(token, userId)
+        }
+    }
+    LaunchedEffect(showBottomSheet)
+    {
+        if (!showBottomSheet)
+        {
             viewModel.getUser(token, userId)
         }
     }

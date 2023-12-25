@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -135,7 +136,7 @@ fun MbtiContent(
                             Row() {
                                 Text(
                                     text = stringResource(R.string.info_mbti),
-                                    color = Color(0xFF000080),
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     style = MaterialTheme.typography.headlineMedium.copy(
                                         fontWeight = FontWeight.Bold,
                                         fontStyle = FontStyle.Normal
@@ -153,7 +154,7 @@ fun MbtiContent(
                             }
                             Text(
                                 text = stringResource(R.string.mbti_form),
-                                color = Color(0xFF00002D),
+                                color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.titleSmall,
                                 modifier = Modifier
                                     .padding(top = 17.dp)
@@ -163,8 +164,8 @@ fun MbtiContent(
                                     .fillMaxWidth(),
                                 value = inputMbti,
                                 colors = OutlinedTextFieldDefaults.colors(
-                                    focusedBorderColor = Color(0xFF000080),
-                                    unfocusedBorderColor = Color(0xFFBCCCFF),
+                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                                 ),
                                 textStyle = TextStyle.Default.copy(
                                     fontSize = 16.sp,
@@ -224,70 +225,52 @@ fun MbtiContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(top = 17.dp),
-                                colors = ButtonDefaults.buttonColors(Color(0xFF000080)),
+                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
                                 shape = RoundedCornerShape(4.dp)
                             ) {
                                 Text(
                                     modifier = Modifier.padding(vertical = 4.dp),
                                     text = stringResource(id = R.string.submit),
-                                    color = Color(0xFFE6E6F2),
+                                    color = MaterialTheme.colorScheme.onPrimary,
                                     style = MaterialTheme.typography.bodyLarge.copy(
                                         fontWeight = FontWeight.Normal,
                                         fontStyle = FontStyle.Normal
                                     )
                                 )
                             }
-                            Text(
-                                modifier = Modifier.padding(top = 20.dp),
-                                text = "Your Mbti is : $mbti",
-                                color = Color(0xFF000080),
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    fontStyle = FontStyle.Normal
-                                )
-                            )
-                        }
-                    }
-                    Divider(
-                        thickness = 2.dp,
-                        modifier = Modifier
-                            .padding(top = 15.dp)
-                    )
-                    Text(
-                        text = "Your personality type is:",
-                        modifier = Modifier
-                            .padding(top = 10.dp)
-                            .align(Alignment.CenterHorizontally),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            fontStyle = FontStyle.Normal
-                        ),
-                        color = Color(0xFF00002D),
-                    )
-                    Text(
-                        text = "ISTJ",
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 10.dp),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontStyle = FontStyle.Normal
-                        ),
-                        color = Color(0xFF00002D),
-                    )
-                    LazyColumn {
-                        item {
-                            Text(
-                                text = "Logisticians are practical and fact-minded individuals, whose reliability cannot be doubted.",
-                                textAlign = TextAlign.Justify,
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    fontWeight = FontWeight.Normal,
-                                    fontStyle = FontStyle.Normal
-                                ),
-                                color = Color(0xFF00002D),
+                            Divider(
+                                thickness = 2.dp,
                                 modifier = Modifier
-                                    .padding(top = 10.dp),
+                                    .padding(top = 15.dp),
+                                color = MaterialTheme.colorScheme.secondary
                             )
+                           Column(
+                               modifier = Modifier
+                                   .fillMaxWidth()
+                           ) {
+                               Text(
+                                   text = "Your personality type is:",
+                                   modifier = Modifier
+                                       .padding(top = 10.dp)
+                                       .align(Alignment.CenterHorizontally),
+                                   style = MaterialTheme.typography.titleSmall.copy(
+                                       fontWeight = FontWeight.Normal,
+                                       fontStyle = FontStyle.Normal
+                                   ),
+                                   color = MaterialTheme.colorScheme.onSurface,
+                               )
+                               Text(
+                                   text = mbti,
+                                   modifier = Modifier
+                                       .align(Alignment.CenterHorizontally)
+                                       .padding(top = 10.dp),
+                                   style = MaterialTheme.typography.titleLarge.copy(
+                                       fontWeight = FontWeight.Bold,
+                                       fontStyle = FontStyle.Normal
+                                   ),
+                                   color = MaterialTheme.colorScheme.onSurface,
+                               )
+                           }
                         }
                     }
                 }

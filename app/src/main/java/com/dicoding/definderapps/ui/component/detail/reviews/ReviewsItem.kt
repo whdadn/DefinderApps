@@ -40,7 +40,7 @@ fun ReviewsItem(
         Card(
             modifier = Modifier
                 .wrapContentSize(),
-            colors = CardDefaults.cardColors(Color.Transparent),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background),
         ) {
             Row(
                 modifier = Modifier
@@ -49,7 +49,7 @@ fun ReviewsItem(
             ) {
                 Text(
                     text = name,
-                    color = Color(0xFF000080),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         fontStyle = FontStyle.Normal
@@ -58,7 +58,7 @@ fun ReviewsItem(
             }
             Text(
                 text = review,
-                color = Color(0xFF00002D),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier
                     .padding(6.dp),
                 style = MaterialTheme.typography.bodyLarge.copy(
@@ -82,7 +82,7 @@ fun ReviewsItem(
                {
                    Text(
                        text = "Show more",
-                       color = Color(0xFFb0b0d8),
+                       color = MaterialTheme.colorScheme.primary,
                        modifier = Modifier
                            .padding(6.dp)
                            .clickable { expanded = true },
@@ -96,7 +96,7 @@ fun ReviewsItem(
                {
                    Text(
                        text = "Show less",
-                       color = Color(0xFFb0b0d8),
+                       color = MaterialTheme.colorScheme.primary,
                        modifier = Modifier
                            .padding(6.dp)
                            .clickable { expanded = false },
