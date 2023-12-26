@@ -1,9 +1,12 @@
 package com.dicoding.definderapps.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dicoding.definderapps.data.local.pref.HomeLocModel
 import com.dicoding.definderapps.data.local.pref.UserModel
+import com.dicoding.definderapps.data.local.room.Entity
 import com.dicoding.definderapps.data.remote.response.place.PlaceResponse
 import com.dicoding.definderapps.repository.Repository
 import com.dicoding.definderapps.ui.common.ResultState
@@ -50,9 +53,9 @@ class HomeViewModel(private val repository: Repository):ViewModel() {
     }
 
 
-    fun getPlaceByNameAndDistrict(token:String,name:String, district:String){
+    fun getPlaceHome(token:String,daerah:String, objek:String, mbti:String){
         viewModelScope.launch {
-            repository.getPlaceByNameAndDistrict(token,name,district)
+            repository.getPlaceHome(token,daerah, objek, mbti)
                 .catch {
                     _dataLocResult.value = ResultState.Error(it.message.toString())
                 }
@@ -68,9 +71,9 @@ class HomeViewModel(private val repository: Repository):ViewModel() {
         }
     }
 
-    fun getPlace(token: String){
+    fun getPlace(token: String, name:String){
         viewModelScope.launch {
-            repository.getPlaceByName(token,"")
+            repository.getPlaceByName(token, name)
                 .catch {
                     _dataLocResult.value = ResultState.Error(it.message.toString())
                 }
@@ -86,5 +89,27 @@ class HomeViewModel(private val repository: Repository):ViewModel() {
         }
     }
 
+    fun insertFavPlace(placeId:Int){
+        val place= Entity(placeId = placeId)
+        viewModelScope.launch {
+            repository.insertFavPlace(place)
+        }
+    }
+
+    fun insertFavPlaceApi(token: String, placeId: Int) = repository.insertFavPlaceApi(token, placeId)
+
+
+    fun getFavById(placeId: Int): LiveData<Entity> {
+        return repository.getFavPlace(placeId).asLiveData()
+    }
+
+    fun deleteFavPlace(placeId: Int){
+        val place= Entity(placeId = placeId)
+        viewModelScope.launch {
+            repository.deleteFavPlace(place)
+        }
+    }
+
+    fun deleteFavPlaceApi(token: String, placeId: Int) = repository.deleteFavPlaceApi(token, placeId)
 
 }

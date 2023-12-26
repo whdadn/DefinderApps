@@ -6,16 +6,23 @@ import com.dicoding.definderapps.data.local.pref.HomeLocModel
 import com.dicoding.definderapps.data.local.pref.HomeLocPreference
 import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.data.local.pref.UserPreference
+import com.dicoding.definderapps.data.local.room.Dao
+import com.dicoding.definderapps.data.local.room.Entity
+import com.dicoding.definderapps.data.remote.response.createreview.CreateReviewResponse
 import com.dicoding.definderapps.data.remote.retrofit.ApiService
 import com.dicoding.definderapps.data.remote.retrofit.ApiServiceMbti
 import com.dicoding.definderapps.data.remote.response.detail.DetailResponse
 import com.dicoding.definderapps.data.remote.response.detailtransport.DetailTransportResponse
+import com.dicoding.definderapps.data.remote.response.favorite.FavoriteResponse
+import com.dicoding.definderapps.data.remote.response.favorite.GetFavoriteResponse
 import com.dicoding.definderapps.data.remote.response.login.LoginResponse
+import com.dicoding.definderapps.data.remote.response.mbti.MbtiDescResponse
 import com.dicoding.definderapps.data.remote.response.mbti.MbtiResponse
 import com.dicoding.definderapps.data.remote.response.place.PlaceResponse
 import com.dicoding.definderapps.data.remote.response.profile.EditProfileResponse
 import com.dicoding.definderapps.data.remote.response.profile.GetUserResponse
 import com.dicoding.definderapps.data.remote.response.register.RegisterResponse
+import com.dicoding.definderapps.data.remote.response.review.GetReviewResponse
 import com.dicoding.definderapps.data.remote.response.transport.TransportResponse
 import com.dicoding.definderapps.data.remote.response.typetransport.TypeTransportResponse
 import com.dicoding.definderapps.ui.common.ResultState
@@ -29,7 +36,8 @@ class Repository private constructor(
     private val darkMode: DarkModePreference,
     private val homeLocPreference: HomeLocPreference,
     private val apiService: ApiService,
-    private val apiServiceMbti: ApiServiceMbti
+    private val apiServiceMbti: ApiServiceMbti,
+    private val dao: Dao
 ) {
     companion object {
         @Volatile
@@ -39,11 +47,12 @@ class Repository private constructor(
             darkMode: DarkModePreference,
             homeLocPreference: HomeLocPreference,
             apiService: ApiService,
-            apiServiceMbti: ApiServiceMbti
+            apiServiceMbti: ApiServiceMbti,
+            dao:Dao
         ): Repository =
             instance ?: synchronized(this) {
                 instance
-                    ?: Repository(userPreference,darkMode,homeLocPreference, apiService, apiServiceMbti)
+                    ?: Repository(userPreference,darkMode,homeLocPreference, apiService, apiServiceMbti, dao)
             }.also { instance = it }
     }
 
@@ -71,10 +80,10 @@ class Repository private constructor(
         }
     }
 
-    fun getPlaceByNameAndDistrict(token:String,name: String, district:String) = flow {
+    fun getPlaceHome(token:String,daerah: String, objek:String, mbti:String) = flow {
         emit(ResultState.Loading)
         try {
-            val response = apiService.getPlaceByNameAndDistrict("Bearer $token",name,district)
+            val response = apiService.getPlaceHome("Bearer $token",daerah, objek, mbti)
             emit(ResultState.Success(response))
         }catch (e:HttpException){
             val errorBody = e.response()?.errorBody()?.string()
@@ -192,6 +201,95 @@ class Repository private constructor(
         }
     }
 
+    suspend fun insertFavPlace(favPlace:Entity){
+        dao.insertFavPlace(favPlace)
+    }
+
+    fun insertFavPlaceApi(token:String, placeId: Int) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response =apiService.createFavorite("Bearer $token", placeId)
+            emit(ResultState.Success(response))
+        }catch (e: HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, FavoriteResponse::class.java)
+            emit(ResultState.Error(errorResponse.message))
+        }
+    }
+
+    fun getFavPlace(placeId:Int):Flow<Entity>{
+        return dao.getFavPlace(placeId)
+    }
+
+    fun getAllFavPlace():Flow<List<Entity>>{
+        return dao.getAllFavPlace()
+    }
+
+    fun getFavPlaceApi(token: String) = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getFavorite("Bearer $token")
+            emit(ResultState.Success(response))
+        }catch (e:HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, GetFavoriteResponse::class.java)
+            emit(ResultState.Error(errorResponse?.message.toString()))
+        }
+    }
+
+
+    suspend fun deleteFavPlace(favPlace: Entity){
+        dao.deleteFavPlace(favPlace)
+    }
+
+    fun deleteFavPlaceApi(token:String, placeId: Int) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response =apiService.deleteFavorite("Bearer $token", placeId)
+            emit(ResultState.Success(response))
+        }catch (e: HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, FavoriteResponse::class.java)
+            emit(ResultState.Error(errorResponse.message))
+        }
+    }
+
+    fun getMbtiDesc(token: String) = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getMbtiDesc("Bearer $token")
+            emit(ResultState.Success(response))
+        }catch (e:HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, MbtiDescResponse::class.java)
+            emit(ResultState.Error(errorResponse?.message.toString()))
+        }
+    }
+
+    fun createReview(token:String,placeId: Int, review: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response =apiService.createReview("Bearer $token",placeId, review, "4")
+            emit(ResultState.Success(response))
+        }catch (e: HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, CreateReviewResponse::class.java)
+            emit(ResultState.Error(errorResponse.message))
+        }
+    }
+
+    fun getReview(token: String, placeId: Int) = flow {
+        emit(ResultState.Loading)
+        try {
+            val response = apiService.getReview("Bearer $token",placeId)
+            emit(ResultState.Success(response))
+        }catch (e:HttpException){
+            val errorBody = e.response()?.errorBody()?.string()
+            val errorResponse = Gson().fromJson(errorBody, GetReviewResponse::class.java)
+            emit(ResultState.Error(errorResponse?.message.toString()))
+        }
+    }
+
     suspend fun saveMbti(mbti:String) {
         preference.saveMbti(mbti)
     }
@@ -202,6 +300,10 @@ class Repository private constructor(
 
     fun getSession(): Flow<UserModel> {
         return preference.getSession()
+    }
+
+    fun getToken():Flow<String>{
+        return preference.getToken()
     }
 
     fun yourMbti():Flow<String>{

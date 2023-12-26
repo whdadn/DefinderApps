@@ -1,189 +1,184 @@
 package com.dicoding.definderapps.ui.detail.tourguide
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.dicoding.definderapps.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentMethodScreen() {
-    var expanded by remember { mutableStateOf(false) }
-    var option by remember { mutableStateOf("") }
-    var cardName by rememberSaveable { mutableStateOf("") }
-    var cardNumber by rememberSaveable { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .padding(16.dp),
-    ) {
-        Text(
-            text = "Payment Method",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Normal
-            ),
-            modifier = Modifier.padding(vertical = 10.dp),
-        )
-        Text(
-            text = "Choose Card",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall.copy(
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal
-            ),
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = it },
-        ) {
-            OutlinedTextField(
-                value = option,
-                onValueChange = {},
-                readOnly = true,
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                },
-                modifier = Modifier.menuAnchor(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                ),
-                placeholder = {
-                    Text(
-                        text = "Choose Card",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-            ) {
-                DropdownMenuItem(
-                    text = { Text(text = "Master Card") },
-                    onClick = {
-                        option = "Master Card"
-                        expanded = false
-                    },
-                )
-                DropdownMenuItem(
-                    text = { Text(text = "Cimb Niaga") },
-                    onClick = {
-                        option = "Cimb Niaga"
-                        expanded = false
-                    },
-                )
-                DropdownMenuItem(
-                    text = { Text(text = "BCA") },
-                    onClick = {
-                        option = "BCA"
-                        expanded = false
-                    },
-                )
-                DropdownMenuItem(
-                    text = { Text(text = "BNI") },
-                    onClick = {
-                        option = "BNI"
-                        expanded = false
-                    },
-                )
-            }
-        }
-        Text(
-            text = "Card Name",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall.copy(
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal
-            ),
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = cardName,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontSize = 16.sp
-            ),
-            onValueChange = { cardName = it },
-        )
-        Text(
-            text = "Card Number",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleSmall.copy(
-                fontWeight = FontWeight.Normal,
-                fontStyle = FontStyle.Normal
-            ),
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = cardNumber,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            ),
-            textStyle = TextStyle.Default.copy(
-                fontSize = 16.sp
-            ),
-            onValueChange = { cardNumber = it },
-        )
-
-        Button(
-            onClick = { },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 17.dp),
-            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
-            shape = RoundedCornerShape(4.dp)
-        ) {
+    Box(Modifier.fillMaxSize()) {
+        Column(Modifier.align(Alignment.Center)) {
             Text(
-                modifier = Modifier.padding(vertical = 4.dp),
-                text = "Purchase",
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.bodyLarge.copy(
+                text = stringResource(R.string.coming_soon),
+                style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
-                    fontStyle = FontStyle.Normal
+                    fontStyle = FontStyle.Italic
                 )
             )
         }
     }
+
+//    var expanded by remember { mutableStateOf(false) }
+//    var option by remember { mutableStateOf("") }
+//    var cardName by rememberSaveable { mutableStateOf("") }
+//    var cardNumber by rememberSaveable { mutableStateOf("") }
+//
+//    Column(
+//        modifier = Modifier
+//            .padding(16.dp),
+//    ) {
+//        Text(
+//            text = "Payment Method",
+//            color = MaterialTheme.colorScheme.onSurface,
+//            style = MaterialTheme.typography.headlineMedium.copy(
+//                fontWeight = FontWeight.Bold,
+//                fontStyle = FontStyle.Normal
+//            ),
+//            modifier = Modifier.padding(vertical = 10.dp),
+//        )
+//        Text(
+//            text = "Choose Card",
+//            color = MaterialTheme.colorScheme.onSurface,
+//            style = MaterialTheme.typography.titleSmall.copy(
+//                fontWeight = FontWeight.Normal,
+//                fontStyle = FontStyle.Normal
+//            ),
+//            modifier = Modifier.padding(vertical = 8.dp)
+//        )
+//        ExposedDropdownMenuBox(
+//            expanded = expanded,
+//            onExpandedChange = { expanded = it },
+//        ) {
+//            OutlinedTextField(
+//                value = option,
+//                onValueChange = {},
+//                readOnly = true,
+//                trailingIcon = {
+//                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+//                },
+//                modifier = Modifier.menuAnchor(),
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+//                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+//                ),
+//                placeholder = {
+//                    Text(
+//                        text = "Choose Card",
+//                        color = MaterialTheme.colorScheme.onSurface,
+//                        style = MaterialTheme.typography.bodyMedium
+//                    )
+//                }
+//            )
+//            ExposedDropdownMenu(
+//                expanded = expanded,
+//                onDismissRequest = { expanded = false },
+//            ) {
+//                DropdownMenuItem(
+//                    text = { Text(text = "Master Card") },
+//                    onClick = {
+//                        option = "Master Card"
+//                        expanded = false
+//                    },
+//                )
+//                DropdownMenuItem(
+//                    text = { Text(text = "Cimb Niaga") },
+//                    onClick = {
+//                        option = "Cimb Niaga"
+//                        expanded = false
+//                    },
+//                )
+//                DropdownMenuItem(
+//                    text = { Text(text = "BCA") },
+//                    onClick = {
+//                        option = "BCA"
+//                        expanded = false
+//                    },
+//                )
+//                DropdownMenuItem(
+//                    text = { Text(text = "BNI") },
+//                    onClick = {
+//                        option = "BNI"
+//                        expanded = false
+//                    },
+//                )
+//            }
+//        }
+//        Text(
+//            text = "Card Name",
+//            color = MaterialTheme.colorScheme.onSurface,
+//            style = MaterialTheme.typography.titleSmall.copy(
+//                fontWeight = FontWeight.Normal,
+//                fontStyle = FontStyle.Normal
+//            ),
+//            modifier = Modifier.padding(vertical = 8.dp)
+//        )
+//        OutlinedTextField(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            value = cardName,
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedBorderColor = MaterialTheme.colorScheme.primary,
+//                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+//            ),
+//            textStyle = TextStyle.Default.copy(
+//                fontSize = 16.sp
+//            ),
+//            onValueChange = { cardName = it },
+//        )
+//        Text(
+//            text = "Card Number",
+//            color = MaterialTheme.colorScheme.onSurface,
+//            style = MaterialTheme.typography.titleSmall.copy(
+//                fontWeight = FontWeight.Normal,
+//                fontStyle = FontStyle.Normal
+//            ),
+//            modifier = Modifier.padding(vertical = 8.dp)
+//        )
+//        OutlinedTextField(
+//            modifier = Modifier
+//                .fillMaxWidth(),
+//            value = cardNumber,
+//            colors = OutlinedTextFieldDefaults.colors(
+//                focusedBorderColor = MaterialTheme.colorScheme.primary,
+//                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+//            ),
+//            textStyle = TextStyle.Default.copy(
+//                fontSize = 16.sp
+//            ),
+//            onValueChange = { cardNumber = it },
+//        )
+//
+//        Button(
+//            onClick = { },
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 17.dp),
+//            colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.primary),
+//            shape = RoundedCornerShape(4.dp)
+//        ) {
+//            Text(
+//                modifier = Modifier.padding(vertical = 4.dp),
+//                text = "Purchase",
+//                color = MaterialTheme.colorScheme.onPrimary,
+//                style = MaterialTheme.typography.bodyLarge.copy(
+//                    fontWeight = FontWeight.Normal,
+//                    fontStyle = FontStyle.Normal
+//                )
+//            )
+//        }
+//    }
 }
 
 @Preview(

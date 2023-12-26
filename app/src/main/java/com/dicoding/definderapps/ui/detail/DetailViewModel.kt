@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.data.remote.response.detail.DetailResponse
 import com.dicoding.definderapps.data.remote.response.detailtransport.DetailTransportResponse
+import com.dicoding.definderapps.data.remote.response.review.GetReviewResponse
 import com.dicoding.definderapps.data.remote.response.typetransport.TypeTransportResponse
 import com.dicoding.definderapps.repository.Repository
 import com.dicoding.definderapps.ui.common.ResultState
@@ -25,6 +26,9 @@ class DetailViewModel(private val repository: Repository): ViewModel() {
 
     private val _dataDetailTransport:MutableStateFlow<ResultState<DetailTransportResponse>> = MutableStateFlow(ResultState.Loading)
     val dataDetailtransport:StateFlow<ResultState<DetailTransportResponse>> get() = _dataDetailTransport
+
+    private val _dataReviewPlace:MutableStateFlow<ResultState<GetReviewResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataReviewPlace:StateFlow<ResultState<GetReviewResponse>> get() = _dataReviewPlace
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
@@ -85,5 +89,27 @@ class DetailViewModel(private val repository: Repository): ViewModel() {
 
         }
     }
+
+    fun createReview(token: String, placeId: Int, review:String) = repository.createReview(token, placeId, review)
+    fun getReviewPlace(token: String, placeId: Int){
+        viewModelScope.launch {
+            repository.getReview(token, placeId)
+                .catch {
+                    _dataReviewPlace.value = ResultState.Error(it.message.toString())
+                }
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            _dataReviewPlace.value = ResultState.Success(resultState.data)
+                        }
+                        else->{}
+                    }
+                }
+
+
+        }
+    }
+
+
 
 }

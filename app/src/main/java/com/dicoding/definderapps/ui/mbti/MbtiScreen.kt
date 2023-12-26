@@ -2,7 +2,6 @@ package com.dicoding.definderapps.ui.mbti
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,10 +29,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,7 +40,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -57,9 +55,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
-import com.dicoding.definderapps.data.local.pref.UserModel
 import com.dicoding.definderapps.ui.common.ResultState
-import com.dicoding.definderapps.ui.profile.ProfileContent
 import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
@@ -270,6 +266,25 @@ fun MbtiContent(
                                    ),
                                    color = MaterialTheme.colorScheme.onSurface,
                                )
+                               val session by viewModel.getToken().observeAsState()
+                               val token = session?.token.toString()
+                               viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let {
+                                   when(it){
+                                       is ResultState.Loading->{
+                                           viewModel.getMbtiDesc(token)
+                                       }
+                                       is ResultState.Success->{
+                                           it.data.data.forEach {data->
+                                               if (data.name==mbti){
+                                                   Column {
+                                                       Text(text = data.description)
+                                                   }
+                                               }
+                                           }
+                                       }
+                                       is ResultState.Error->{}
+                                   }
+                               }
                            }
                         }
                     }
