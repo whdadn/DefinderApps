@@ -35,7 +35,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -55,6 +54,7 @@ import kotlinx.coroutines.launch
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun LocationScreen(
+    mbti:String,
     closeDialog:()->Unit,
     context:Context = LocalContext.current,
     viewModel:WelcomeViewModel,
@@ -63,7 +63,7 @@ fun LocationScreen(
     var inputTourismName by rememberSaveable { mutableStateOf("") }
     var inputDistrict by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var optionMbti by remember { mutableStateOf("") }
+    var optionMbti by remember { mutableStateOf(mbti) }
 
     Dialog(
         onDismissRequest = {
@@ -353,9 +353,10 @@ fun LocationScreen(
 
                     Button(
                         onClick = {
-                                  if (inputTourismName!="" && inputDistrict!=""){
-                                      val loc = HomeLocModel(name = inputTourismName.trim(), province = inputDistrict.trim())
+                                  if (inputTourismName!="" && inputDistrict!="" && optionMbti!=""){
+                                      val loc = HomeLocModel(name = inputTourismName.trim(), district = inputDistrict.trim(), mbti=optionMbti)
                                       viewModel.saveHomeLoc(loc)
+                                      viewModel.saveMbti(optionMbti)
                                       navigateToHome()
 
                                   }else{

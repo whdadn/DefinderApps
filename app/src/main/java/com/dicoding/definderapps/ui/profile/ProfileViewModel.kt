@@ -1,11 +1,9 @@
 package com.dicoding.definderapps.ui.profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.dicoding.definderapps.data.local.pref.UserModel
-import com.dicoding.definderapps.data.remote.response.detail.DetailResponse
+import com.dicoding.definderapps.data.remote.response.mbti.MbtiDescResponse
 import com.dicoding.definderapps.data.remote.response.profile.GetUserResponse
 import com.dicoding.definderapps.repository.Repository
 import com.dicoding.definderapps.ui.common.ResultState
@@ -24,6 +22,9 @@ class ProfileViewModel(private val repository: Repository) : ViewModel() {
     private val _session: MutableStateFlow<UiState<UserModel>> = MutableStateFlow(UiState.Loading)
     val session: StateFlow<UiState<UserModel>> get() = _session
 
+    private val _dataMbtiDesc: MutableStateFlow<ResultState<MbtiDescResponse>> = MutableStateFlow(ResultState.Loading)
+    val dataMbtiDesc: StateFlow<ResultState<MbtiDescResponse>> get() = _dataMbtiDesc
+
     fun getSession(){
         viewModelScope.launch {
             repository.getSession()
@@ -36,6 +37,23 @@ class ProfileViewModel(private val repository: Repository) : ViewModel() {
         }
     }
 
+    fun getMbtiDesc(token:String){
+        viewModelScope.launch {
+            repository.getMbtiDesc(token)
+                .catch {
+                    _dataMbtiDesc.value = ResultState.Error(it.message.toString())
+                }
+                .collect{resultState ->
+                    when (resultState) {
+                        is ResultState.Success -> {
+                            val placeResponse = resultState.data
+                            _dataMbtiDesc.value = ResultState.Success(placeResponse)
+                        }
+                        else->{}
+                    }
+                }
+        }
+    }
     fun getUser(token:String,userId:Int){
         viewModelScope.launch {
             repository.getUser(token, userId)

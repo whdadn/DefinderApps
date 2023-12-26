@@ -1,6 +1,6 @@
 package com.dicoding.definderapps.ui.profile
 
-import android.util.Log
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,7 +34,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -42,7 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -98,6 +96,7 @@ fun ProfileContent(
     token:String,
     userId:Int,
     mbti:String,
+    context:Context= LocalContext.current,
     viewModel:ProfileViewModel,
     darkTheme:Boolean,
     onThemeUpdated:(Boolean)->Unit,
@@ -197,6 +196,23 @@ fun ProfileContent(
                                 modifier = Modifier
                                     .padding(top = 6.dp),
                             )
+                            viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let {mbtiDesc->
+                                when(mbtiDesc){
+                                    is ResultState.Loading->{
+                                        viewModel.getMbtiDesc(token)
+                                    }
+                                    is ResultState.Success->{
+                                        mbtiDesc.data.data.forEach {data-> 
+                                            if (data.name==mbti){
+                                                Column {
+                                                    Text(text = data.description)
+                                                }
+                                            }
+                                        }
+                                    }
+                                    is ResultState.Error->{}
+                                }
+                            }
                         }
                     }
 
@@ -205,7 +221,7 @@ fun ProfileContent(
                 }
                 is ResultState.Error->{
                     showLoading=false
-                    Toast.makeText(LocalContext.current, it.error, Toast.LENGTH_SHORT ).show()
+                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT ).show()
                 }
             }
         }
@@ -320,6 +336,7 @@ fun ProfileContent(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
+                            Toast.makeText(context, context.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
                         }
                 ) {
                     Column(
@@ -365,6 +382,7 @@ fun ProfileContent(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
+                            Toast.makeText(context, context.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
                         }
                 ) {
                     Column(

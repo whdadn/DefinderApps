@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Definder Apps</string>
     <string name="title_activity_registrasi">RegistrasiActivity</string>
 
@@ -96,4 +96,10 @@
     <string name="failed_to_edit_your_account">Failed to edit your Account</string>
     <string name="success_edit_password">Success Edit your Password Account</string>
     <string name="failed_to_edit_your_password">Failed to edit your Password Account</string>
+    <string name="lets_search_destination">Let\'s Search Destination</string>
+    <string name="you_havent_added_favorite_place">You haven\'t added a favorite place</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="successfully_added_review">Successfully added a review</string>
+    <string name="failed_to_add_review">Failed to add review</string>
+    <string name="add_eview_comment" tools:ignore="TypographyEllipsis">Add a review comment...</string>
 </resources>

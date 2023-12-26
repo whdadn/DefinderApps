@@ -37,6 +37,11 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         }
     }
 
+    fun getToken():Flow<String>{
+        return dataStore.data.map {preferences->
+            preferences[TOKEN_KEY]?:""
+        }
+    }
     suspend fun saveMbti(mbti:String){
         dataStore.edit {preferences->
             preferences[MBTI_KEY] = mbti
@@ -110,7 +115,8 @@ class HomeLocPreference private constructor(private val homeLocPref: DataStore<P
     suspend fun saveHomeLocation(homeLocModel: HomeLocModel) {
         homeLocPref.edit { preferences ->
             preferences[NAME] = homeLocModel.name
-            preferences[PROVINCE] = homeLocModel.province
+            preferences[DISTRICT] = homeLocModel.district
+            preferences[MBTI] = homeLocModel.mbti
         }
     }
 
@@ -118,7 +124,8 @@ class HomeLocPreference private constructor(private val homeLocPref: DataStore<P
         return homeLocPref.data.map { preferences ->
             HomeLocModel(
                 preferences[NAME] ?: "",
-                preferences[PROVINCE] ?: ""
+                preferences[DISTRICT] ?: "",
+                preferences[MBTI]?:""
             )
         }
     }
@@ -128,7 +135,8 @@ class HomeLocPreference private constructor(private val homeLocPref: DataStore<P
         private var INSTANCE: HomeLocPreference? = null
 
         private val NAME = stringPreferencesKey("name_location")
-        private val PROVINCE = stringPreferencesKey("province_location")
+        private val DISTRICT = stringPreferencesKey("district_location")
+        private val MBTI = stringPreferencesKey("mbti")
 
         fun getInstance(homeLocPref: DataStore<Preferences>): HomeLocPreference {
             return INSTANCE ?: synchronized(this) {

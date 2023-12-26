@@ -1,5 +1,7 @@
 package com.dicoding.definderapps.ui.detail.reviews
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,111 +11,90 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dicoding.definderapps.R
+import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.ui.common.ResultState
 import com.dicoding.definderapps.ui.component.detail.reviews.ReviewsItem
+import com.dicoding.definderapps.ui.detail.DetailViewModel
+import kotlinx.coroutines.launch
 
-data class Reviews(
-    val id: Int,
-    val name: String,
-    val review: String
-)
-
-val data = listOf(
-    Reviews(
-        1,
-        "Sukuna",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
-    ),
-    Reviews(
-        2,
-        "Geto",
-        "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
-    ),
-    Reviews(
-        3,
-        "Pululu",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
-    ),
-    Reviews(
-        4,
-        "Uhuy",
-        "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
-    ),
-    Reviews(
-        5,
-        "Ihiy",
-        "Ini adalah sebuah candi yang sangat indah dan menakjubkan"
-    ),
-    Reviews(
-        6,
-        "Nobara",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
-    ),
-    Reviews(
-        7,
-        "Inumaki",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus."
-    ),
-    Reviews(
-        8,
-        "Satoru",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
-                "\n" +
-                "Maecenas suscipit ac odio eget placerat. Suspendisse potenti. Nullam sit amet ornare felis. Suspendisse suscipit eros a ligula ornare congue. Pellentesque quis egestas nulla, nec sagittis ante. Integer imperdiet elementum quam, at efficitur ipsum fermentum non. Vestibulum fringilla neque arcu, ac euismod risus porttitor a. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum vestibulum nibh ut elit elementum suscipit. Vestibulum porta arcu et erat rhoncus iaculis. Curabitur luctus odio ac lectus eleifend sodales. Aenean leo felis, rutrum vel lectus non, eleifend bibendum nunc."
-    ),
-    Reviews(
-        9,
-        "Megumi",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
-                "\n" +
-                "Maecenas suscipit ac odio eget placerat. Suspendisse potenti. Nullam sit amet ornare felis. Suspendisse suscipit eros a ligula ornare congue. Pellentesque quis egestas nulla, nec sagittis ante. Integer imperdiet elementum quam, at efficitur ipsum fermentum non. Vestibulum fringilla neque arcu, ac euismod risus porttitor a. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum vestibulum nibh ut elit elementum suscipit. Vestibulum porta arcu et erat rhoncus iaculis. Curabitur luctus odio ac lectus eleifend sodales. Aenean leo felis, rutrum vel lectus non, eleifend bibendum nunc."
-    ),
-    Reviews(
-        10,
-        "Yuji",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac bibendum nibh. Donec vel ante in tellus lacinia euismod at sit amet nulla. Curabitur sed tincidunt dolor. Fusce egestas est sed dolor faucibus, eget semper mi tempus. Sed nibh ex, ultricies eget sollicitudin vitae, pretium id metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. In lacinia venenatis elit, pulvinar condimentum tortor cursus ut. Pellentesque feugiat metus cursus augue elementum vestibulum. Etiam sit amet erat orci. Curabitur fermentum magna sit amet volutpat blandit. In mattis, nisl in consectetur ullamcorper, magna erat semper nisi, aliquam commodo lectus lectus in purus.\n" +
-                "\n" +
-                "Maecenas suscipit ac odio eget placerat. Suspendisse potenti. Nullam sit amet ornare felis. Suspendisse suscipit eros a ligula ornare congue. Pellentesque quis egestas nulla, nec sagittis ante. Integer imperdiet elementum quam, at efficitur ipsum fermentum non. Vestibulum fringilla neque arcu, ac euismod risus porttitor a. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vestibulum vestibulum nibh ut elit elementum suscipit. Vestibulum porta arcu et erat rhoncus iaculis. Curabitur luctus odio ac lectus eleifend sodales. Aenean leo felis, rutrum vel lectus non, eleifend bibendum nunc."
-    ),
-)
 
 @Composable
-fun ReviewsScreen()
-{
+fun ReviewsScreen(
+    token: String,
+    placeId: Int,
+    context: Context = LocalContext.current,
+    viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance(context)),
+) {
     var reviewUser by rememberSaveable { mutableStateOf("") }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(bottom = 64.dp)
-        ){
-            items(data){ list->
-                ReviewsItem(
-                    name = list.name,
-                    review = list.review
-                )
+    var showLoading by rememberSaveable { mutableStateOf(false) }
+    var createReview by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (showLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+        viewModel.dataReviewPlace.collectAsState(initial = ResultState.Loading).value.let { get ->
+            when (get) {
+                is ResultState.Loading -> {
+                    showLoading = true
+                    viewModel.getReviewPlace(token, placeId)
+                }
+
+                is ResultState.Success -> {
+                    showLoading = false
+
+                    LazyColumn(
+                        modifier = Modifier
+                            .padding(bottom = 64.dp)
+                    ) {
+                        if (!get.data.data.reviews.isNullOrEmpty()){
+                            items(get.data.data.reviews, key = {it?.review.toString()}){
+                                ReviewsItem(
+                                    name = it?.userName.toString(),
+                                    review = it?.review.toString()
+                                )
+                            }
+
+                        }
+
+                    }
+
+                }
+                is ResultState.Error -> {
+                    showLoading = false
+                    Toast.makeText(context, get.error, Toast.LENGTH_SHORT).show()
+                }
+
             }
         }
+
 
         Column(
             modifier = Modifier
@@ -126,7 +107,7 @@ fun ReviewsScreen()
                     .padding(0.dp),
                 placeholder = {
                     Text(
-                        text = "Add a review comment...",
+                        text = stringResource(R.string.add_eview_comment),
                         style = MaterialTheme.typography.labelLarge.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal,
@@ -135,16 +116,44 @@ fun ReviewsScreen()
                         color = MaterialTheme.colorScheme.outline
                     )
                 },
-                onValueChange = {reviewUser = it},
+                onValueChange = { reviewUser = it },
                 trailingIcon = {
                     IconButton(
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            if (reviewUser!=""){
+                                scope.launch {
+                                    viewModel.createReview(token,placeId,reviewUser).asFlow()
+                                        .collect{review->
+                                            when(review){
+                                                is ResultState.Loading -> {
+                                                    showLoading = true
+                                                }
+                                                is ResultState.Success -> {
+                                                    createReview=true
+                                                    Toast.makeText(context, context.getString(R.string.successfully_added_review), Toast.LENGTH_SHORT).show()
+                                                    reviewUser = ""
+                                                }
+
+                                                is ResultState.Error -> {
+                                                    showLoading = false
+                                                    Toast.makeText(context, context.getString(R.string.failed_to_add_review), Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                }
+                            }
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Send,
                             contentDescription = "",
                             tint = MaterialTheme.colorScheme.onTertiaryContainer
                         )
+                    }
+                    LaunchedEffect(createReview){
+                        viewModel.getReviewPlace(token,placeId)
+                        createReview=false
+                        showLoading=false
                     }
                 }
             )
@@ -158,7 +167,6 @@ fun ReviewsScreen()
     device = Devices.PIXEL_4_XL
 )
 @Composable
-fun ReviewsItemPreview()
-{
-    ReviewsScreen()
+fun ReviewsItemPreview() {
+    ReviewsScreen(token="", placeId = 1)
 }

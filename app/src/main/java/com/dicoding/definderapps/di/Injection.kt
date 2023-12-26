@@ -7,6 +7,7 @@ import com.dicoding.definderapps.data.local.pref.UserPreference
 import com.dicoding.definderapps.data.local.pref.darkTheme
 import com.dicoding.definderapps.data.local.pref.dataStore
 import com.dicoding.definderapps.data.local.pref.homeLocationPref
+import com.dicoding.definderapps.data.local.room.FavDatabase
 import com.dicoding.definderapps.data.remote.retrofit.ApiConfig
 import com.dicoding.definderapps.data.remote.retrofit.ApiConfigMbti
 import com.dicoding.definderapps.repository.Repository
@@ -18,6 +19,7 @@ object Injection {
         val homeLocPreference = HomeLocPreference.getInstance(context.homeLocationPref)
         val apiService = ApiConfig.getApiService()
         val apiServiceMbti = ApiConfigMbti.getApiServiceMbti()
-        return Repository.getInstance(pref,darkMode,homeLocPreference, apiService, apiServiceMbti)
+        val dao = FavDatabase.getInstance(context).dao()
+        return Repository.getInstance(pref,darkMode,homeLocPreference, apiService, apiServiceMbti, dao)
     }
 }
