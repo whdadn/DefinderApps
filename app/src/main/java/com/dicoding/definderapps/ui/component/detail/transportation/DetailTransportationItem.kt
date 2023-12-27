@@ -75,7 +75,9 @@ fun DetailTransportationItem(
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal
-                )
+                ),
+                modifier = Modifier
+                    .padding(top = 2.dp)
             )
         }
 
@@ -90,8 +92,8 @@ fun DetailTransportationItem(
             )
 
             Text(
-                text = "\"$transportationDesc\".",
-                color = Color(0xFF00002D),
+                text = transportationDesc,
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Normal,
                     fontStyle = FontStyle.Normal,
@@ -110,7 +112,7 @@ fun DetailTransportationItem(
                 if (!expanded) {
                     Text(
                         text = "Show more",
-                        color = Color(0xFFb0b0d8),
+                        color = MaterialTheme.colorScheme.inversePrimary,
                         modifier = Modifier
                             .padding(6.dp)
                             .clickable { expanded = true },
@@ -122,7 +124,7 @@ fun DetailTransportationItem(
                 } else {
                     Text(
                         text = "Show less",
-                        color = Color(0xFFb0b0d8),
+                        color = MaterialTheme.colorScheme.inversePrimary,
                         modifier = Modifier
                             .padding(6.dp)
                             .clickable { expanded = false },

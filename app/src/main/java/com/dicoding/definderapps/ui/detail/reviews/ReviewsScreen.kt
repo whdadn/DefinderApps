@@ -78,7 +78,7 @@ fun ReviewsScreen(
                             items(get.data.data.reviews, key = {it?.review.toString()}){
                                 ReviewsItem(
                                     name = it?.userName.toString(),
-                                    review = it?.review.toString()
+                                    review = it?.review.toString(),
                                 )
                             }
 
