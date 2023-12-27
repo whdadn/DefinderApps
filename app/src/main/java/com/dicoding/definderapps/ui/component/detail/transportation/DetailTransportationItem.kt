@@ -76,8 +76,6 @@ fun DetailTransportationItem(
                     fontWeight = FontWeight.Bold,
                     fontStyle = FontStyle.Normal
                 ),
-                modifier = Modifier
-                    .padding(top = 2.dp)
             )
         }
 

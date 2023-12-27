@@ -193,6 +193,7 @@ fun MbtiContent(
                                                             SnackbarResult.ActionPerformed -> {
                                                                 closeDialog()
                                                             }
+
                                                             else -> {}
                                                         }
                                                     }
@@ -240,52 +241,65 @@ fun MbtiContent(
                                     .padding(top = 15.dp),
                                 color = MaterialTheme.colorScheme.secondary
                             )
-                           Column(
-                               modifier = Modifier
-                                   .fillMaxWidth()
-                           ) {
-                               Text(
-                                   text = "Your personality type is:",
-                                   modifier = Modifier
-                                       .padding(top = 10.dp)
-                                       .align(Alignment.CenterHorizontally),
-                                   style = MaterialTheme.typography.titleSmall.copy(
-                                       fontWeight = FontWeight.Normal,
-                                       fontStyle = FontStyle.Normal
-                                   ),
-                                   color = MaterialTheme.colorScheme.onSurface,
-                               )
-                               Text(
-                                   text = mbti,
-                                   modifier = Modifier
-                                       .align(Alignment.CenterHorizontally)
-                                       .padding(top = 10.dp),
-                                   style = MaterialTheme.typography.titleLarge.copy(
-                                       fontWeight = FontWeight.Bold,
-                                       fontStyle = FontStyle.Normal
-                                   ),
-                                   color = MaterialTheme.colorScheme.onSurface,
-                               )
-                               val session by viewModel.getToken().observeAsState()
-                               val token = session?.token.toString()
-                               viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let {
-                                   when(it){
-                                       is ResultState.Loading->{
-                                           viewModel.getMbtiDesc(token)
-                                       }
-                                       is ResultState.Success->{
-                                           it.data.data.forEach {data->
-                                               if (data.name==mbti){
-                                                   Column {
-                                                       Text(text = data.description)
-                                                   }
-                                               }
-                                           }
-                                       }
-                                       is ResultState.Error->{}
-                                   }
-                               }
-                           }
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = "Your personality type is:",
+                                    modifier = Modifier
+                                        .padding(top = 10.dp)
+                                        .align(Alignment.CenterHorizontally),
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        fontStyle = FontStyle.Normal
+                                    ),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                                Text(
+                                    text = mbti,
+                                    modifier = Modifier
+                                        .align(Alignment.CenterHorizontally)
+                                        .padding(top = 10.dp),
+                                    style = MaterialTheme.typography.titleLarge.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        fontStyle = FontStyle.Normal
+                                    ),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                                val session by viewModel.getToken().observeAsState()
+                                val token = session?.token.toString()
+                                viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let {
+                                    when (it) {
+                                        is ResultState.Loading -> {
+                                            viewModel.getMbtiDesc(token)
+                                        }
+
+                                        is ResultState.Success -> {
+                                            it.data.data.forEach { data ->
+                                                if (data.name == mbti) {
+                                                    Column {
+                                                        Text(
+                                                            text = data.description,
+                                                            textAlign = TextAlign.Justify,
+                                                            style = MaterialTheme.typography.bodyMedium.copy(
+                                                                fontWeight = FontWeight.Normal,
+                                                                fontStyle = FontStyle.Normal
+                                                            ),
+
+                                                            color = MaterialTheme.colorScheme.onSurface,
+                                                            modifier = Modifier
+                                                                .padding(top = 10.dp),
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        is ResultState.Error -> {}
+                                    }
+                                }
+                            }
                         }
                     }
                 }

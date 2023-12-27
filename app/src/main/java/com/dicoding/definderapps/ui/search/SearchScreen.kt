@@ -88,7 +88,8 @@ fun SearchScreen(
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     fontWeight = FontWeight.Normal,
                                     fontStyle = FontStyle.Italic
-                                )
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
