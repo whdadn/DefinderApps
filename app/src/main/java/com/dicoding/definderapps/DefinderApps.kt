@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -212,8 +214,7 @@ private fun BottomBar(
 ) {
     NavigationBar(
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -245,7 +246,7 @@ private fun BottomBar(
                     Icon(
                         painter = if (currentRoute == item.screen.route) item.iconFilled else item.icon,
                         contentDescription = null,
-                        tint = if (currentRoute == item.screen.route) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary
+                        tint = if (currentRoute == item.screen.route) MaterialTheme.colorScheme.onTertiaryContainer else MaterialTheme.colorScheme.onTertiaryContainer
                     )
                 },
                 selected = currentRoute == item.screen.route,

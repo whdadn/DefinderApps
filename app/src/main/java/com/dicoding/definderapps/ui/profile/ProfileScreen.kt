@@ -26,9 +26,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,12 +44,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -57,7 +62,6 @@ import com.dicoding.definderapps.ui.common.ResultState
 import com.dicoding.definderapps.ui.mbti.MbtiScreen
 import com.yogi.foodlist.ui.common.UiState
 
-
 @Composable
 fun ProfileScreen(
     navigateToLogin: () -> Unit,
@@ -66,12 +70,14 @@ fun ProfileScreen(
     darkTheme: Boolean,
     onThemeUpdated: (Boolean) -> Unit
 ) {
+
     viewModel.session.collectAsState(initial = UiState.Loading).value.let {
-        when(it){
-            is UiState.Loading->{
+        when (it) {
+            is UiState.Loading -> {
                 viewModel.getSession()
             }
-            is UiState.Success->{
+
+            is UiState.Success -> {
                 ProfileContent(
                     token = it.data.token,
                     userId = it.data.id,
@@ -80,9 +86,11 @@ fun ProfileScreen(
                     darkTheme = darkTheme,
                     onThemeUpdated = onThemeUpdated,
                     navigateToLogin = navigateToLogin,
-                    navigateToEditProfile = navigateToEditProfile)
+                    navigateToEditProfile = navigateToEditProfile
+                )
             }
-            is UiState.Error->{
+
+            is UiState.Error -> {
                 Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
@@ -92,136 +100,180 @@ fun ProfileScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContent(
-    modifier:Modifier= Modifier,
-    token:String,
-    userId:Int,
-    mbti:String,
-    context:Context= LocalContext.current,
-    viewModel:ProfileViewModel,
-    darkTheme:Boolean,
-    onThemeUpdated:(Boolean)->Unit,
+    modifier: Modifier = Modifier,
+    token: String,
+    userId: Int,
+    mbti: String,
+    context: Context = LocalContext.current,
+    viewModel: ProfileViewModel,
+    darkTheme: Boolean,
+    onThemeUpdated: (Boolean) -> Unit,
     navigateToLogin: () -> Unit,
     navigateToEditProfile: () -> Unit
-){
+) {
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
     var showLoading by rememberSaveable { mutableStateOf(false) }
     var showMbti by rememberSaveable { mutableStateOf(false) }
-    Box(modifier = modifier.fillMaxSize()) {
-        if (showLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
-        viewModel.dataUser.collectAsState(initial = ResultState.Loading).value.let {
-            when (it) {
-                is ResultState.Loading -> {
-                    showLoading = true
-                    viewModel.getUser(token, userId)
-                }
 
-                is ResultState.Success -> {
-                    showLoading = false
-                    Row(
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                ),
+                title = {
+                    Text(
+                        text = "Profile",
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontStyle = FontStyle.Normal
+                        ),
                         modifier = Modifier
-                            .padding(top = 16.dp),
+                            .padding(top = 5.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            showBottomSheet = true
+                        },
                     ) {
-                        Column(
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = null,
                             modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center
+                                .size(65.dp),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+    ) { innerPadding ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            if (showLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+            viewModel.dataUser.collectAsState(initial = ResultState.Loading).value.let {
+                when (it) {
+                    is ResultState.Loading -> {
+                        showLoading = true
+                        viewModel.getUser(token, userId)
+                    }
+
+                    is ResultState.Success -> {
+                        showLoading = false
+                        Row(
+                            modifier = Modifier
+                                .padding(top = 16.dp),
                         ) {
-                            IconButton(
-                                onClick = {
-                                    showBottomSheet = true
-                                },
+                            Column(
                                 modifier = Modifier
-                                    .align(Alignment.End)
-                                    .padding(end = 7.dp)
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.Menu,
-                                    contentDescription = null,
+                                Image(
+                                    painter = painterResource(id = R.drawable.profile_default),
+                                    contentDescription = "profile_image",
+                                    contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .size(65.dp),
-                                    tint = MaterialTheme.colorScheme.primary
+                                        .padding(top = 30.dp)
+                                        .size(200.dp)
+                                        .clip(CircleShape)
                                 )
-                            }
-                            Image(
-                                painter = painterResource(id = R.drawable.profile_default),
-                                contentDescription = "profile_image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .padding(top = 30.dp)
-                                    .size(200.dp)
-                                    .clip(CircleShape)
-                            )
-                            Text(
-                                text = it.data.data.name,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.headlineLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    fontStyle = FontStyle.Normal
-                                ),
-                                modifier = Modifier
-                                    .padding(top = 8.dp)
-                                    .align(Alignment.CenterHorizontally),
-                            )
-                            if (mbti==""){
                                 Text(
-                                    text = stringResource(id = R.string.click_here_for_set_mbti),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.Normal,
-                                        fontStyle = FontStyle.Normal
-                                    ),
-                                    modifier = Modifier
-                                        .align(Alignment.CenterHorizontally)
-                                        .clickable { showMbti = true },
-                                )
-                            }else{
-                                Text(
-                                    text = mbti,
+                                    text = it.data.data.name,
                                     color = MaterialTheme.colorScheme.onSurface,
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.Normal,
+                                    style = MaterialTheme.typography.headlineLarge.copy(
+                                        fontWeight = FontWeight.Bold,
                                         fontStyle = FontStyle.Normal
                                     ),
                                     modifier = Modifier
+                                        .padding(top = 8.dp)
                                         .align(Alignment.CenterHorizontally),
                                 )
-                            }
-                            Divider(
-                                color = MaterialTheme.colorScheme.secondary,
-                                thickness = 2.dp,
-                                modifier = Modifier
-                                    .padding(top = 6.dp),
-                            )
-                            viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let {mbtiDesc->
-                                when(mbtiDesc){
-                                    is ResultState.Loading->{
-                                        viewModel.getMbtiDesc(token)
-                                    }
-                                    is ResultState.Success->{
-                                        mbtiDesc.data.data.forEach {data-> 
-                                            if (data.name==mbti){
-                                                Column {
-                                                    Text(text = data.description)
+                                if (mbti == "") {
+                                    Text(
+                                        text = stringResource(id = R.string.click_here_for_set_mbti),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        style = MaterialTheme.typography.titleSmall.copy(
+                                            fontWeight = FontWeight.Normal,
+                                            fontStyle = FontStyle.Normal
+                                        ),
+                                        modifier = Modifier
+                                            .align(Alignment.CenterHorizontally)
+                                            .clickable { showMbti = true },
+                                    )
+                                } else {
+                                    Text(
+                                        text = mbti,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        style = MaterialTheme.typography.titleSmall.copy(
+                                            fontWeight = FontWeight.Normal,
+                                            fontStyle = FontStyle.Normal
+                                        ),
+                                        modifier = Modifier
+                                            .align(Alignment.CenterHorizontally),
+                                    )
+                                }
+                                Divider(
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    thickness = 2.dp,
+                                    modifier = Modifier
+                                        .padding(top = 6.dp),
+                                )
+                                viewModel.dataMbtiDesc.collectAsState(initial = ResultState.Loading).value.let { mbtiDesc ->
+                                    when (mbtiDesc) {
+                                        is ResultState.Loading -> {
+                                            viewModel.getMbtiDesc(token)
+                                        }
+
+                                        is ResultState.Success -> {
+                                            mbtiDesc.data.data.forEach { data ->
+                                                if (data.name == mbti) {
+                                                    Column {
+                                                        Text(
+                                                            text = data.description,
+                                                            textAlign = TextAlign.Justify,
+                                                            style = MaterialTheme.typography.bodyMedium.copy(
+                                                                fontWeight = FontWeight.Normal,
+                                                                fontStyle = FontStyle.Normal
+                                                            ),
+                                                            color = MaterialTheme.colorScheme.onSurface,
+                                                            modifier = Modifier
+                                                                .padding(10.dp),
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
+
+                                        is ResultState.Error -> {}
                                     }
-                                    is ResultState.Error->{}
                                 }
                             }
                         }
+
+
                     }
 
-
-
-                }
-                is ResultState.Error->{
-                    showLoading=false
-                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT ).show()
+                    is ResultState.Error -> {
+                        showLoading = false
+                        Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -255,7 +307,7 @@ fun ProfileContent(
                                 contentDescription = "dark_mode",
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.dark_mode),
@@ -303,7 +355,7 @@ fun ProfileContent(
                                 modifier = Modifier
                                     .padding(start = 5.dp)
                                     .size(20.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.edit_profile),
@@ -324,7 +376,8 @@ fun ProfileContent(
                         Row {
                             Icon(
                                 imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -336,7 +389,13 @@ fun ProfileContent(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
-                            Toast.makeText(context, context.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.coming_soon),
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
                         }
                 ) {
                     Column(
@@ -349,7 +408,7 @@ fun ProfileContent(
                                 modifier = Modifier
                                     .padding(start = 5.dp)
                                     .size(20.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.tour_guide),
@@ -370,7 +429,8 @@ fun ProfileContent(
                         Row {
                             Icon(
                                 imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -382,7 +442,13 @@ fun ProfileContent(
                         .padding(start = 16.dp, bottom = 20.dp, end = 16.dp)
                         .fillMaxWidth()
                         .clickable {
-                            Toast.makeText(context, context.getString(R.string.coming_soon), Toast.LENGTH_SHORT).show()
+                            Toast
+                                .makeText(
+                                    context,
+                                    context.getString(R.string.coming_soon),
+                                    Toast.LENGTH_SHORT
+                                )
+                                .show()
                         }
                 ) {
                     Column(
@@ -394,7 +460,7 @@ fun ProfileContent(
                                 contentDescription = stringResource(id = R.string.message),
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.message),
@@ -415,7 +481,8 @@ fun ProfileContent(
                         Row {
                             Icon(
                                 imageVector = Icons.Default.KeyboardArrowRight,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -441,7 +508,7 @@ fun ProfileContent(
                                 contentDescription = stringResource(id = R.string.log_out),
                                 modifier = Modifier
                                     .padding(start = 5.dp),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = stringResource(R.string.log_out),
@@ -471,8 +538,8 @@ fun ProfileContent(
             }
             Spacer(modifier = Modifier.height(50.dp))
         }
-    }else if (showMbti){
-        MbtiScreen(closeDialog = { showMbti=false })
+    } else if (showMbti) {
+        MbtiScreen(closeDialog = { showMbti = false })
     }
     LaunchedEffect(showMbti) {
         if (!showMbti) {
@@ -481,8 +548,7 @@ fun ProfileContent(
     }
     LaunchedEffect(showBottomSheet)
     {
-        if (!showBottomSheet)
-        {
+        if (!showBottomSheet) {
             viewModel.getUser(token, userId)
         }
     }
