@@ -1,17 +1,11 @@
 # About
 Finder is an application that will display recommendations for tourist attractions based on user input (tour name, province name or you can search based on the user's MBTI). In looking for detailed information about tourist attractions, it is too complicated, we have to explore various sites, ask people who have visited, therefore we thought about what if we provide one place where people can get complete detailed information like a guild center. in games/anime.
 
-![halaman_login](https://github.com/whdadn/DefinderApps/assets/129568809/25377936-e240-4b04-94ff-cc3d8263ef0e)
+<img src="https://github.com/whdadn/DefinderApps/assets/129568809/25377936-e240-4b04-94ff-cc3d8263ef0e" width="150"> <img src="https://github.com/whdadn/DefinderApps/assets/129568809/ef5765a1-9b08-47d0-a55e-f6468c695115" width="150">
 
-![halaman_welcome](https://github.com/whdadn/DefinderApps/assets/129568809/ef5765a1-9b08-47d0-a55e-f6468c695115)
+<img src="https://github.com/whdadn/DefinderApps/assets/129568809/f42c5c68-27eb-4030-be79-3a894e4ee39b" width="150"> <img src="https://github.com/whdadn/DefinderApps/assets/129568809/a3713125-f351-4f2f-9791-5fe72f9ba0f0" width="150">
 
-![halaman_home](https://github.com/whdadn/DefinderApps/assets/129568809/f42c5c68-27eb-4030-be79-3a894e4ee39b)
-
-![halaman_search](https://github.com/whdadn/DefinderApps/assets/129568809/a3713125-f351-4f2f-9791-5fe72f9ba0f0)
-
-![halaman_favorite](https://github.com/whdadn/DefinderApps/assets/129568809/29993a8d-50ed-4c6f-9c70-9b393befe35b)
-
-![halaman_profile](https://github.com/whdadn/DefinderApps/assets/129568809/d25ec36a-77ac-471b-9c03-36e3e6ddb360)
+<img src="https://github.com/whdadn/DefinderApps/assets/129568809/29993a8d-50ed-4c6f-9c70-9b393befe35b" width="150"> <img src="https://github.com/whdadn/DefinderApps/assets/129568809/d25ec36a-77ac-471b-9c03-36e3e6ddb360" width="150">
 
 # Feature
 Currently the features available are:
