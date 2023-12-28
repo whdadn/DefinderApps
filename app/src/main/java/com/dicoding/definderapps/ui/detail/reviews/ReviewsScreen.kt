@@ -57,7 +57,7 @@ fun ReviewsScreen(
     var showLoading by rememberSaveable { mutableStateOf(false) }
     var createReview by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    var maxLength = 255
+    val maxLength = 255
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (showLoading) {
@@ -139,7 +139,6 @@ fun ReviewsScreen(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            val maxLength = 255
                             if (reviewUser!=""){
                                if (reviewUser.length <= maxLength)
                                {
