@@ -1,6 +1,7 @@
 package com.dicoding.definderapps.ui.detail.about
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,7 +39,9 @@ fun AboutScreen(
         }
         if (aboutDestination.isNullOrEmpty()){
             item {
-                Column(modifier = Modifier.padding(top=4.dp)) {
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                ) {
                     Text(
                         text = stringResource(id = R.string.data_not_found),
                         color = MaterialTheme.colorScheme.onSurface,
@@ -53,10 +56,13 @@ fun AboutScreen(
         }
         else{
             items(aboutDestination){
-                Column {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
                     Text(
                         text = it.toString(),
-                        color = Color(0xFF00002D),
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.Normal,
                             fontStyle = FontStyle.Normal

@@ -56,6 +56,8 @@ fun ReviewsScreen(
     var showLoading by rememberSaveable { mutableStateOf(false) }
     var createReview by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    var maxLength = 255
+
     Box(modifier = Modifier.fillMaxSize()) {
         if (showLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -116,31 +118,52 @@ fun ReviewsScreen(
                         color = MaterialTheme.colorScheme.outline
                     )
                 },
-                onValueChange = { reviewUser = it },
+                onValueChange = {
+                  if (it.length <= maxLength)
+                      reviewUser = it
+                },
+                supportingText = {
+                  Text(
+                      text = "${reviewUser.length}",
+                      style = MaterialTheme.typography.labelSmall.copy(
+                          fontWeight = FontWeight.Normal,
+                          fontStyle = FontStyle.Normal
+                      ),
+                      color = MaterialTheme.colorScheme.outline
+                  )
+                },
                 trailingIcon = {
                     IconButton(
                         onClick = {
+                            val maxLength = 255
                             if (reviewUser!=""){
-                                scope.launch {
-                                    viewModel.createReview(token,placeId,reviewUser).asFlow()
-                                        .collect{review->
-                                            when(review){
-                                                is ResultState.Loading -> {
-                                                    showLoading = true
-                                                }
-                                                is ResultState.Success -> {
-                                                    createReview=true
-                                                    Toast.makeText(context, context.getString(R.string.successfully_added_review), Toast.LENGTH_SHORT).show()
-                                                    reviewUser = ""
-                                                }
+                               if (reviewUser.length <= maxLength)
+                               {
+                                   scope.launch {
+                                       viewModel.createReview(token,placeId,reviewUser).asFlow()
+                                           .collect{review->
+                                               when(review){
+                                                   is ResultState.Loading -> {
+                                                       showLoading = true
+                                                   }
+                                                   is ResultState.Success -> {
+                                                       createReview=true
+                                                       Toast.makeText(context, context.getString(R.string.successfully_added_review), Toast.LENGTH_SHORT).show()
+                                                       reviewUser = ""
+                                                   }
 
-                                                is ResultState.Error -> {
-                                                    showLoading = false
-                                                    Toast.makeText(context, context.getString(R.string.failed_to_add_review), Toast.LENGTH_SHORT).show()
-                                                }
-                                            }
-                                        }
-                                }
+                                                   is ResultState.Error -> {
+                                                       showLoading = false
+                                                       Toast.makeText(context, context.getString(R.string.failed_to_add_review), Toast.LENGTH_SHORT).show()
+                                                   }
+                                               }
+                                           }
+                                   }
+                               }
+                               else
+                               {
+                                   Toast.makeText(context, "characters are too long, maximum limit is 255 characters", Toast.LENGTH_SHORT).show()
+                               }
                             }
                         }
                     ) {

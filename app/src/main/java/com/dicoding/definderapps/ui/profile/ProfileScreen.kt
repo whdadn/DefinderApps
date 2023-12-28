@@ -190,8 +190,8 @@ fun ProfileContent(
                                     contentDescription = "profile_image",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
-                                        .padding(top = 30.dp)
-                                        .size(200.dp)
+                                        .padding(top = 10.dp)
+                                        .size(150.dp)
                                         .clip(CircleShape)
                                 )
                                 Text(

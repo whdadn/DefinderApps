@@ -59,6 +59,7 @@ import com.dicoding.definderapps.ui.detail.about.AboutScreen
 import com.dicoding.definderapps.ui.detail.reviews.ReviewsScreen
 import com.dicoding.definderapps.ui.detail.tourguide.TourGuideScreen
 import com.dicoding.definderapps.ui.detail.transportation.TransportationScreen
+import com.dicoding.definderapps.utils.rememberWindowInfo
 import kotlinx.coroutines.launch
 
 @SuppressLint("DiscouragedApi")
@@ -73,10 +74,12 @@ fun DetailScreen(
 ) {
     val pref by viewModel.getSession().observeAsState()
     var showLoading by rememberSaveable { mutableStateOf(false) }
+
     Box(modifier = modifier.fillMaxSize()){
         if (showLoading){
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
+
         viewModel.dataDetailPlace.collectAsState(initial = ResultState.Loading).value.let {
             when(it){
                 is ResultState.Loading->{

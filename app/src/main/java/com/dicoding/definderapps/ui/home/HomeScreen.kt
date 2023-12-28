@@ -45,9 +45,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -61,9 +58,12 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
 import com.dicoding.definderapps.ViewModelFactory
+import com.dicoding.definderapps.repository.Repository
 import com.dicoding.definderapps.ui.common.ResultState
 import com.dicoding.definderapps.ui.component.home.DestinationItem
+import com.dicoding.definderapps.ui.location.LocationScreen
 import com.dicoding.definderapps.ui.mbti.MbtiScreen
+import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 import com.yogi.foodlist.ui.common.UiState
 import kotlinx.coroutines.launch
 
@@ -73,10 +73,12 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     context:Context = LocalContext.current,
     viewModel: HomeViewModel = viewModel(factory = ViewModelFactory.getInstance(context)),
-    navigateToDetail: (Int) -> Unit
+    navigateToDetail: (Int) -> Unit,
+    navigateToHome: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     var showMbti by rememberSaveable { mutableStateOf(false) }
+    var showLocationScreen by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
@@ -103,6 +105,15 @@ fun HomeScreen(
                     IconButton(onClick = { showMbti = true }) {
                         Icon(
                             painter = painterResource(id = R.drawable.mbti),
+                            contentDescription = "mbti",
+                            tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                            modifier = Modifier
+                                .size(28.dp)
+                        )
+                    }
+                    IconButton(onClick = { showLocationScreen = true }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.location_circle),
                             contentDescription = "mbti",
                             tint = MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier
@@ -137,7 +148,26 @@ fun HomeScreen(
                     }
                 }
             }
-            if (showMbti)
+            if (showLocationScreen) {
+               viewModel.token.collectAsState(initial = UiState.Loading).value.let {
+                   when(it){
+                       is UiState.Loading->{
+                           viewModel.getToken()
+                       }
+                       is UiState.Success->{
+                          LocationScreen(
+                              mbti = it.data.mbti,
+                              closeDialog = { showLocationScreen = false },
+                              navigateToHome = navigateToHome
+                          )
+                       }
+                       is UiState.Error->{
+                           Toast.makeText(LocalContext.current, it.errorMessage, Toast.LENGTH_SHORT).show()
+                       }
+                   }
+               }
+            }
+            else if (showMbti)
             {
                 MbtiScreen(closeDialog = { showMbti = false })
             }
@@ -171,7 +201,7 @@ fun GetHomeLoc(
                     homeTitle = if (it.data.name=="" && it.data.district==""){
                         context.getString(R.string.home_title_default)
                     }else{
-                        "${it.data.name} Tourism in ${it.data.district}"
+                        "${it.data.name} tourism in ${it.data.district}"
                     },
                     token = token,
                     nameDestination = it.data.name,
@@ -389,5 +419,5 @@ fun ScrollToTopButton(
 @Preview(showBackground = true, device = Devices.PIXEL_4_XL)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(navigateToDetail = {})
+    HomeScreen(navigateToDetail = {}, navigateToHome = {})
 }

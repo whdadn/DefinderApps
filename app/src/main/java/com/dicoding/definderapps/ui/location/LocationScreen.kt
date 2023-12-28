@@ -45,7 +45,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dicoding.definderapps.R
+import com.dicoding.definderapps.ViewModelFactory
 import com.dicoding.definderapps.data.local.pref.HomeLocModel
 import com.dicoding.definderapps.ui.welcome.WelcomeViewModel
 import kotlinx.coroutines.launch
@@ -57,7 +59,7 @@ fun LocationScreen(
     mbti:String,
     closeDialog:()->Unit,
     context:Context = LocalContext.current,
-    viewModel:WelcomeViewModel,
+    viewModel:WelcomeViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current)),
     navigateToHome:()->Unit
 ) {
     var inputTourismName by rememberSaveable { mutableStateOf("") }

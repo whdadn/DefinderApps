@@ -107,70 +107,91 @@ fun SearchScreen(
                                 )
                             }
                         }
-                        if (query.isNotEmpty()) {
-                            if (!it.data.data.isNullOrEmpty()) {
-                                showLoading = false
-                                items(it.data.data, key = { it?.id.toString().trim().toInt() }) { data ->
-                                    val fav by viewModel.getFavById(data?.id.toString().toInt()).observeAsState()
-                                    val idPlace = fav?.placeId
-                                    Column(
-                                        modifier = Modifier.padding(
-                                            horizontal = 16.dp,
-                                            vertical = 6.dp
-                                        )
-                                    ) {
-                                        DestinationItem(
-                                            name = data?.name.toString(),
-                                            imageUrl = data?.image.toString(),
-                                            location = data?.location.toString(),
-                                            rating = data?.rating.toString(),
-                                            review = data?.reviews.toString().trim().toInt(),
-                                            favorite = idPlace == data?.id.toString().toInt(),
-                                            favoriteChange = {
-                                                if (idPlace == data?.id.toString().toInt()){
-                                                    viewModel.deleteFavPlace(data?.id.toString().toInt())
-                                                    scope.launch {
-                                                        viewModel.deleteFavPlaceApi(token, data?.id.toString().toInt()).asFlow().collect{
-                                                            when(it){
-                                                                is ResultState.Loading->{}
-                                                                is ResultState.Success->{
-                                                                    Toast.makeText(context, "${data?.name.toString()} deleted from favorites", Toast.LENGTH_SHORT).show()
-                                                                }
-                                                                is ResultState.Error->{}
+                        if (!it.data.data.isNullOrEmpty()) {
+                            showLoading = false
+                            items(
+                                it.data.data,
+                                key = { it?.id.toString().trim().toInt() }) { data ->
+                                val fav by viewModel.getFavById(data?.id.toString().toInt())
+                                    .observeAsState()
+                                val idPlace = fav?.placeId
+                                Column(
+                                    modifier = Modifier.padding(
+                                        horizontal = 16.dp,
+                                        vertical = 6.dp
+                                    )
+                                ) {
+                                    DestinationItem(
+                                        name = data?.name.toString(),
+                                        imageUrl = data?.image.toString(),
+                                        location = data?.location.toString(),
+                                        rating = data?.rating.toString(),
+                                        review = data?.reviews.toString().trim().toInt(),
+                                        favorite = idPlace == data?.id.toString().toInt(),
+                                        favoriteChange = {
+                                            if (idPlace == data?.id.toString().toInt()) {
+                                                viewModel.deleteFavPlace(
+                                                    data?.id.toString().toInt()
+                                                )
+                                                scope.launch {
+                                                    viewModel.deleteFavPlaceApi(
+                                                        token,
+                                                        data?.id.toString().toInt()
+                                                    ).asFlow().collect {
+                                                        when (it) {
+                                                            is ResultState.Loading -> {}
+                                                            is ResultState.Success -> {
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    "${data?.name.toString()} deleted from favorites",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
                                                             }
-                                                        }
-                                                    }
-                                                }else{
-                                                    viewModel.insertFavPlace(data?.id.toString().toInt())
-                                                    scope.launch {
-                                                        viewModel.insertFavPlaceApi(token,data?.id.toString().toInt()).asFlow().collect{
-                                                            when(it){
-                                                                is ResultState.Loading->{}
-                                                                is ResultState.Success->{
-                                                                    Toast.makeText(context, "${data?.name.toString()} added to favorites", Toast.LENGTH_SHORT).show()
-                                                                }
-                                                                is ResultState.Error->{}
-                                                            }
+
+                                                            is ResultState.Error -> {}
                                                         }
                                                     }
                                                 }
-                                            },
-                                            modifier = Modifier
-                                                .animateItemPlacement(tween(durationMillis = 100))
-                                                .clickable {
-                                                    navigateToDetail(
-                                                        data?.id
-                                                            .toString()
-                                                            .trim()
-                                                            .toInt()
-                                                    )
+                                            } else {
+                                                viewModel.insertFavPlace(
+                                                    data?.id.toString().toInt()
+                                                )
+                                                scope.launch {
+                                                    viewModel.insertFavPlaceApi(
+                                                        token,
+                                                        data?.id.toString().toInt()
+                                                    ).asFlow().collect {
+                                                        when (it) {
+                                                            is ResultState.Loading -> {}
+                                                            is ResultState.Success -> {
+                                                                Toast.makeText(
+                                                                    context,
+                                                                    "${data?.name.toString()} added to favorites",
+                                                                    Toast.LENGTH_SHORT
+                                                                ).show()
+                                                            }
+
+                                                            is ResultState.Error -> {}
+                                                        }
+                                                    }
                                                 }
-                                        )
-                                    }
+                                            }
+                                        },
+                                        modifier = Modifier
+                                            .animateItemPlacement(tween(durationMillis = 100))
+                                            .clickable {
+                                                navigateToDetail(
+                                                    data?.id
+                                                        .toString()
+                                                        .trim()
+                                                        .toInt()
+                                                )
+                                            }
+                                    )
                                 }
-                            }else{
-                                showLoading=false
                             }
+                        } else {
+                            showLoading = false
                         }
                     }
                     AnimatedVisibility(
