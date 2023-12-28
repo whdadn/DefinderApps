@@ -134,6 +134,9 @@ fun DefinderAppContent(
                 HomeScreen(
                     navigateToDetail = { id ->
                         navController.navigate(Screen.Detail.createRoute(id))
+                    },
+                    navigateToHome = {
+                        navController.navigate(Screen.Home.route)
                     }
                 )
             }
