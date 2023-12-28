@@ -80,7 +80,6 @@ fun SearchScreen(
 
                 is ResultState.Success -> {
                     showLoading = false
-                    showLoading = query != "nullll" && query.isNotEmpty()
                     if (query == "nullll") {
                         Column(Modifier.align(Alignment.Center)) {
                             Text(
@@ -105,6 +104,12 @@ fun SearchScreen(
                                     modifier = Modifier
                                         .padding(vertical = 16.dp, horizontal = 16.dp)
                                 )
+                                if(query!="nullll" && query.isNotEmpty() ){
+                                    showLoading= true
+                                    if (!it.data.data.isNullOrEmpty()){
+                                        showLoading = false
+                                    }
+                                }
                             }
                         }
                         if (!it.data.data.isNullOrEmpty()) {
@@ -210,6 +215,7 @@ fun SearchScreen(
                             }
                         )
                     }
+
 
                 }
 
